@@ -12,6 +12,7 @@ import { RULE_SETS, type Gender, type RuleSet, type RuleSetId } from '../rules';
 import type { Account, DataSource } from '../data/DataSource';
 import { LocalDataSource, clearLocalLists, localLists } from '../data/localDataSource';
 import { SupabaseDataSource, supabase, supabaseConfigured } from '../data/supabaseDataSource';
+import { isAdmin as isAdminUser } from '../data/resultsDataSource';
 
 interface Settings {
   ruleSet: RuleSetId;
@@ -58,6 +59,9 @@ interface AppContextValue extends Settings {
   /** Number of guest lists waiting to be copied into a new account. */
   pendingGuestLists: number;
   migrateGuestLists: () => Promise<number>;
+  /** True when the signed-in user may upload results. Hiding the UI is a convenience;
+   *  row level security is what actually enforces it. */
+  admin: boolean;
 }
 
 const AppContext = createContext<AppContextValue | null>(null);
@@ -76,6 +80,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   });
   const [authReady, setAuthReady] = useState(!supabaseConfigured);
   const [pendingGuestLists, setPendingGuestLists] = useState(0);
+  const [admin, setAdmin] = useState(false);
 
   // Reflect the rule set onto <html> so the CSS tokens — and the browser chrome
   // colour — follow the toggle.
@@ -108,6 +113,20 @@ export function AppProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     setPendingGuestLists(localLists().length);
   }, [session, guest]);
+
+  useEffect(() => {
+    if (!session?.user) {
+      setAdmin(false);
+      return;
+    }
+    let cancelled = false;
+    void isAdminUser().then((value) => {
+      if (!cancelled) setAdmin(value);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [session]);
 
   const account: Account | null = useMemo(() => {
     if (session?.user) {
@@ -190,6 +209,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     signOut,
     pendingGuestLists,
     migrateGuestLists,
+    admin,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

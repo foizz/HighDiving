@@ -12,7 +12,9 @@
     "typecheck": "tsc -b --noEmit",
     "data:fina": "node scripts/extract-fina.mjs",
     "data:rb-images": "node scripts/extract-rb-images.mjs",
-    "data:rb": "node scripts/build-rb-table.mjs"
+    "data:rb": "node scripts/build-rb-table.mjs",
+    "build:engine": "esbuild src/engine-entry.ts --bundle --format=esm --platform=neutral --target=es2022 --outfile=supabase/functions/_shared/engine.js",
+    "data:rules-text": "node scripts/build-rules-text.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.45.4",

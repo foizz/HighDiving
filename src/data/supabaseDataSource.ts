@@ -41,19 +41,37 @@ function toList(row: Row): DiveList {
  * project whose migration has never been applied, so say that instead.
  */
 export class MissingTableError extends Error {
-  constructor() {
+  constructor(readonly table: string, readonly migration: string) {
     super(
-      'The dive_lists table does not exist in this Supabase project yet. ' +
-        'Run supabase/migrations/0001_init.sql in the project\'s SQL editor, then reload.',
+      `The ${table} table does not exist in this Supabase project yet. ` +
+        `Run supabase/migrations/${migration} in the project's SQL editor, then reload.`,
     );
     this.name = 'MissingTableError';
   }
 }
 
-function rethrow(error: unknown): never {
+/** Which migration creates each table, so the message can name the one to run. */
+const MIGRATION_FOR: Record<string, string> = {
+  dive_lists: '0001_init.sql',
+  divers: '0002_results.sql',
+  competitions: '0002_results.sql',
+  results: '0002_results.sql',
+  admins: '0002_results.sql',
+  ai_usage: '0002_results.sql',
+};
+
+/**
+ * Translate a missing-table error, naming the table from the message when PostgREST
+ * gives one. Everything else is re-thrown untouched, so a real failure is never masked.
+ */
+export function rethrow(error: unknown, fallbackTable?: string): never {
   const e = error as { code?: string; message?: string } | null;
-  if (e?.code === 'PGRST205' || /relation .*dive_lists.* does not exist/i.test(e?.message ?? '')) {
-    throw new MissingTableError();
+  const named = /(?:table|relation)\s+'?(?:public\.)?([a-z_]+)'?/i.exec(e?.message ?? '')?.[1];
+  const table = named && MIGRATION_FOR[named] ? named : fallbackTable;
+  const missing =
+    e?.code === 'PGRST205' || /does not exist|could not find the table/i.test(e?.message ?? '');
+  if (missing && table && MIGRATION_FOR[table]) {
+    throw new MissingTableError(table, MIGRATION_FOR[table]);
   }
   throw error;
 }
@@ -73,13 +91,13 @@ export class SupabaseDataSource implements DataSource {
       .from('dive_lists')
       .select('*')
       .order('updated_at', { ascending: false });
-    if (error) rethrow(error);
+    if (error) rethrow(error, 'dive_lists');
     return (data as Row[]).map(toList);
   }
 
   async getList(id: string): Promise<DiveList | null> {
     const { data, error } = await this.client.from('dive_lists').select('*').eq('id', id).maybeSingle();
-    if (error) rethrow(error);
+    if (error) rethrow(error, 'dive_lists');
     return data ? toList(data as Row) : null;
   }
 
@@ -93,11 +111,11 @@ export class SupabaseDataSource implements DataSource {
       dives: list.dives,
       updated_at: new Date().toISOString(),
     });
-    if (error) rethrow(error);
+    if (error) rethrow(error, 'dive_lists');
   }
 
   async deleteList(id: string): Promise<void> {
     const { error } = await this.client.from('dive_lists').delete().eq('id', id);
-    if (error) rethrow(error);
+    if (error) rethrow(error, 'dive_lists');
   }
 }

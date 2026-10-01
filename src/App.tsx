@@ -6,25 +6,36 @@ import { ListsScreen } from './screens/ListsScreen';
 import { CatalogScreen } from './screens/CatalogScreen';
 import { SimulatorScreen } from './screens/SimulatorScreen';
 import { SettingsScreen } from './screens/SettingsScreen';
+import { RankingsScreen } from './screens/RankingsScreen';
+import { AskScreen } from './screens/AskScreen';
+import { AdminScreen } from './screens/AdminScreen';
+import { MoreScreen, type MoreTarget } from './screens/MoreScreen';
 
-type Tab = 'lists' | 'table' | 'simulate' | 'settings';
+type Tab = 'lists' | 'simulate' | 'rankings' | 'ask' | 'more';
 
 const TABS: { id: Tab; label: string }[] = [
   { id: 'lists', label: 'Lists' },
-  { id: 'table', label: 'Table' },
   { id: 'simulate', label: 'Simulate' },
-  { id: 'settings', label: 'Settings' },
+  { id: 'rankings', label: 'Rankings' },
+  { id: 'ask', label: 'Ask' },
+  { id: 'more', label: 'More' },
 ];
 
 export default function App() {
   const { account, authReady, ruleSet, setRuleSet, rules } = useApp();
   const [tab, setTab] = useState<Tab>('lists');
+  const [more, setMore] = useState<MoreTarget | null>(null);
 
   if (!authReady) {
     return <div className="grid min-h-full place-items-center text-sm text-muted">Loading…</div>;
   }
 
   if (!account) return <EntryScreen />;
+
+  function openTab(next: Tab) {
+    setMore(null);
+    setTab(next);
+  }
 
   return (
     <div className="mx-auto flex min-h-full max-w-2xl flex-col">
@@ -57,9 +68,26 @@ export default function App() {
 
       <main className="flex-1">
         {tab === 'lists' ? <ListsScreen /> : null}
-        {tab === 'table' ? <CatalogScreen /> : null}
         {tab === 'simulate' ? <SimulatorScreen /> : null}
-        {tab === 'settings' ? <SettingsScreen /> : null}
+        {tab === 'rankings' ? <RankingsScreen /> : null}
+        {tab === 'ask' ? <AskScreen /> : null}
+        {tab === 'more' ? (
+          more === null ? (
+            <MoreScreen onOpen={setMore} />
+          ) : (
+            <div>
+              <button
+                onClick={() => setMore(null)}
+                className="px-4 pt-4 text-sm text-muted hover:text-text"
+              >
+                ← More
+              </button>
+              {more === 'table' ? <CatalogScreen /> : null}
+              {more === 'settings' ? <SettingsScreen /> : null}
+              {more === 'admin' ? <AdminScreen /> : null}
+            </div>
+          )
+        ) : null}
       </main>
 
       <nav
@@ -72,7 +100,7 @@ export default function App() {
             return (
               <li key={t.id} className="flex-1">
                 <button
-                  onClick={() => setTab(t.id)}
+                  onClick={() => openTab(t.id)}
                   aria-current={active ? 'page' : undefined}
                   className={`min-h-12 w-full px-1 text-xs font-semibold transition focus-visible:outline-none focus-visible:ring-2 ${
                     active ? 'text-accent-2' : 'text-muted'

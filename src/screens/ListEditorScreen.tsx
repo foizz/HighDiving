@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useApp } from '../app/AppState';
 import { POSITION_NAMES, type Position } from '../lib/dive';
 import type { HeightKey } from '../lib/ddTable';
@@ -22,14 +22,6 @@ export function ListEditorScreen({
 }) {
   const { rules, gender } = useApp();
   const [picking, setPicking] = useState<SlotId | null>(null);
-
-  // The toggle drives evaluation, so record the current choice on the list too and the
-  // stored metadata never drifts from what the user is actually looking at.
-  useEffect(() => {
-    if (list.ruleSet !== rules.id || list.gender !== gender) {
-      onChange({ ...list, ruleSet: rules.id, gender });
-    }
-  }, [rules.id, gender, list, onChange]);
 
   const slots = rules.slots(gender);
   const height = rules.heights[gender].table as HeightKey;

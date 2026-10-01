@@ -106,10 +106,77 @@ so the anon key in the browser only ever reaches the signed-in user's own lists.
 signed-in modes run the same screens through one `DataSource` interface, which is what lets
 a guest's lists be moved into an account after signing up (Settings → Account).
 
+## Season rankings
+
+The rule book defines **two** season tables. They count different events on different
+scales, and the app never merges them:
+
+| | World Series ranking (3.3.1) | World Ranking (6.2) |
+|---|---|---|
+| Counts | Red Bull tour stops only | Red Bull stops **+ World Aquatics High Diving World Cups** |
+| Points | 20, 16, 13, 10, 8, 7, 6, 5, 4, 3, 2, 1 | 45, 38, 32, 27, 23, 20, 18, 16, 14, 12, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 |
+| Aggregation | sum | average, divisor never below 4 |
+| Best-dive bonus | +1 (3.4.1) | not applied |
+
+A World Aquatics result moves the World Ranking and leaves the Series table untouched —
+`src/lib/ranking.test.ts` asserts exactly that, because it is the easy thing to break.
+
+Each competition row carries `counts_for_series` and `counts_for_world_ranking`, so the
+separation is enforced by data rather than by remembering a convention.
+
+### Uploading results
+
+Apply `supabase/migrations/0002_results.sql`, then make yourself an admin with the
+commented `insert` at the bottom of that file. The Admin screen appears under **More**
+once you are in the `admins` table; writes are rejected by row level security for anyone
+who is not, so hiding the screen is a convenience rather than the control.
+
+Results go in by pasting a table (`position, name, score`, with `*` marking the best dive)
+or row by row. The parser takes tabs, commas or runs of spaces, reports problems per row,
+and asks before turning an unrecognised name into a new diver.
+
+## The assistant
+
+`supabase/functions/ask` answers questions about either rule book, your own lists, and the
+uploaded results.
+
+```bash
+npm i -g supabase                      # if you do not have it
+supabase functions deploy ask
+supabase secrets set ANTHROPIC_API_KEY=sk-ant-...
+```
+
+The key lives in function secrets and never reaches the browser. The function requires the
+caller's Supabase JWT and reuses it for every query, so the assistant can only read what
+that user could read themselves.
+
+Two choices worth knowing about:
+
+- **Both rule books go into the prompt whole** (~32k tokens), behind a cache breakpoint
+  with a one-hour TTL. They fit, caching makes repeat questions cheap, and unlike a
+  retrieval index nothing can silently drop the clause that decides an answer.
+- **Figures come from tools, not from the model.** DD lookups, list validation, scoring
+  and standings call the same functions the app uses, bundled for Deno from
+  `src/engine-entry.ts` by `npm run build:engine` rather than copied. The assistant cannot
+  disagree with the dive picker, and those answers stay covered by the app's tests.
+
+Regenerate both inputs after changing the engine or the rule books:
+
+```bash
+npm run build:engine       # src/engine-entry.ts -> supabase/functions/_shared/engine.js
+npm run data:rules-text    # the PDFs -> supabase/functions/_shared/rules-text.js
+```
+
+`ai_usage` caps requests per user per day (`ASK_DAILY_LIMIT`, default 50), checked before
+any model call — without it one looping client could spend the whole API budget.
+
 ## Known gaps
 
-- **No historical results archive.** The "what would I need to beat X?" question is answered
-  by the simulator's target mode instead; past competition results are not bundled.
+- **No seed results.** The ranking tables are empty until an admin uploads a competition;
+  nothing is bundled.
+- **The assistant has not been run against a live key.** The function is written and the
+  engine bundle is verified standalone, but it has not been deployed or exercised
+  end to end.
 - **DD comes from the tables only.** Both books also publish a formula for computing the DD
   of a dive that is not tabled (FINA Appendix 1, Red Bull Appendix 2). That is not
   implemented — an untabled dive/position is reported as unavailable rather than given a

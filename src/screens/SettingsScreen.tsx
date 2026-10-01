@@ -38,9 +38,9 @@ export function SettingsScreen() {
       </Card>
 
       <Card className="mb-3">
-        <h2 className="mb-2 font-bold">Competition</h2>
+        <h2 className="mb-2 font-bold">Default competition</h2>
         <Segmented
-          ariaLabel="Competition"
+          ariaLabel="Default competition"
           value={gender}
           onChange={setGender}
           options={[
@@ -48,10 +48,17 @@ export function SettingsScreen() {
             { value: 'women', label: 'Women', sublabel: rules.heights.women.label },
           ]}
         />
+        <p className="mt-3 text-xs text-muted">
+          Used for new lists and for the dive table. Each list keeps its own setting, which
+          you can change while editing it.
+        </p>
       </Card>
 
       <Card className="mb-3">
         <h2 className="mb-2 font-bold">What these rules require</h2>
+        <p className="mb-2 text-xs text-muted">
+          For the {gender === 'men' ? "men's" : "women's"} competition.
+        </p>
         <ul className="space-y-1.5 text-sm">
           {slots.map((s) => (
             <li key={s.id} className="flex justify-between gap-3">

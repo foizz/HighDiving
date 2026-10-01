@@ -25,11 +25,11 @@ export function SimulatorScreen() {
     });
   }, [data]);
 
-  // The rule-set toggle is the single source of truth: a list is scored under whichever
-  // book is currently selected, so the DDs here always match the ones in the editor.
+  // Scored under whichever book is currently selected, at the list's own gender, so the
+  // DDs here always match the ones the editor shows for that list.
   const list = lists?.find((l) => l.id === listId) ?? null;
   const listRules = rules;
-  const listGender = gender;
+  const listGender = list?.gender ?? gender;
 
   const evaluation = useMemo(
     () => (list ? evaluateList(list.dives, listRules, listGender) : null),

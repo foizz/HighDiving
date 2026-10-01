@@ -267,6 +267,49 @@ describe('list validation', () => {
     expect(women.dives[0].failed).toBe(true);
   });
 
+  it('judges a women\'s list at the 20 m column and the lower limits', () => {
+    // 102C is 2.7 at 27 m and 2.6 at 20 m, so it is inside the required limit for both.
+    const legalForBoth: ListEntry[] = [
+      entry('required', '102', 'C'),
+      entry('intermediate', '202', 'B'),
+      entry('optional1', '406', 'B'),
+      entry('optional2', '611', 'B'),
+    ];
+    const women = evaluateList(legalForBoth, REDBULL, 'women');
+    expect(women.dives[0].rawDD).toBe(2.6); // the 20 m column, not the 27 m one
+    expect(women.valid).toBe(true);
+    const men = evaluateList(legalForBoth, REDBULL, 'men');
+    expect(men.dives[0].rawDD).toBe(2.7);
+    expect(men.valid).toBe(true);
+  });
+
+  it('rejects a required dive that is inside the men limit but over the women one', () => {
+    // 102B is 2.8 at 27 m — exactly the men's required limit — and 2.7 at 20 m, which is
+    // over the women's 2.6. The identical list is legal as a men's list and not as a women's.
+    const list: ListEntry[] = [
+      entry('required', '102', 'B'),
+      entry('intermediate', '202', 'B'),
+      entry('optional1', '406', 'B'),
+      entry('optional2', '611', 'B'),
+    ];
+    const men = evaluateList(list, REDBULL, 'men');
+    expect(men.dives[0].rawDD).toBe(2.8);
+    expect(men.dives[0].failed).toBe(false);
+    expect(men.valid).toBe(true);
+
+    const women = evaluateList(list, REDBULL, 'women');
+    expect(women.dives[0].rawDD).toBe(2.7);
+    expect(women.dives[0].failed).toBe(true);
+    expect(women.valid).toBe(false);
+  });
+
+  it('applies the women intermediate limit of 3.4', () => {
+    const slots = REDBULL.slots('women');
+    expect(slots.find((s) => s.id === 'required')!.maxDD).toBe(2.6);
+    expect(slots.find((s) => s.id === 'intermediate')!.maxDD).toBe(3.4);
+    expect(WORLD_AQUATICS.slots('women').find((s) => s.id === 'intermediate')!.maxDD).toBe(3.4);
+  });
+
   it('zeroes every copy of a repeated dive', () => {
     const list: ListEntry[] = [
       entry('required', '102', 'B'),

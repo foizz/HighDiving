@@ -5,7 +5,7 @@ import type { HeightKey } from '../lib/ddTable';
 import { evaluateList, type EvaluatedDive, type ListEntry, type SlotId } from '../rules';
 import type { DiveList } from '../data/DataSource';
 import { DivePicker } from '../components/DivePicker';
-import { Button, Card, Input, Pill, ScreenHeader, Violations } from '../components/ui';
+import { Button, Card, Input, Pill, ScreenHeader, Segmented, Violations } from '../components/ui';
 
 /**
  * The list editor. Every edit re-evaluates the whole list, because most of the rules —
@@ -20,8 +20,13 @@ export function ListEditorScreen({
   onChange: (next: DiveList) => void;
   onBack: () => void;
 }) {
-  const { rules, gender } = useApp();
+  const { rules } = useApp();
   const [picking, setPicking] = useState<SlotId | null>(null);
+
+  // Gender belongs to the list, not to the app: it fixes the platform height and the
+  // required/intermediate DD limits for that competition, and a diver may keep lists
+  // for both. The rule set stays global because it is the comparison toggle.
+  const gender = list.gender;
 
   const slots = rules.slots(gender);
   const height = rules.heights[gender].table as HeightKey;
@@ -63,8 +68,20 @@ export function ListEditorScreen({
         value={list.name}
         onChange={(e) => onChange({ ...list, name: e.target.value })}
         aria-label="List name"
-        className="mb-4"
+        className="mb-3"
       />
+
+      <div className="mb-4">
+        <Segmented
+          ariaLabel="Competition"
+          value={gender}
+          onChange={(next) => onChange({ ...list, gender: next })}
+          options={[
+            { value: 'men' as const, label: 'Men', sublabel: rules.heights.men.label },
+            { value: 'women' as const, label: 'Women', sublabel: rules.heights.women.label },
+          ]}
+        />
+      </div>
 
       <div className="space-y-3">
         {slots.map((slot) => {

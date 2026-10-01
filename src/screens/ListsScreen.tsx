@@ -85,9 +85,9 @@ export function ListsScreen() {
       ) : (
         <ul className="space-y-3">
           {lists.map((list) => {
-            // Evaluated under the rule set currently selected, so the verdict shown here
-            // always agrees with what the editor and simulator show.
-            const evaluation = evaluateList(list.dives, rules, gender);
+            // The active rule set, but each list's own gender — so a women's list is
+            // judged against the women's heights and limits wherever it is shown.
+            const evaluation = evaluateList(list.dives, rules, list.gender);
             return (
               <li key={list.id}>
                 <Card>
@@ -99,7 +99,7 @@ export function ListsScreen() {
                       </span>
                     </div>
                     <p className="mt-0.5 text-xs text-muted">
-                      {rules.shortName} · {gender === 'men' ? "Men's" : "Women's"} ·{' '}
+                      {rules.shortName} · {list.gender === 'men' ? "Men's" : "Women's"} ·{' '}
                       {evaluation.dives.length}/4 dives
                     </p>
                     <div className="mt-2">

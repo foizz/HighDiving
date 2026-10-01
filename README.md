@@ -124,6 +124,30 @@ A World Aquatics result moves the World Ranking and leaves the Series table unto
 Each competition row carries `counts_for_series` and `counts_for_world_ranking`, so the
 separation is enforced by data rather than by remembering a convention.
 
+### Seeding 2022–2026
+
+`Red_Bull_Cliff_Diving_2022-2026_Simplified_Results.xlsx` holds 741 results across 62
+final tables. `npm run data:results-seed` turns it into
+`supabase/seed/redbull_results.sql` — run that in the SQL editor after the migration.
+It is idempotent: competitions and divers are keyed on ids derived from the event and
+the name, and each seeded competition's results are replaced rather than appended, so
+re-running it after the spreadsheet changes is safe.
+
+The generator refuses to write if it finds a repeated placing or a diver listed twice in
+one competition, because those would otherwise fail halfway through the transaction
+against the unique indexes.
+
+Two things the spreadsheet cannot tell us:
+
+- **No best-dive bonuses.** It does not record which dive won the +1 (3.4.1), so
+  `best_dive` is false throughout and World Series totals can be up to one point per
+  stop below the official figure. Tick them on the Admin screen where you know them.
+- **One missing total.** Andrea Barnaba, 2025 El Nido, is a DNF with no numeric total;
+  the placing is kept and the score stored as null.
+
+Every seeded event is a Red Bull tour stop, so all of them count towards both tables.
+If a World Aquatics World Cup is added later it should carry `counts_for_series = false`.
+
 ### Uploading results
 
 Apply `supabase/migrations/0002_results.sql`, then make yourself an admin with the
@@ -172,8 +196,9 @@ any model call — without it one looping client could spend the whole API budge
 
 ## Known gaps
 
-- **No seed results.** The ranking tables are empty until an admin uploads a competition;
-  nothing is bundled.
+- **The 2026 season is partial.** The spreadsheet has five Red Bull stops for 2026 and no
+  World Aquatics World Cups, while rule 6.2 counts eight events, so World Ranking averages
+  will move as the rest are added.
 - **The assistant has not been run against a live key.** The function is written and the
   engine bundle is verified standalone, but it has not been deployed or exercised
   end to end.

@@ -63,7 +63,11 @@ export function ListsScreen() {
     <div className="p-4 pb-24">
       <ScreenHeader title="My lists" subtitle="Each list is four dives for one competition." />
 
-      {error ? <p className="mb-3 text-sm text-danger">{error}</p> : null}
+      {error ? (
+        <div className="mb-3 rounded-xl border border-danger/40 bg-danger/10 p-3 text-sm text-danger">
+          {error}
+        </div>
+      ) : null}
 
       <Button
         onClick={() => {

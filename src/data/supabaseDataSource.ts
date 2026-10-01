@@ -35,6 +35,29 @@ function toList(row: Row): DiveList {
   };
 }
 
+/**
+ * PostgREST answers a request for a table that does not exist with a 404 and
+ * PGRST205, which surfaces as an opaque "Not Found". The usual cause by far is a
+ * project whose migration has never been applied, so say that instead.
+ */
+export class MissingTableError extends Error {
+  constructor() {
+    super(
+      'The dive_lists table does not exist in this Supabase project yet. ' +
+        'Run supabase/migrations/0001_init.sql in the project\'s SQL editor, then reload.',
+    );
+    this.name = 'MissingTableError';
+  }
+}
+
+function rethrow(error: unknown): never {
+  const e = error as { code?: string; message?: string } | null;
+  if (e?.code === 'PGRST205' || /relation .*dive_lists.* does not exist/i.test(e?.message ?? '')) {
+    throw new MissingTableError();
+  }
+  throw error;
+}
+
 export class SupabaseDataSource implements DataSource {
   readonly isGuest = false;
 
@@ -50,13 +73,13 @@ export class SupabaseDataSource implements DataSource {
       .from('dive_lists')
       .select('*')
       .order('updated_at', { ascending: false });
-    if (error) throw error;
+    if (error) rethrow(error);
     return (data as Row[]).map(toList);
   }
 
   async getList(id: string): Promise<DiveList | null> {
     const { data, error } = await this.client.from('dive_lists').select('*').eq('id', id).maybeSingle();
-    if (error) throw error;
+    if (error) rethrow(error);
     return data ? toList(data as Row) : null;
   }
 
@@ -70,11 +93,11 @@ export class SupabaseDataSource implements DataSource {
       dives: list.dives,
       updated_at: new Date().toISOString(),
     });
-    if (error) throw error;
+    if (error) rethrow(error);
   }
 
   async deleteList(id: string): Promise<void> {
     const { error } = await this.client.from('dive_lists').delete().eq('id', id);
-    if (error) throw error;
+    if (error) rethrow(error);
   }
 }

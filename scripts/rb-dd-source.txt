@@ -1,0 +1,182 @@
+# Red Bull Cliff Diving World Series — 2025 DD TABLE (Appendix 3 of the 2026 rule book).
+#
+# Transcribed by eye from the scanned appendix images, which have no text layer.
+# Extract them yourself with `npm run data:rb-images` and check this file against them.
+#
+# Format:  number | description | <27m A,B,C,D,E> | <20m A,B,C,D,E>
+# `-` means the position is not listed for that dive at that height.
+# Section headers set the group; they mirror the rule book's own section names.
+
+[1 Forward]
+102      | Forward 1 Somersault                      | 3.0,2.8,2.7,-,2.9 | 2.9,2.7,2.6,-,2.8
+104      | Forward 2 Somersaults                     | 3.4,3.2,3.0,-,3.3 | -,3.1,2.9,-,3.2
+106      | Forward 3 Somersaults                     | -,3.9,3.7,-,4.1   | -,3.9,3.7,-,4.1
+108      | Forward 4 Somersaults                     | -,4.7,4.4,-,-     | -,4.9,4.6,-,-
+112      | Forward Flying 1 Somersault               | -,2.9,2.8,-,-     | -,2.8,2.7,-,-
+114      | Forward Flying 2 Somersaults              | -,3.3,3.1,-,-     | -,3.2,3.0,-,-
+116      | Forward Flying 3 Somersaults              | -,4.1,3.8,-,-     | -,4.1,3.8,-,-
+5121     | Forward 1 Somersault 1/2 Twist            | -,-,-,2.8,-       | -,-,-,2.7,-
+5141     | Forward 2 Somersaults 1/2 Twist           | -,2.9,2.7,-,3.0   | -,2.8,2.6,-,2.9
+5(1)141  | Forward Flying 2 Somersaults with 1/2 Twist | -,3.0,2.8,-,-   | -,2.9,2.7,-,-
+5161     | Forward 3 Somersaults 1/2 Twist           | -,3.5,3.3,-,3.7   | -,3.5,3.3,-,-
+5(1)161  | Forward Flying 3 Somersaults 1/2 Twist    | -,3.7,3.4,-,-     | -,3.7,3.4,-,-
+5181     | Forward 4 Somersaults 1/2 Twist           | -,4.2,3.9,-,-     | -,4.4,4.0,-,-
+5(1)181  | Forward Flying 4 Somersaults with 1/2 Twist | -,4.6,4.0,-,-   | -,-,-,-,-
+51(10)1  | Forward 5 Somersaults 1/2 Twist           | -,5.1,4.7,-,-     | -,-,-,-,-
+51(12)1  | Forward 6 Somersaults 1/2 Twist           | -,6.1,5.7,-,-     | -,-,-,-,-
+
+[2 Back]
+202      | Back 1 Somersault                         | 2.8,2.6,2.5,-,2.7 | 2.7,2.5,2.4,-,2.6
+204      | Back 2 Somersaults                        | 3.1,2.9,2.7,-,3.0 | 3.2,3.0,2.8,-,-
+206      | Back 3 Somersaults                        | -,3.7,3.5,-,3.9   | -,3.9,3.7,-,-
+208      | Back 4 Somersaults                        | -,4.6,4.3,-,4.9   | -,5.0,4.6,-,-
+20(10)   | Back 5 Somersaults                        | -,5.6,5.2,-,-     | -,-,-,-,-
+212      | Back Flying 1 Somersault                  | -,2.7,2.6,-,-     | -,2.6,2.5,-,-
+214      | Back Flying 2 Somersaults                 | -,3.0,2.8,-,-     | -,3.1,2.9,-,-
+216      | Back Flying 3 Somersaults                 | -,3.9,3.6,-,-     | -,4.1,3.8,-,-
+
+[3 Reverse]
+302      | Reverse 1 Somersault                      | 2.8,2.6,2.5,-,2.7 | 2.8,2.6,2.4,-,2.7
+304      | Reverse 2 Somersaults                     | -,3.0,2.8,-,3.1   | -,3.1,2.9,-,-
+306      | Reverse 3 Somersaults                     | -,3.8,3.6,-,4.0   | -,4.1,3.9,-,-
+308      | Reverse 4 Somersaults                     | -,4.7,4.4,-,-     | -,5.2,4.8,-,-
+30(10)   | Reverse 5 Somersaults                     | -,5.7,5.3,-,-     | -,-,-,-,-
+312      | Reverse Flying 1 Somersault               | -,2.7,2.6,-,-     | -,2.7,2.6,-,-
+
+[4 Inward]
+402      | Inward 1 Somersault                       | -,2.9,2.8,-,3.0   | -,2.9,2.8,-,3.0
+404      | Inward 2 Somersaults                      | -,3.4,3.2,-,-     | -,3.4,3.2,-,-
+406      | Inward 3 Somersaults                      | -,4.2,4.0,-,-     | -,4.3,4.1,-,-
+408      | Inward 4 Somersaults                      | -,5.1,4.8,-,-     | -,5.4,5.0,-,-
+412      | Inward Flying 1 Somersault                | -,3.0,2.9,-,-     | -,3.0,2.9,-,-
+5421     | Inward 1 Somersault 1/2 Twist             | -,-,-,2.9,-       | -,-,-,2.8,-
+5441     | Inward 2 Somersaults 1/2 Twist            | -,3.1,2.9,-,3.2   | -,3.1,2.9,-,-
+5461     | Inward 3 Somersaults 1/2 Twist            | -,3.8,3.6,-,-     | -,3.9,3.7,-,-
+5481     | Inward 4 Somersaults 1/2 Twist            | -,4.6,4.3,-,-     | -,4.9,4.5,-,-
+54(10)1  | Inward 5 Somersaults 1/2 Twist            | -,5.5,5.1,-,-     | -,-,-,-,-
+
+[5 Handstand]
+611      | Handstand Forward 1/2 Somersault          | 3.0,2.8,2.7,-,-   | 2.9,2.7,2.6,-,-
+613      | Handstand Forward 1 1/2 Somersaults       | -,3.3,3.1,-,-     | -,3.2,3.0,-,-
+615      | Handstand Forward 2 1/2 Somersaults       | -,4.1,3.9,-,-     | -,4.2,4.0,-,-
+6131     | Handstand Forward 1 1/2 Somersaults 1/2 Twist | -,-,-,3.0,-  | -,-,-,2.9,-
+6151     | Handstand Forward 2 1/2 Somersaults 1/2 Twist | -,3.7,3.5,-,- | -,3.8,3.6,-,-
+6171     | Handstand Forward 3 1/2 Somersaults 1/2 Twist | -,4.6,4.2,-,- | -,-,-,-,-
+621      | Handstand Back 1/2 Somersault             | 2.8,2.6,2.5,-,-   | 2.7,2.5,2.4,-,-
+623      | Handstand Back 1 1/2 Somersaults          | 3.2,3.0,2.8,-,-   | 3.2,3.0,2.8,-,-
+625      | Handstand Back 2 1/2 Somersaults          | -,3.8,3.6,-,-     | -,3.9,3.7,-,-
+627      | Handstand Back 3 1/2 Somersaults          | -,4.8,4.4,-,-     | -,5.1,4.7,-,-
+629      | Handstand Back 4 1/2 Somersaults          | -,6.0,5.4,-,-     | -,-,-,-,-
+631      | Handstand Reverse 1/2 Somersault          | 2.9,2.7,2.6,-,-   | 2.9,2.7,2.6,-,-
+633      | Handstand Reverse 1 1/2 Somersaults       | -,3.2,3.0,-,-     | -,3.2,3.0,-,-
+635      | Handstand Reverse 2 1/2 Somersaults       | -,4.0,3.8,-,-     | -,4.2,4.0,-,-
+637      | Handstand Reverse 3 1/2 Somersaults       | -,5.1,4.7,-,-     | -,-,-,-,-
+641      | Handstand Inward 1/2 Somersaults          | -,2.9,2.8,-,-     | -,-,-,-,-
+643      | Handstand Inward 1 1/2 Somersaults        | -,3.4,3.2,-,-     | -,-,-,-,-
+6431     | Handstand Inward 1/2 Somersaults 1/2 Twists | -,3.1,2.9,-,-   | -,-,-,-,-
+
+[6 Forward Twists]
+5142     | Forward 2 Somersaults 1 Twist             | -,-,-,3.5,-       | -,-,-,3.4,-
+5143     | Forward 2 Somersaults 1 1/2 Twists        | -,-,-,3.2,-       | -,-,-,3.1,-
+5144     | Forward 2 Somersaults 2 Twists            | -,-,-,3.9,-       | -,-,-,3.8,-
+5145     | Forward 2 Somersaults 2 1/2 Twists        | -,-,-,3.6,-       | -,-,-,3.5,-
+5146     | Forward 2 Somersaults 3 Twists            | -,-,-,4.3,-       | -,-,-,4.2,-
+5147     | Forward 2 Somersaults 3 1/2 Twists        | -,-,-,4.0,-       | -,-,-,3.9,-
+5149     | Forward 2 Somersaults 4 1/2 Twists        | -,-,-,4.4,-       | -,-,-,-,-
+5162     | Forward 3 Somersaults 1 Twist             | -,4.3,4.1,-,-     | -,4.4,4.2,-,-
+5163     | Forward 3 Somersaults 1 1/2 Twists        | -,3.9,3.7,-,-     | -,4.0,3.8,-,-
+5164     | Forward 3 Somersaults 2 Twists            | -,4.8,4.6,-,-     | -,5.0,4.8,-,-
+5165     | Forward 3 Somersaults 2 1/2 Twists        | -,4.4,4.2,-,-     | -,4.6,4.4,-,-
+5166     | Forward 3 Somersaults 3 Twists            | -,-,-,5.3,-       | -,-,-,-,-
+5167     | Forward 3 Somersaults 3 1/2 Twists        | -,-,-,4.9,-       | -,-,-,-,-
+5169     | Forward 3 Somersaults 4 1/2 Twists        | -,-,-,5.4,-       | -,-,-,-,-
+5182     | Forward 4 Somersaults 1 Twist             | -,5.2,4.9,-,-     | -,-,-,-,-
+5183     | Forward 4 Somersaults 1 1/2 Twist         | -,4.7,4.4,-,-     | -,-,-,-,-
+5185     | Forward 4 Somersaults 2 1/2 Twist         | -,5.3,5.0,-,-     | -,-,-,-,-
+5187     | Forward 4 Somersaults 3 1/2 Twist         | -,5.9,5.6,-,-     | -,-,-,-,-
+51(10)3  | Forward 5 Somersaults 1 1/2 Twist         | -,5.7,5.3,-,-     | -,-,-,-,-
+
+[7 Back Twists]
+5241     | Back 2 Somersaults 1/2 Twist              | -,-,-,3.4,-       | -,-,-,3.3,-
+5242     | Back 2 Somersaults 1 Twist                | -,-,-,3.1,-       | -,-,-,3.0,-
+5243     | Back 2 Somersaults 1 1/2 Twists           | -,-,-,3.7,-       | -,-,-,3.7,-
+5244     | Back 2 Somersaults 2 Twists               | -,-,-,3.4,-       | -,-,-,3.4,-
+5245     | Back 2 Somersaults 2 1/2 Twists           | -,-,-,4.1,-       | -,-,-,4.1,-
+5246     | Back 2 Somersaults 3 Twists               | -,-,-,3.8,-       | -,-,-,3.8,-
+5247     | Back 2 Somersaults 3 1/2 Twists           | -,-,-,4.5,-       | -,-,-,-,-
+5248     | Back 2 Somersaults 4 Twists               | -,-,-,4.2,-       | -,-,-,4.2,-
+524(10)  | Back 2 Somersaults 5 Twists               | -,-,-,4.8,-       | -,-,-,-,-
+5261     | Back 3 Somersaults 1/2 Twist              | -,4.2,4.0,-,-     | -,4.3,4.1,-,-
+5262     | Back 3 Somersaults 1 Twist                | -,3.8,3.6,-,-     | -,3.9,3.7,-,-
+5263     | Back 3 Somersaults 1 1/2 Twists           | -,4.6,4.4,-,-     | -,4.8,4.6,-,-
+5264     | Back 3 Somersaults 2 Twists               | -,4.2,4.0,-,-     | -,4.4,4.2,-,-
+5265     | Back 3 Somersaults 2 1/2 Twists           | -,5.1,4.9,-,-     | -,-,-,-,-
+5266     | Back 3 Somersaults 3 Twists               | -,4.7,4.5,-,-     | -,4.9,4.7,-,-
+5267     | Back 3 Somersaults 3 1/2 Twists           | -,-,-,5.6,-       | -,-,-,-,-
+5268     | Back 3 Somersaults 4 Twists               | -,-,-,5.2,-       | -,-,-,-,-
+526(10)  | Back 3 Somersaults 5 Twists               | -,-,-,5.9,-       | -,-,-,-,-
+5281     | Back 4 Somersaults 1/2 Twist              | -,5.1,4.8,-,-     | -,-,-,-,-
+5282     | Back 4 Somersaults 1 Twist                | -,4.6,4.3,-,-     | -,4.9,4.5,-,-
+5283     | Back 4 Somersaults 1 1/2 Twists           | -,5.6,5.3,-,-     | -,-,-,-,-
+5284     | Back 4 Somersaults 2 Twists               | -,5.1,4.8,-,-     | -,-,-,-,-
+5286     | Back 4 Somersaults 3 Twists               | -,5.7,5.4,-,-     | -,-,-,-,-
+52(10)2  | Back 5 Somersaults 1 Twist                | -,5.5,5.1,-,-     | -,-,-,-,-
+
+[8 Reverse Twists]
+5341     | Reverse 2 Somersaults 1/2 Twist           | -,-,-,3.5,-       | -,-,-,3.4,-
+5342     | Reverse 2 Somersaults 1 Twist             | -,-,-,3.2,-       | -,-,-,3.1,-
+5343     | Reverse 2 Somersaults 1 1/2 Twists        | -,-,-,3.9,-       | -,-,-,3.8,-
+5344     | Reverse 2 Somersaults 2 Twists            | -,-,-,3.6,-       | -,-,-,3.5,-
+5345     | Reverse 2 Somersaults 2 1/2 Twists        | -,-,-,4.4,-       | -,-,-,-,-
+5346     | Reverse 2 Somersaults 3 Twists            | -,-,-,4.1,-       | -,-,-,-,-
+5347     | Reverse 2 Somersaults 3 1/2 Twists        | -,-,-,4.9,-       | -,-,-,-,-
+5348     | Reverse 2 Somersaults 4 Twists            | -,-,-,4.6,-       | -,-,-,-,-
+534(10)  | Reverse 2 Somersaults 5 Twists            | -,-,-,5.3,-       | -,-,-,-,-
+5361     | Reverse 3 Somersaults 1/2 Twist           | -,4.3,4.1,-,-     | -,4.4,4.2,-,-
+5362     | Reverse 3 Somersaults 1 Twist             | -,3.9,3.7,-,-     | -,4.0,3.8,-,-
+5363     | Reverse 3 Somersaults 1 1/2 Twists        | -,4.8,4.6,-,-     | -,-,-,-,-
+5364     | Reverse 3 Somersaults 2 Twists            | -,4.4,4.2,-,-     | -,-,-,-,-
+5365     | Reverse 3 Somersaults 2 1/2 Twists        | -,5.5,5.3,-,-     | -,-,-,-,-
+5366     | Reverse 3 Somersaults 3 Twists            | -,5.1,4.9,-,-     | -,-,-,-,-
+5368     | Reverse 3 Somersaults 4 Twists            | -,-,-,5.8,-       | -,-,-,-,-
+5381     | Reverse 4 Somersaults 1/2 Twist           | -,5.2,4.9,-,-     | -,-,-,-,-
+5382     | Reverse 4 Somersaults 1 Twist             | -,4.7,4.4,-,-     | -,-,-,-,-
+
+[9 Inward Twists]
+5442     | Inward 2 Somersaults 1 Twist              | -,-,-,3.8,-       | -,-,-,3.7,-
+5443     | Inward 2 Somersaults 1 1/2 Twists         | -,-,-,3.5,-       | -,-,-,3.4,-
+5445     | Inward 2 Somersaults 2 1/2 Twists         | -,-,-,4.0,-       | -,-,-,3.9,-
+5447     | Inward 2 Somersaults 3 1/2 Twists         | -,-,-,4.5,-       | -,-,-,-,-
+5462     | Inward 3 Somersaults 1 Twist              | -,4.6,4.4,-,-     | -,-,-,-,-
+5463     | Inward 3 Somersaults 1 1/2 Twists         | -,4.2,4.0,-,-     | -,-,-,-,-
+
+[10 Handstand Twists]
+6132     | Handstand Forward 1 1/2 Somersaults 1 Twist | -,-,-,3.5,-     | -,-,-,3.5,-
+6133     | Handstand Forward 1 1/2 Somersaults 1 1/2 Twists | -,-,-,3.2,- | -,-,-,3.2,-
+6134     | Handstand Forward 1 1/2 Somersaults 2 Twists | -,-,-,3.9,-    | -,-,-,3.9,-
+6135     | Handstand Forward 1 1/2 Somersaults 2 1/2 Twists | -,-,-,3.6,- | -,-,-,3.6,-
+6152     | Handstand Forward 2 1/2 Somersaults 1 Twist | -,4.5,4.3,-,-   | -,4.6,4.4,-,-
+6153     | Handstand Forward 2 1/2 Somersaults 1 1/2 Twists | -,4.1,3.9,-,- | -,4.2,4.0,-,-
+6154     | Handstand Forward 2 1/2 Somersaults 2 Twists | -,-,-,5.0,-    | -,-,-,-,-
+6155     | Handstand Forward 2 1/2 Somersaults 2 1/2 Twists | -,-,-,4.6,- | -,-,-,-,-
+6156     | Handstand Forward 2 1/2 Somersaults 3 Twists | -,-,-,5.5,-    | -,-,-,-,-
+6157     | Handstand Forward 2 1/2 Somersaults 3 1/2 Twists | -,-,-,5.1,- | -,-,-,-,-
+6173     | Handstand Forward 3 1/2 Somersaults 1 1/2 Twists | -,5.1,4.7,-,- | -,-,-,-,-
+6231     | Handstand Back 1 1/2 Somersaults 1/2 Twist | -,-,-,3.4,-      | -,-,-,3.3,-
+6232     | Handstand Back 1 1/2 Somersaults 1 Twist  | -,-,-,3.1,-       | -,-,-,3.0,-
+6233     | Handstand Back 1 1/2 Somersaults 1 1/2 Twists | -,-,-,3.7,-   | -,-,-,3.7,-
+6251     | Handstand Back 2 1/2 Somersaults 1/2 Twist | -,4.2,4.0,-,-    | -,4.3,4.1,-,-
+6252     | Handstand Back 2 1/2 Somersaults 1 Twist  | -,3.8,3.6,-,-     | -,3.9,3.7,-,-
+6253     | Handstand Back 2 1/2 Somersaults 1 1/2 Twist | -,4.6,4.4,-,-  | -,4.8,4.6,-,-
+6254     | Handstand Back 2 1/2 Somersaults 2 Twists | -,4.2,4.0,-,-     | -,4.4,4.2,-,-
+6255     | Handstand Back 2 1/2 Somersaults 2 1/2 Twist | -,-,-,5.1,-    | -,-,-,-,-
+6256     | Handstand Back 2 1/2 Somersaults 3 Twists | -,-,-,4.7,-       | -,-,-,4.9,-
+6257     | Handstand Back 2 1/2 Somersaults 3 1/2 Twist | -,-,-,5.7,-    | -,-,-,-,-
+6258     | Handstand Back 2 1/2 Somersaults 4 Twists | -,-,-,5.3,-       | -,-,-,-,-
+625(10)  | Handstand Back 2 1/2 Somersaults 5 Twists | -,-,-,6.0,-       | -,-,-,-,-
+6271     | Handstand Back 3 1/2 Somersaults 1/2 Twist | -,5.2,4.8,-,-    | -,-,-,-,-
+6272     | Handstand Back 3 1/2 Somersaults 1 Twist  | -,4.7,4.3,-,-     | -,-,-,-,-
+6273     | Handstand Back 3 1/2 Somersaults 1 1/2 Twists | -,5.7,5.3,-,- | -,-,-,-,-
+6274     | Handstand Back 3 1/2 Somersaults 2 Twists | -,5.2,4.8,-,-     | -,-,-,-,-
+6275     | Handstand Back 3 1/2 Somersaults 2 1/2 Twists | -,6.3,5.9,-,- | -,-,-,-,-
+6276     | Handstand Back 3 1/2 Somersaults 3 Twists | -,5.8,5.4,-,-     | -,-,-,-,-

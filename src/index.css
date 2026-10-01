@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * The whole platform re-skins from one attribute on <html>: data-ruleset.
+ * Every component styles itself from these semantic tokens, so neither rule set
+ * needs a single conditional in a component.
+ *
+ * Red Bull Cliff Diving runs dark — deep navy with the red/yellow accents from the
+ * series branding. World Aquatics runs light — white with its blue and cyan.
+ */
+:root,
+:root[data-ruleset='redbull'] {
+  --bg: 6 14 38;
+  --surface: 14 26 60;
+  --surface-2: 23 38 80;
+  --border: 44 62 112;
+  --text: 241 245 255;
+  --text-muted: 160 176 214;
+  --accent: 219 10 64;
+  --accent-text: 255 255 255;
+  --accent-2: 255 201 0;
+  --accent-2-text: 26 20 0;
+  --ok: 52 199 123;
+  --warn: 255 176 32;
+  --danger: 255 94 94;
+  --ring: 255 201 0;
+}
+
+:root[data-ruleset='worldaquatics'] {
+  --bg: 244 248 252;
+  --surface: 255 255 255;
+  --surface-2: 234 242 250;
+  --border: 199 216 232;
+  --text: 10 29 48;
+  --text-muted: 83 105 128;
+  --accent: 0 86 164;
+  --accent-text: 255 255 255;
+  --accent-2: 0 163 224;
+  --accent-2-text: 255 255 255;
+  --ok: 13 138 78;
+  --warn: 176 104 0;
+  --danger: 199 32 42;
+  --ring: 0 163 224;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  background-color: rgb(var(--bg));
+  color: rgb(var(--text));
+  -webkit-text-size-adjust: 100%;
+  overscroll-behavior-y: none;
+}
+
+/* Keep numeric columns in the DD tables aligned. */
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Honour the iOS safe area so the bottom tab bar clears the home indicator. */
+.pb-safe {
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 0.5rem);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

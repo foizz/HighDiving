@@ -1,0 +1,118 @@
+# High Dive List
+
+A mobile-first web app for high divers: build a four-dive competition list, see each
+dive's degree of difficulty, browse the full DD table, and simulate what a given set of
+judges' awards would score — under either the **Red Bull Cliff Diving** rules or the
+**World Aquatics (FINA)** rules, with the interface re-skinning to match.
+
+```bash
+npm install
+npm run dev        # http://localhost:5173
+npm test           # engine + rule tests
+npm run build
+```
+
+Accounts are optional. With no Supabase keys the app runs guest-only and keeps lists on
+the device; see [Accounts](#accounts).
+
+## Where the numbers come from
+
+Everything the app asserts about difficulty and legality is taken from the two published
+rule books in this repository, not from memory or from a third-party table.
+
+| | Red Bull Cliff Diving | World Aquatics |
+|---|---|---|
+| DD table | `RED BULL … 2026 RULE BOOK_final.pdf`, Appendix 3 ("2025 DD TABLE") | `2017-2021_high_diving_13082019_0.pdf`, Appendix 2 |
+| Competition format | same rule book, §3 | [High Diving Competition Regulations](https://www.swiss-aquatics.ch/wp-content/uploads/2024/02/7.4.6-HDI-AQUA-Regeln_EN.pdf), in force 9 Nov 2024 |
+| Dives tabled | 154 | 149 |
+
+**The two tables are genuinely different.** Red Bull's 2025 table is not a copy of FINA's:
+at 27 m, dive `202` is A 2.8 for Red Bull and A 2.9 for World Aquatics, and `106` is B 3.9
+against B 3.8. Treating one as a stand-in for the other would produce wrong DDs, so each
+rule set carries its own table.
+
+The World Aquatics PDF does **not** contain the senior competition format — it defers to
+By-Law BL 15 — so that came from the current World Aquatics regulations linked above.
+
+### Rebuilding the data
+
+```bash
+npm run data:fina        # FINA PDF  -> src/data/dd-table.json
+npm run data:rb-images   # Red Bull appendix pages -> tmp/rb-pages/*.png
+npm run data:rb          # scripts/rb-dd-source.txt -> src/data/dd-table.redbull.json
+```
+
+The FINA appendix has a real text layer, so `scripts/extract-fina.mjs` reads it directly
+with `pdftotext -table` (Xpdf; ships with Git for Windows). It locates the A/B/C/D/E
+header row, snaps the observed value columns onto it, and **refuses to emit anything if
+that mapping is ambiguous** rather than filing a DD under the wrong position.
+
+The Red Bull appendix is scanned images with no text layer. `scripts/extract-rb-images.mjs`
+pulls the bitmaps out of the PDF (dependency-free — Node's `zlib` plus a hand-rolled PNG
+writer) so they can be read by eye, and the readings live in `scripts/rb-dd-source.txt`,
+one dive per line, for checking against the images. `npm run data:rb` validates that file
+and fails on a malformed row, an implausible DD or a duplicate dive.
+
+### How the data is checked
+
+`npm test` is not only unit tests of the helpers — it validates the extracted data:
+
+- Spot DDs are asserted against values quoted from the PDFs.
+- The books' own worked example is reproduced: `8.0, 7.5, 7.5, 7.5, 7.0 = 22.5 × 3.8 = 85.5`.
+- Every one of the 303 tabled dive numbers across both books must parse, and the parser's
+  derived group must equal the group the book tables it under. The two tables were produced
+  by completely different routes — one automated, one transcribed by hand — so agreeing on
+  all 303 cross-validates both.
+
+## What the rules actually say
+
+Both books score identically: cancel the highest and lowest awards, add the remaining
+three, multiply by the DD. Five judges drop one from each end; seven drop two.
+
+| | Red Bull | World Aquatics |
+|---|---|---|
+| Required / intermediate max DD | 2.8 / 3.6 men, 2.6 / 3.4 women | same |
+| Optionals | 2, no DD limit | same |
+| Take-offs | all four dives from different take-offs (3.5.1) | required ≠ intermediate, optional ≠ optional (3.4.1/3.4.2) |
+| Dive over its DD limit | failed dive, scores **0** (3.5.3) | DD **capped** at the limit |
+| Repeated dive | 0 points | not allowed |
+| Height | 26.5–28 m / 20–22 m | 27 m / 20 m |
+| Judges | 5 | 7 preferred, 5 permitted |
+
+The over-limit behaviour is the one place the books genuinely disagree, and it is modelled
+per rule set rather than shared.
+
+## Layout
+
+```
+scripts/            PDF extraction and the Red Bull transcription source
+src/data/           generated DD tables + the storage layer
+src/lib/            dive-number parser, DD lookup, scoring
+src/rules/          the two rule sets and list validation
+src/screens/        entry, lists, editor, dive table, simulator, settings
+supabase/migrations
+```
+
+`src/rules/index.ts` holds both rule sets as data against one `RuleSet` interface, so
+adding a third set of rules is one file rather than conditionals spread through the UI.
+Likewise the theme: every colour is a CSS variable keyed off `data-ruleset` on `<html>`,
+so the toggle re-skins the whole app without a single per-component branch.
+
+## Accounts
+
+Copy `.env.example` to `.env` and fill in a Supabase project's URL and anon key, then apply
+`supabase/migrations/0001_init.sql`. Row-level security scopes every row to `auth.uid()`,
+so the anon key in the browser only ever reaches the signed-in user's own lists. Guest and
+signed-in modes run the same screens through one `DataSource` interface, which is what lets
+a guest's lists be moved into an account after signing up (Settings → Account).
+
+## Known gaps
+
+- **No historical results archive.** The "what would I need to beat X?" question is answered
+  by the simulator's target mode instead; past competition results are not bundled.
+- **DD comes from the tables only.** Both books also publish a formula for computing the DD
+  of a dive that is not tabled (FINA Appendix 1, Red Bull Appendix 2). That is not
+  implemented — an untabled dive/position is reported as unavailable rather than given a
+  computed number that was never published.
+- The Red Bull DD values were transcribed by eye. They are worth spot-checking against
+  `tmp/rb-pages/*.png` before being relied on for anything that matters.

@@ -1,0 +1,2863 @@
+{
+  "source": "2017-2021_high_diving_13082019_0.pdf (Appendix 2)",
+  "dives": [
+    {
+      "number": "5(1)141",
+      "description": "Forward Flying 2 Somersaults 1/2 Twist",
+      "group": 1,
+      "groupName": "Forward",
+      "dd": {
+        "15": {
+          "B": 3,
+          "C": 2.8
+        },
+        "20": {
+          "B": 2.9,
+          "C": 2.7
+        },
+        "27": {
+          "B": 3,
+          "C": 2.8
+        },
+        "10_12": {
+          "B": 2.9,
+          "C": 2.7
+        }
+      }
+    },
+    {
+      "number": "5(1)161",
+      "description": "Forward Flying 3 Somersaults 1/2 Twist",
+      "group": 1,
+      "groupName": "Forward",
+      "dd": {
+        "15": {
+          "B": 3.8,
+          "C": 3.5
+        },
+        "20": {
+          "B": 3.6,
+          "C": 3.3
+        },
+        "27": {
+          "B": 3.6,
+          "C": 3.3
+        },
+        "10_12": {
+          "B": 4,
+          "C": 3.7
+        }
+      }
+    },
+    {
+      "number": "5(1)181",
+      "description": "Forward Flying 4 Somersaults 1/2 Twist",
+      "group": 1,
+      "groupName": "Forward",
+      "dd": {
+        "27": {
+          "B": 4.5,
+          "C": 3.9
+        },
+        "10_12": {
+          "B": 5.7,
+          "C": 5.1
+        }
+      }
+    },
+    {
+      "number": "51(10)1",
+      "description": "Forward 5 Somersaults 1/2 Twist",
+      "group": 1,
+      "groupName": "Forward",
+      "dd": {
+        "27": {
+          "B": 5.1,
+          "C": 4.6
+        }
+      }
+    },
+    {
+      "number": "51(12)1",
+      "description": "Forward 6 Somersaults 1/2 Twist",
+      "group": 1,
+      "groupName": "Forward",
+      "dd": {
+        "27": {
+          "B": 6.4,
+          "C": 5.9
+        }
+      }
+    },
+    {
+      "number": "102",
+      "description": "Forward 1 Somersault",
+      "group": 1,
+      "groupName": "Forward",
+      "dd": {
+        "15": {
+          "A": 2.8,
+          "B": 2.6,
+          "C": 2.5,
+          "E": 2.7
+        },
+        "20": {
+          "A": 2.9,
+          "B": 2.7,
+          "C": 2.6,
+          "E": 2.8
+        },
+        "27": {
+          "A": 3,
+          "B": 2.8,
+          "C": 2.7,
+          "E": 2.9
+        },
+        "10_12": {
+          "A": 2.7,
+          "B": 2.5,
+          "C": 2.4,
+          "E": 2.6
+        }
+      }
+    },
+    {
+      "number": "104",
+      "description": "Forward 2 Somersaults",
+      "group": 1,
+      "groupName": "Forward",
+      "dd": {
+        "15": {
+          "B": 3.2,
+          "C": 3,
+          "E": 3.1
+        },
+        "20": {
+          "B": 3.1,
+          "C": 2.9
+        },
+        "27": {
+          "B": 3.2,
+          "C": 3,
+          "E": 3.3
+        },
+        "10_12": {
+          "B": 3.1,
+          "C": 2.9,
+          "E": 3.2
+        }
+      }
+    },
+    {
+      "number": "106",
+      "description": "Forward 3 Somersaults",
+      "group": 1,
+      "groupName": "Forward",
+      "dd": {
+        "15": {
+          "B": 4,
+          "C": 3.8,
+          "E": 3.8
+        },
+        "20": {
+          "B": 3.8,
+          "C": 3.6
+        },
+        "27": {
+          "B": 3.8,
+          "C": 3.6
+        },
+        "10_12": {
+          "B": 4.2,
+          "C": 4,
+          "E": 4
+        }
+      }
+    },
+    {
+      "number": "108",
+      "description": "Forward 4 Somersaults",
+      "group": 1,
+      "groupName": "Forward",
+      "dd": {
+        "15": {
+          "B": 5.4,
+          "C": 5.1
+        },
+        "20": {
+          "B": 5,
+          "C": 4.7
+        },
+        "27": {
+          "B": 4.7,
+          "C": 4.4
+        },
+        "10_12": {
+          "B": 5.9,
+          "C": 5.6
+        }
+      }
+    },
+    {
+      "number": "112",
+      "description": "Forward Flying 1 Somersault",
+      "group": 1,
+      "groupName": "Forward",
+      "dd": {
+        "15": {
+          "B": 2.7,
+          "C": 2.6
+        },
+        "20": {
+          "B": 2.8,
+          "C": 2.7
+        },
+        "27": {
+          "B": 2.9,
+          "C": 2.8
+        },
+        "10_12": {
+          "B": 2.6,
+          "C": 2.5
+        }
+      }
+    },
+    {
+      "number": "114",
+      "description": "Forward Flying 2 Somersaults",
+      "group": 1,
+      "groupName": "Forward",
+      "dd": {
+        "15": {
+          "B": 3.3,
+          "C": 3.1
+        },
+        "20": {
+          "B": 3.2,
+          "C": 3
+        },
+        "27": {
+          "B": 3.3,
+          "C": 3.1
+        },
+        "10_12": {
+          "B": 3.2,
+          "C": 3
+        }
+      }
+    },
+    {
+      "number": "116",
+      "description": "Forward Flying 3 Somersaults",
+      "group": 1,
+      "groupName": "Forward",
+      "dd": {
+        "15": {
+          "B": 4.2,
+          "C": 3.9
+        },
+        "20": {
+          "B": 4,
+          "C": 3.7
+        },
+        "27": {
+          "B": 4,
+          "C": 3.7
+        },
+        "10_12": {
+          "B": 4.4,
+          "C": 4.1
+        }
+      }
+    },
+    {
+      "number": "5121",
+      "description": "Forward 1 Somersault 1/2 Twist",
+      "group": 1,
+      "groupName": "Forward",
+      "dd": {
+        "15": {
+          "D": 2.4
+        },
+        "20": {
+          "D": 2.5
+        },
+        "27": {
+          "D": 2.6
+        },
+        "10_12": {
+          "D": 2.3
+        }
+      }
+    },
+    {
+      "number": "5141",
+      "description": "Forward 2 Somersaults 1/2 Twist",
+      "group": 1,
+      "groupName": "Forward",
+      "dd": {
+        "15": {
+          "B": 2.9,
+          "C": 2.7,
+          "E": 3
+        },
+        "20": {
+          "B": 2.8,
+          "C": 2.6,
+          "E": 2.9
+        },
+        "27": {
+          "B": 2.9,
+          "C": 2.7,
+          "E": 3
+        },
+        "10_12": {
+          "B": 2.8,
+          "C": 2.6,
+          "E": 2.9
+        }
+      }
+    },
+    {
+      "number": "5161",
+      "description": "Forward 3 Somersaults 1/2 Twist",
+      "group": 1,
+      "groupName": "Forward",
+      "dd": {
+        "15": {
+          "B": 3.6,
+          "C": 3.4
+        },
+        "20": {
+          "B": 3.4,
+          "C": 3.2
+        },
+        "27": {
+          "B": 3.4,
+          "C": 3.2,
+          "E": 3.6
+        },
+        "10_12": {
+          "B": 3.8,
+          "C": 3.6,
+          "E": 4
+        }
+      }
+    },
+    {
+      "number": "5161m",
+      "description": "Forward 3 Somersaults 1/2 Twist mid-turn",
+      "group": 1,
+      "groupName": "Forward",
+      "dd": {
+        "15": {
+          "B": 3.7,
+          "C": 3.6
+        },
+        "20": {
+          "B": 3.5,
+          "C": 3.4
+        },
+        "27": {
+          "B": 3.5,
+          "C": 3.4
+        },
+        "10_12": {
+          "B": 3.9,
+          "C": 3.8
+        }
+      }
+    },
+    {
+      "number": "5181",
+      "description": "Forward 4 Somersaults 1/2 Twist",
+      "group": 1,
+      "groupName": "Forward",
+      "dd": {
+        "15": {
+          "B": 4.8,
+          "C": 4.5
+        },
+        "20": {
+          "B": 4.4,
+          "C": 4.1
+        },
+        "27": {
+          "B": 4.1,
+          "C": 3.8,
+          "E": 4.5
+        },
+        "10_12": {
+          "B": 5.3,
+          "C": 5,
+          "E": 5.7
+        }
+      }
+    },
+    {
+      "number": "5181m",
+      "description": "Forward 4 Somersaults 1/2 Twist mid-turn",
+      "group": 1,
+      "groupName": "Forward",
+      "dd": {
+        "15": {
+          "B": 5.1,
+          "C": 4.8
+        },
+        "27": {
+          "B": 4.4,
+          "C": 4.1
+        },
+        "10_12": {
+          "B": 5.6,
+          "C": 5.3
+        }
+      }
+    },
+    {
+      "number": "20(10)",
+      "description": "Back 5 Somersaults",
+      "group": 2,
+      "groupName": "Back",
+      "dd": {
+        "27": {
+          "B": 5.8,
+          "C": 5.3
+        }
+      }
+    },
+    {
+      "number": "202",
+      "description": "Back 1 Somersault",
+      "group": 2,
+      "groupName": "Back",
+      "dd": {
+        "15": {
+          "A": 2.9,
+          "B": 2.7,
+          "C": 2.6,
+          "E": 2.8
+        },
+        "20": {
+          "A": 2.9,
+          "B": 2.7,
+          "C": 2.6,
+          "E": 2.8
+        },
+        "27": {
+          "A": 2.9,
+          "B": 2.7,
+          "C": 2.6,
+          "E": 2.8
+        },
+        "10_12": {
+          "A": 2.8,
+          "B": 2.6,
+          "C": 2.5,
+          "E": 2.7
+        }
+      }
+    },
+    {
+      "number": "204",
+      "description": "Back 2 Somersaults",
+      "group": 2,
+      "groupName": "Back",
+      "dd": {
+        "15": {
+          "A": 3.4,
+          "B": 3.2,
+          "C": 3,
+          "E": 3.3
+        },
+        "20": {
+          "A": 3.4,
+          "B": 3.2,
+          "C": 3,
+          "E": 3.3
+        },
+        "27": {
+          "A": 3.3,
+          "B": 3.1,
+          "C": 2.9,
+          "E": 3.2
+        },
+        "10_12": {
+          "A": 3.3,
+          "B": 3.1,
+          "C": 2.9,
+          "E": 3.2
+        }
+      }
+    },
+    {
+      "number": "206",
+      "description": "Back 3 Somersaults",
+      "group": 2,
+      "groupName": "Back",
+      "dd": {
+        "15": {
+          "B": 4.2,
+          "C": 4,
+          "E": 4.4
+        },
+        "20": {
+          "B": 4,
+          "C": 3.8,
+          "E": 4.2
+        },
+        "27": {
+          "B": 3.8,
+          "C": 3.6,
+          "E": 4
+        },
+        "10_12": {
+          "B": 4.4,
+          "C": 4.2,
+          "E": 4.6
+        }
+      }
+    },
+    {
+      "number": "208",
+      "description": "Back 4 Somersaults",
+      "group": 2,
+      "groupName": "Back",
+      "dd": {
+        "15": {
+          "B": 5.7,
+          "C": 5.4
+        },
+        "20": {
+          "B": 5.2,
+          "C": 4.9
+        },
+        "27": {
+          "B": 4.6,
+          "C": 4.3,
+          "E": 5
+        },
+        "10_12": {
+          "B": 6.2,
+          "C": 5.9
+        }
+      }
+    },
+    {
+      "number": "212",
+      "description": "Back Flying 1 Somersault",
+      "group": 2,
+      "groupName": "Back",
+      "dd": {
+        "15": {
+          "B": 2.8,
+          "C": 2.7
+        },
+        "20": {
+          "B": 2.8,
+          "C": 2.7
+        },
+        "27": {
+          "B": 2.8,
+          "C": 2.7
+        },
+        "10_12": {
+          "B": 2.7,
+          "C": 2.6
+        }
+      }
+    },
+    {
+      "number": "214",
+      "description": "Back Flying 2 Somersaults",
+      "group": 2,
+      "groupName": "Back",
+      "dd": {
+        "15": {
+          "B": 3.3,
+          "C": 3.1
+        },
+        "20": {
+          "B": 3.3,
+          "C": 3.1
+        },
+        "27": {
+          "B": 3.2,
+          "C": 3
+        },
+        "10_12": {
+          "B": 3.2,
+          "C": 3
+        }
+      }
+    },
+    {
+      "number": "216",
+      "description": "Back Flying 3 Somersaults",
+      "group": 2,
+      "groupName": "Back",
+      "dd": {
+        "27": {
+          "B": 4,
+          "C": 3.7
+        }
+      }
+    },
+    {
+      "number": "30(10)",
+      "description": "Reverse 5 Somersaults",
+      "group": 3,
+      "groupName": "Reverse",
+      "dd": {
+        "27": {
+          "B": 6.1,
+          "C": 5.6
+        }
+      }
+    },
+    {
+      "number": "302",
+      "description": "Reverse 1 Somersault",
+      "group": 3,
+      "groupName": "Reverse",
+      "dd": {
+        "15": {
+          "A": 2.9,
+          "B": 2.7,
+          "C": 2.6,
+          "E": 2.8
+        },
+        "20": {
+          "A": 2.9,
+          "B": 2.7,
+          "C": 2.6,
+          "E": 2.8
+        },
+        "27": {
+          "A": 2.9,
+          "B": 2.7,
+          "C": 2.6,
+          "E": 2.8
+        },
+        "10_12": {
+          "A": 2.9,
+          "B": 2.7,
+          "C": 2.6,
+          "E": 2.8
+        }
+      }
+    },
+    {
+      "number": "304",
+      "description": "Reverse 2 Somersaults",
+      "group": 3,
+      "groupName": "Reverse",
+      "dd": {
+        "15": {
+          "B": 3.3,
+          "C": 3.1,
+          "E": 3.1
+        },
+        "20": {
+          "B": 3.2,
+          "C": 3
+        },
+        "27": {
+          "B": 3.1,
+          "C": 2.9,
+          "E": 3.2
+        },
+        "10_12": {
+          "B": 3.3,
+          "C": 3.1,
+          "E": 3.4
+        }
+      }
+    },
+    {
+      "number": "306",
+      "description": "Reverse 3 Somersaults",
+      "group": 3,
+      "groupName": "Reverse",
+      "dd": {
+        "15": {
+          "B": 4.3,
+          "C": 4.1,
+          "E": 4.1
+        },
+        "20": {
+          "B": 4.1,
+          "C": 3.9
+        },
+        "27": {
+          "B": 3.9,
+          "C": 3.7
+        },
+        "10_12": {
+          "B": 4.5,
+          "C": 4.3,
+          "E": 4.3
+        }
+      }
+    },
+    {
+      "number": "308",
+      "description": "Reverse 4 Somersaults",
+      "group": 3,
+      "groupName": "Reverse",
+      "dd": {
+        "15": {
+          "B": 5.9,
+          "C": 5.6
+        },
+        "20": {
+          "B": 5.4,
+          "C": 5.1
+        },
+        "27": {
+          "B": 4.8,
+          "C": 4.5
+        },
+        "10_12": {
+          "B": 6.4,
+          "C": 6.1
+        }
+      }
+    },
+    {
+      "number": "312",
+      "description": "Reverse Flying 1 Somersault",
+      "group": 3,
+      "groupName": "Reverse",
+      "dd": {
+        "15": {
+          "B": 2.8,
+          "C": 2.7
+        },
+        "20": {
+          "B": 2.8,
+          "C": 2.7
+        },
+        "27": {
+          "B": 2.8,
+          "C": 2.7
+        },
+        "10_12": {
+          "B": 2.8,
+          "C": 2.7
+        }
+      }
+    },
+    {
+      "number": "54(10)1",
+      "description": "Inward 5 Somersaults 1/2 Twist",
+      "group": 4,
+      "groupName": "Inward",
+      "dd": {
+        "27": {
+          "B": 5.9,
+          "C": 5.4
+        }
+      }
+    },
+    {
+      "number": "402",
+      "description": "Inward 1 Somersault",
+      "group": 4,
+      "groupName": "Inward",
+      "dd": {
+        "15": {
+          "B": 3,
+          "C": 2.9,
+          "E": 3
+        },
+        "20": {
+          "B": 3,
+          "C": 2.9
+        },
+        "27": {
+          "B": 2.9,
+          "C": 2.8,
+          "E": 3
+        },
+        "10_12": {
+          "B": 2.9,
+          "C": 2.8,
+          "E": 3
+        }
+      }
+    },
+    {
+      "number": "404",
+      "description": "Inward 2 Somersaults",
+      "group": 4,
+      "groupName": "Inward",
+      "dd": {
+        "15": {
+          "B": 3.7,
+          "C": 3.5
+        },
+        "20": {
+          "B": 3.6,
+          "C": 3.4
+        },
+        "27": {
+          "B": 3.5,
+          "C": 3.3
+        },
+        "10_12": {
+          "B": 3.6,
+          "C": 3.4
+        }
+      }
+    },
+    {
+      "number": "406",
+      "description": "Inward 3 Somersaults",
+      "group": 4,
+      "groupName": "Inward",
+      "dd": {
+        "15": {
+          "B": 4.7,
+          "C": 4.5
+        },
+        "20": {
+          "B": 4.5,
+          "C": 4.3
+        },
+        "27": {
+          "B": 4.3,
+          "C": 4.1
+        },
+        "10_12": {
+          "B": 4.9,
+          "C": 4.7
+        }
+      }
+    },
+    {
+      "number": "408",
+      "description": "Inward 4 Somersaults",
+      "group": 4,
+      "groupName": "Inward",
+      "dd": {
+        "20": {
+          "B": 5.9,
+          "C": 5.6
+        },
+        "27": {
+          "B": 5.4,
+          "C": 5.1
+        }
+      }
+    },
+    {
+      "number": "412",
+      "description": "Inward Flying 1 Somersault",
+      "group": 4,
+      "groupName": "Inward",
+      "dd": {
+        "15": {
+          "B": 3.1,
+          "C": 3
+        },
+        "20": {
+          "B": 3.1,
+          "C": 3
+        },
+        "27": {
+          "B": 3,
+          "C": 2.9
+        },
+        "10_12": {
+          "B": 3,
+          "C": 2.9
+        }
+      }
+    },
+    {
+      "number": "5421",
+      "description": "Inward 1 Somersault 1/2 Twist",
+      "group": 4,
+      "groupName": "Inward",
+      "dd": {
+        "15": {
+          "D": 2.7
+        },
+        "20": {
+          "D": 2.7
+        },
+        "27": {
+          "D": 2.6
+        },
+        "10_12": {
+          "D": 2.6
+        }
+      }
+    },
+    {
+      "number": "5441",
+      "description": "Inward 2 Somersaults 1/2 Twist",
+      "group": 4,
+      "groupName": "Inward",
+      "dd": {
+        "15": {
+          "B": 3.3,
+          "C": 3.1,
+          "E": 3.4
+        },
+        "20": {
+          "B": 3.2,
+          "C": 3
+        },
+        "27": {
+          "B": 3.1,
+          "C": 2.9
+        },
+        "10_12": {
+          "B": 3.2,
+          "C": 3,
+          "E": 3.1
+        }
+      }
+    },
+    {
+      "number": "5461",
+      "description": "Inward 3 Somersaults 1/2 Twist",
+      "group": 4,
+      "groupName": "Inward",
+      "dd": {
+        "15": {
+          "B": 4.2,
+          "C": 4
+        },
+        "20": {
+          "B": 4,
+          "C": 3.8
+        },
+        "27": {
+          "B": 3.8,
+          "C": 3.6
+        },
+        "10_12": {
+          "B": 4.4,
+          "C": 4.2
+        }
+      }
+    },
+    {
+      "number": "5481",
+      "description": "Inward 4 Somersaults 1/2 Twist",
+      "group": 4,
+      "groupName": "Inward",
+      "dd": {
+        "15": {
+          "B": 5.7,
+          "C": 5.4
+        },
+        "20": {
+          "B": 5.2,
+          "C": 4.9
+        },
+        "27": {
+          "B": 4.7,
+          "C": 4.4
+        },
+        "10_12": {
+          "B": 6.2,
+          "C": 5.9
+        }
+      }
+    },
+    {
+      "number": "611",
+      "description": "Armstand Forward 1/2 Somersault",
+      "group": 5,
+      "groupName": "Armstand",
+      "dd": {
+        "15": {
+          "A": 2.7,
+          "B": 2.5,
+          "C": 2.4
+        },
+        "20": {
+          "A": 2.8,
+          "B": 2.6,
+          "C": 2.5
+        },
+        "27": {
+          "A": 2.9,
+          "B": 2.7,
+          "C": 2.6
+        },
+        "10_12": {
+          "A": 2.6,
+          "B": 2.4,
+          "C": 2.3
+        }
+      }
+    },
+    {
+      "number": "613",
+      "description": "Armstand Forward 1 1/2 SomersaultS",
+      "group": 5,
+      "groupName": "Armstand",
+      "dd": {
+        "15": {
+          "B": 3.2,
+          "C": 3
+        },
+        "20": {
+          "B": 3.2,
+          "C": 3
+        },
+        "27": {
+          "B": 3.3,
+          "C": 3.1
+        },
+        "10_12": {
+          "B": 3.1,
+          "C": 2.9
+        }
+      }
+    },
+    {
+      "number": "615",
+      "description": "Armstand Forward 2 1/2 SomersaultS",
+      "group": 5,
+      "groupName": "Armstand",
+      "dd": {
+        "15": {
+          "B": 4.3,
+          "C": 4.1
+        },
+        "20": {
+          "B": 4.2,
+          "C": 4
+        },
+        "27": {
+          "B": 4.2,
+          "C": 4
+        },
+        "10_12": {
+          "B": 4.5,
+          "C": 4.3
+        }
+      }
+    },
+    {
+      "number": "621",
+      "description": "Arm. Back 1/2 Somersault",
+      "group": 5,
+      "groupName": "Armstand",
+      "dd": {
+        "15": {
+          "A": 2.8,
+          "B": 2.6,
+          "C": 2.5
+        },
+        "20": {
+          "A": 2.8,
+          "B": 2.6,
+          "C": 2.5
+        },
+        "27": {
+          "A": 2.8,
+          "B": 2.6,
+          "C": 2.5
+        },
+        "10_12": {
+          "A": 2.7,
+          "B": 2.5,
+          "C": 2.4
+        }
+      }
+    },
+    {
+      "number": "623",
+      "description": "Arm. Back 1 1/2 Somersault",
+      "group": 5,
+      "groupName": "Armstand",
+      "dd": {
+        "15": {
+          "A": 3.3,
+          "B": 3.1,
+          "C": 2.9
+        },
+        "20": {
+          "A": 3.3,
+          "B": 3.1,
+          "C": 2.9
+        },
+        "27": {
+          "A": 3.3,
+          "B": 3.1,
+          "C": 2.9
+        },
+        "10_12": {
+          "A": 3.2,
+          "C": 2.8
+        }
+      }
+    },
+    {
+      "number": "625",
+      "description": "Arm. Back 2 1/2 Somersaults",
+      "group": 5,
+      "groupName": "Armstand",
+      "dd": {
+        "15": {
+          "B": 4.2
+        },
+        "20": {
+          "B": 4,
+          "C": 3.8
+        },
+        "27": {
+          "B": 3.8,
+          "C": 3.6
+        },
+        "10_12": {
+          "B": 4.4,
+          "C": 4.2
+        }
+      }
+    },
+    {
+      "number": "627",
+      "description": "Arm. Back 3 1/2 Somersaults",
+      "group": 5,
+      "groupName": "Armstand",
+      "dd": {
+        "27": {
+          "B": 4.8,
+          "C": 4.5
+        }
+      }
+    },
+    {
+      "number": "629",
+      "description": "Arm. Back 4 1/2 Somersaults",
+      "group": 5,
+      "groupName": "Armstand",
+      "dd": {
+        "27": {
+          "B": 6.1,
+          "C": 5.6
+        }
+      }
+    },
+    {
+      "number": "631",
+      "description": "Arm. Reverse 1/2 Somersault",
+      "group": 5,
+      "groupName": "Armstand",
+      "dd": {
+        "15": {
+          "A": 2.9,
+          "B": 2.7,
+          "C": 2.6
+        },
+        "20": {
+          "A": 2.9,
+          "B": 2.7,
+          "C": 2.6
+        },
+        "27": {
+          "A": 2.9,
+          "B": 2.7,
+          "C": 2.6
+        },
+        "10_12": {
+          "A": 2.8,
+          "B": 2.6,
+          "C": 2.5
+        }
+      }
+    },
+    {
+      "number": "633",
+      "description": "Arm. Reverse 1 1/2 Somersault",
+      "group": 5,
+      "groupName": "Armstand",
+      "dd": {
+        "15": {
+          "B": 3.4,
+          "C": 3.2
+        },
+        "20": {
+          "B": 3.3,
+          "C": 3.1
+        },
+        "27": {
+          "B": 3.3,
+          "C": 3.1
+        },
+        "10_12": {
+          "B": 3.3,
+          "C": 3.1
+        }
+      }
+    },
+    {
+      "number": "635",
+      "description": "Arm. Reverse 2 1/2 Somersaults",
+      "group": 5,
+      "groupName": "Armstand",
+      "dd": {
+        "15": {
+          "B": 4.3,
+          "C": 4.1
+        },
+        "20": {
+          "B": 4.2,
+          "C": 4
+        },
+        "27": {
+          "B": 4.1,
+          "C": 3.9
+        },
+        "10_12": {
+          "B": 4.5,
+          "C": 4.3
+        }
+      }
+    },
+    {
+      "number": "637",
+      "description": "Arm. Reverse 3 1/2 Somersaults",
+      "group": 5,
+      "groupName": "Armstand",
+      "dd": {
+        "20": {
+          "B": 5.5,
+          "C": 5.2
+        },
+        "27": {
+          "B": 5.1,
+          "C": 4.8
+        }
+      }
+    },
+    {
+      "number": "6131",
+      "description": "Arm. Forward 1 1/2 Somersault 1/2 Twist",
+      "group": 5,
+      "groupName": "Armstand",
+      "dd": {
+        "15": {
+          "D": 2.9
+        },
+        "20": {
+          "D": 2.9
+        },
+        "27": {
+          "D": 3
+        },
+        "10_12": {
+          "D": 2.8
+        }
+      }
+    },
+    {
+      "number": "6151",
+      "description": "Arm. Forward 2 1/2 Somersaults 1/2 Twist",
+      "group": 5,
+      "groupName": "Armstand",
+      "dd": {
+        "15": {
+          "B": 3.8,
+          "C": 3.6
+        },
+        "20": {
+          "B": 3.7,
+          "C": 3.5
+        },
+        "27": {
+          "B": 3.7,
+          "C": 3.5
+        },
+        "10_12": {
+          "C": 3.8
+        }
+      }
+    },
+    {
+      "number": "6171",
+      "description": "Arm. Forward 3 1/2 Somersaults 1/2 Twist",
+      "group": 5,
+      "groupName": "Armstand",
+      "dd": {
+        "27": {
+          "B": 4.6,
+          "C": 4.3
+        }
+      }
+    },
+    {
+      "number": "5142",
+      "description": "Forward 2 Somersaults 1 Twist",
+      "group": 6,
+      "groupName": "Forward Twists",
+      "dd": {
+        "15": {
+          "D": 3.5
+        },
+        "20": {
+          "D": 3.4
+        },
+        "27": {
+          "D": 3.5
+        },
+        "10_12": {
+          "D": 3.4
+        }
+      }
+    },
+    {
+      "number": "5143",
+      "description": "Forward 2 Somersaults 1 1/2 Twist",
+      "group": 6,
+      "groupName": "Forward Twists",
+      "dd": {
+        "15": {
+          "D": 3.2
+        },
+        "20": {
+          "D": 3.1
+        },
+        "27": {
+          "D": 3.2
+        },
+        "10_12": {
+          "D": 3.1
+        }
+      }
+    },
+    {
+      "number": "5144",
+      "description": "Forward 2 Somersaults 2 Twists",
+      "group": 6,
+      "groupName": "Forward Twists",
+      "dd": {
+        "15": {
+          "D": 4
+        },
+        "20": {
+          "D": 3.9
+        },
+        "27": {
+          "D": 4
+        },
+        "10_12": {
+          "D": 4
+        }
+      }
+    },
+    {
+      "number": "5145",
+      "description": "Forward 2 Somersaults 2 1/2 Twists",
+      "group": 6,
+      "groupName": "Forward Twists",
+      "dd": {
+        "15": {
+          "D": 3.6
+        },
+        "20": {
+          "D": 3.5
+        },
+        "27": {
+          "D": 3.6
+        },
+        "10_12": {
+          "D": 3.6
+        }
+      }
+    },
+    {
+      "number": "5146",
+      "description": "Forward 2 Somersaults 3 Twists",
+      "group": 6,
+      "groupName": "Forward Twists",
+      "dd": {
+        "15": {
+          "D": 4.6
+        },
+        "20": {
+          "D": 4.5
+        },
+        "27": {
+          "D": 4.6
+        },
+        "10_12": {
+          "D": 4.8
+        }
+      }
+    },
+    {
+      "number": "5147",
+      "description": "Forward 2 Somersaults 3 1/2 Twists",
+      "group": 6,
+      "groupName": "Forward Twists",
+      "dd": {
+        "15": {
+          "D": 4.1
+        },
+        "20": {
+          "D": 4
+        },
+        "27": {
+          "D": 4.1
+        },
+        "10_12": {
+          "D": 4.3
+        }
+      }
+    },
+    {
+      "number": "5149",
+      "description": "Forward 2 Somersaults 4 1/2 Twists",
+      "group": 6,
+      "groupName": "Forward Twists",
+      "dd": {
+        "15": {
+          "D": 4.7
+        },
+        "27": {
+          "D": 4.7
+        },
+        "10_12": {
+          "D": 5.2
+        }
+      }
+    },
+    {
+      "number": "5162",
+      "description": "Forward 3 Somersaults 1 Twist",
+      "group": 6,
+      "groupName": "Forward Twists",
+      "dd": {
+        "15": {
+          "B": 4.5,
+          "C": 4.3
+        },
+        "20": {
+          "B": 4.3,
+          "C": 4.1
+        },
+        "27": {
+          "B": 4.2,
+          "C": 4
+        },
+        "10_12": {
+          "B": 4.7,
+          "C": 4.5
+        }
+      }
+    },
+    {
+      "number": "5163",
+      "description": "Forward 3 Somersaults 1 1/2 Twist",
+      "group": 6,
+      "groupName": "Forward Twists",
+      "dd": {
+        "15": {
+          "B": 4.1,
+          "C": 3.9
+        },
+        "20": {
+          "B": 3.9,
+          "C": 3.7
+        },
+        "27": {
+          "B": 3.8,
+          "C": 3.6
+        },
+        "10_12": {
+          "B": 4.3,
+          "C": 4.1
+        }
+      }
+    },
+    {
+      "number": "5164",
+      "description": "Forward 3 Somersaults 2 Twists",
+      "group": 6,
+      "groupName": "Forward Twists",
+      "dd": {
+        "15": {
+          "B": 5.2,
+          "C": 5
+        },
+        "20": {
+          "B": 5,
+          "C": 4.8
+        },
+        "27": {
+          "B": 4.8,
+          "C": 4.6
+        },
+        "10_12": {
+          "B": 5.5,
+          "C": 5.3
+        }
+      }
+    },
+    {
+      "number": "5165",
+      "description": "Forward 3 Somersaults 2 1/2 Twists",
+      "group": 6,
+      "groupName": "Forward Twists",
+      "dd": {
+        "15": {
+          "B": 4.7,
+          "C": 4.5
+        },
+        "20": {
+          "B": 4.5,
+          "C": 4.3
+        },
+        "27": {
+          "B": 4.3,
+          "C": 4.1
+        },
+        "10_12": {
+          "B": 5,
+          "C": 4.8
+        }
+      }
+    },
+    {
+      "number": "5166",
+      "description": "Forward 3 Somersaults 3 Twists",
+      "group": 6,
+      "groupName": "Forward Twists",
+      "dd": {
+        "20": {
+          "D": 5.8
+        },
+        "27": {
+          "D": 5.5
+        }
+      }
+    },
+    {
+      "number": "5167",
+      "description": "Forward 3 Somersaults 3 1/2 Twists",
+      "group": 6,
+      "groupName": "Forward Twists",
+      "dd": {
+        "27": {
+          "D": 4.9
+        }
+      }
+    },
+    {
+      "number": "5169",
+      "description": "Forward 3 Somersaults 4 1/2 Twists",
+      "group": 6,
+      "groupName": "Forward Twists",
+      "dd": {
+        "27": {
+          "D": 5.6
+        }
+      }
+    },
+    {
+      "number": "5182",
+      "description": "Forward 4 Somersaults 1 Twist",
+      "group": 6,
+      "groupName": "Forward Twists",
+      "dd": {
+        "27": {
+          "B": 5.3,
+          "C": 5
+        }
+      }
+    },
+    {
+      "number": "5183",
+      "description": "Forward 4 Somersaults 1 1/2 Twist",
+      "group": 6,
+      "groupName": "Forward Twists",
+      "dd": {
+        "27": {
+          "B": 4.7,
+          "C": 4.4
+        }
+      }
+    },
+    {
+      "number": "5185",
+      "description": "Forward 4 Somersaults 2 1/2 Twists",
+      "group": 6,
+      "groupName": "Forward Twists",
+      "dd": {
+        "27": {
+          "B": 5.4,
+          "C": 5.1
+        }
+      }
+    },
+    {
+      "number": "52(10)2",
+      "description": "Back 5 Somersaults 1 Twist",
+      "group": 7,
+      "groupName": "Back Twists",
+      "dd": {
+        "27": {
+          "B": 5.6,
+          "C": 5.1
+        }
+      }
+    },
+    {
+      "number": "524(10)",
+      "description": "Back 2 Somersaults 5 Twists",
+      "group": 7,
+      "groupName": "Back Twists",
+      "dd": {
+        "27": {
+          "D": 5
+        }
+      }
+    },
+    {
+      "number": "526(10)",
+      "description": "Back 3 Somersaults 5 Twists",
+      "group": 7,
+      "groupName": "Back Twists",
+      "dd": {
+        "27": {
+          "D": 6
+        }
+      }
+    },
+    {
+      "number": "5241",
+      "description": "Back 2 Somersaults 1/2 Twist",
+      "group": 7,
+      "groupName": "Back Twists",
+      "dd": {
+        "15": {
+          "D": 3.5
+        },
+        "20": {
+          "D": 3.4
+        },
+        "27": {
+          "D": 3.4
+        },
+        "10_12": {
+          "D": 3.4
+        }
+      }
+    },
+    {
+      "number": "5242",
+      "description": "Back 2 Somersaults 1 Twist",
+      "group": 7,
+      "groupName": "Back Twists",
+      "dd": {
+        "15": {
+          "D": 3.2
+        },
+        "20": {
+          "D": 3.1
+        },
+        "27": {
+          "D": 3.1
+        },
+        "10_12": {
+          "D": 3.1
+        }
+      }
+    },
+    {
+      "number": "5243",
+      "description": "Back 2 Somersaults 1 1/2 Twist",
+      "group": 7,
+      "groupName": "Back Twists",
+      "dd": {
+        "15": {
+          "D": 3.8
+        },
+        "20": {
+          "D": 3.7
+        },
+        "27": {
+          "D": 3.7
+        },
+        "10_12": {
+          "D": 3.8
+        }
+      }
+    },
+    {
+      "number": "5244",
+      "description": "Back 2 Somersaults 2 Twists",
+      "group": 7,
+      "groupName": "Back Twists",
+      "dd": {
+        "15": {
+          "D": 3.5
+        },
+        "20": {
+          "D": 3.4
+        },
+        "27": {
+          "D": 3.4
+        },
+        "10_12": {
+          "D": 3.5
+        }
+      }
+    },
+    {
+      "number": "5245",
+      "description": "Back 2 Somersaults 2 1/2 Twists",
+      "group": 7,
+      "groupName": "Back Twists",
+      "dd": {
+        "15": {
+          "D": 4.3
+        },
+        "20": {
+          "D": 4.2
+        },
+        "27": {
+          "D": 4.2
+        },
+        "10_12": {
+          "D": 4.5
+        }
+      }
+    },
+    {
+      "number": "5246",
+      "description": "Back 2 Somersaults 3 Twists",
+      "group": 7,
+      "groupName": "Back Twists",
+      "dd": {
+        "15": {
+          "D": 3.9
+        },
+        "20": {
+          "D": 3.8
+        },
+        "27": {
+          "D": 3.8
+        },
+        "10_12": {
+          "D": 4.1
+        }
+      }
+    },
+    {
+      "number": "5247",
+      "description": "Back 2 Somersaults 3 1/2 Twists",
+      "group": 7,
+      "groupName": "Back Twists",
+      "dd": {
+        "27": {
+          "D": 4.8
+        }
+      }
+    },
+    {
+      "number": "5248",
+      "description": "Back 2 Somersaults 4 Twists",
+      "group": 7,
+      "groupName": "Back Twists",
+      "dd": {
+        "15": {
+          "D": 4.5
+        },
+        "20": {
+          "D": 4.4
+        },
+        "27": {
+          "D": 4.3
+        },
+        "10_12": {
+          "D": 4.9
+        }
+      }
+    },
+    {
+      "number": "5261",
+      "description": "Back 3 Somersaults 1/2 Twist",
+      "group": 7,
+      "groupName": "Back Twists",
+      "dd": {
+        "15": {
+          "B": 4.5,
+          "C": 4.3
+        },
+        "20": {
+          "B": 4.3,
+          "C": 4.1
+        },
+        "27": {
+          "B": 4.2,
+          "C": 4
+        },
+        "10_12": {
+          "B": 4.7,
+          "C": 4.5
+        }
+      }
+    },
+    {
+      "number": "5262",
+      "description": "Back 3 Somersaults 1 Twist",
+      "group": 7,
+      "groupName": "Back Twists",
+      "dd": {
+        "15": {
+          "B": 4,
+          "C": 3.8
+        },
+        "20": {
+          "B": 3.8,
+          "C": 3.6
+        },
+        "27": {
+          "B": 3.7,
+          "C": 3.5
+        },
+        "10_12": {
+          "B": 4.2,
+          "C": 4
+        }
+      }
+    },
+    {
+      "number": "5263",
+      "description": "Back 3 Somersaults 1 1/2 Twist",
+      "group": 7,
+      "groupName": "Back Twists",
+      "dd": {
+        "15": {
+          "B": 5,
+          "C": 4.8
+        },
+        "20": {
+          "B": 4.8,
+          "C": 4.6
+        },
+        "27": {
+          "B": 4.6,
+          "C": 4.4
+        },
+        "10_12": {
+          "B": 5.3,
+          "C": 5.1
+        }
+      }
+    },
+    {
+      "number": "5264",
+      "description": "Back 3 Somersaults 2 Twists",
+      "group": 7,
+      "groupName": "Back Twists",
+      "dd": {
+        "15": {
+          "B": 4.5,
+          "C": 4.3
+        },
+        "20": {
+          "B": 4.3,
+          "C": 4.1
+        },
+        "27": {
+          "B": 4.1,
+          "C": 3.9
+        },
+        "10_12": {
+          "B": 4.8,
+          "C": 4.6
+        }
+      }
+    },
+    {
+      "number": "5265",
+      "description": "Back 3 Somersaults 2 1/2 Twist",
+      "group": 7,
+      "groupName": "Back Twists",
+      "dd": {
+        "27": {
+          "B": 5.2,
+          "C": 5
+        }
+      }
+    },
+    {
+      "number": "5266",
+      "description": "Back 3 Somersaults 3 Twists",
+      "group": 7,
+      "groupName": "Back Twists",
+      "dd": {
+        "15": {
+          "B": 5.1,
+          "C": 4.9
+        },
+        "20": {
+          "B": 4.9,
+          "C": 4.7
+        },
+        "27": {
+          "B": 4.6,
+          "C": 4.4
+        },
+        "10_12": {
+          "B": 5.6,
+          "C": 5.4
+        }
+      }
+    },
+    {
+      "number": "5267",
+      "description": "Back 3 Somersaults 3 1/2 Twists",
+      "group": 7,
+      "groupName": "Back Twists",
+      "dd": {
+        "27": {
+          "D": 5.9
+        }
+      }
+    },
+    {
+      "number": "5268",
+      "description": "Back 3 Somersaults 4 Twists",
+      "group": 7,
+      "groupName": "Back Twists",
+      "dd": {
+        "27": {
+          "D": 5.2
+        }
+      }
+    },
+    {
+      "number": "5281",
+      "description": "Back 4 Somersaults 1/2 Twist",
+      "group": 7,
+      "groupName": "Back Twists",
+      "dd": {
+        "27": {
+          "B": 5.2,
+          "C": 4.9
+        }
+      }
+    },
+    {
+      "number": "5282",
+      "description": "Back 4 Somersaults 1 Twist",
+      "group": 7,
+      "groupName": "Back Twists",
+      "dd": {
+        "15": {
+          "B": 5.3,
+          "C": 5
+        },
+        "20": {
+          "B": 4.9,
+          "C": 4.6
+        },
+        "27": {
+          "B": 4.5,
+          "C": 4.2
+        },
+        "10_12": {
+          "B": 5.8,
+          "C": 5.5
+        }
+      }
+    },
+    {
+      "number": "5282m",
+      "description": "Back 4 Somersaults 1 Twist mid-turn",
+      "group": 7,
+      "groupName": "Back Twists",
+      "dd": {
+        "27": {
+          "B": 4.8,
+          "C": 4.5
+        }
+      }
+    },
+    {
+      "number": "5283",
+      "description": "Back 4 Somersaults 1 1/2 Twist",
+      "group": 7,
+      "groupName": "Back Twists",
+      "dd": {
+        "27": {
+          "B": 5.8,
+          "C": 5.5
+        }
+      }
+    },
+    {
+      "number": "5284",
+      "description": "Back 4 Somersaults 2 Twists",
+      "group": 7,
+      "groupName": "Back Twists",
+      "dd": {
+        "27": {
+          "B": 5.1,
+          "C": 4.8
+        }
+      }
+    },
+    {
+      "number": "5286",
+      "description": "Back 4 Somersaults 3 Twists",
+      "group": 7,
+      "groupName": "Back Twists",
+      "dd": {
+        "27": {
+          "B": 5.8,
+          "C": 5.5
+        }
+      }
+    },
+    {
+      "number": "534(10)",
+      "description": "Reverse 2 Somersaults 5 Twists",
+      "group": 8,
+      "groupName": "Reverse Twists",
+      "dd": {
+        "27": {
+          "D": 5.4
+        }
+      }
+    },
+    {
+      "number": "5341",
+      "description": "Reverse 2 Somersaults 1/2 Twist",
+      "group": 8,
+      "groupName": "Reverse Twists",
+      "dd": {
+        "15": {
+          "D": 3.6
+        },
+        "20": {
+          "D": 3.4
+        },
+        "27": {
+          "D": 3.4
+        },
+        "10_12": {
+          "D": 3.5
+        }
+      }
+    },
+    {
+      "number": "5342",
+      "description": "Reverse 2 Somersaults 1 Twist",
+      "group": 8,
+      "groupName": "Reverse Twists",
+      "dd": {
+        "15": {
+          "D": 3.3
+        },
+        "20": {
+          "D": 3.1
+        },
+        "27": {
+          "D": 3.1
+        },
+        "10_12": {
+          "D": 3.2
+        }
+      }
+    },
+    {
+      "number": "5343",
+      "description": "Reverse 2 Somersaults 1 1/2 Twist",
+      "group": 8,
+      "groupName": "Reverse Twists",
+      "dd": {
+        "15": {
+          "D": 4
+        },
+        "20": {
+          "D": 3.8
+        },
+        "27": {
+          "D": 3.8
+        },
+        "10_12": {
+          "D": 3.9
+        }
+      }
+    },
+    {
+      "number": "5344",
+      "description": "Reverse 2 Somersaults 2 Twists",
+      "group": 8,
+      "groupName": "Reverse Twists",
+      "dd": {
+        "15": {
+          "D": 3.7
+        },
+        "20": {
+          "D": 3.5
+        },
+        "27": {
+          "D": 3.5
+        },
+        "10_12": {
+          "D": 3.6
+        }
+      }
+    },
+    {
+      "number": "5345",
+      "description": "Reverse 2 Somersaults 2 1/2 Twists",
+      "group": 8,
+      "groupName": "Reverse Twists",
+      "dd": {
+        "15": {
+          "D": 4.6
+        },
+        "20": {
+          "D": 4.4
+        },
+        "27": {
+          "D": 4.4
+        },
+        "10_12": {
+          "D": 4.7
+        }
+      }
+    },
+    {
+      "number": "5346",
+      "description": "Reverse 2 Somersaults 3 Twists",
+      "group": 8,
+      "groupName": "Reverse Twists",
+      "dd": {
+        "15": {
+          "D": 4.2
+        },
+        "20": {
+          "D": 4
+        },
+        "27": {
+          "D": 4
+        },
+        "10_12": {
+          "D": 4.3
+        }
+      }
+    },
+    {
+      "number": "5347",
+      "description": "Reverse 2 Somersaults 3 1/2 Twists",
+      "group": 8,
+      "groupName": "Reverse Twists",
+      "dd": {
+        "15": {
+          "D": 5.3
+        },
+        "27": {
+          "D": 5.1
+        },
+        "10_12": {
+          "D": 5.8
+        }
+      }
+    },
+    {
+      "number": "5348",
+      "description": "Reverse 2 Somersaults 4 Twists",
+      "group": 8,
+      "groupName": "Reverse Twists",
+      "dd": {
+        "15": {
+          "D": 4.8
+        },
+        "27": {
+          "D": 4.6
+        },
+        "10_12": {
+          "D": 5.3
+        }
+      }
+    },
+    {
+      "number": "5361",
+      "description": "Reverse 3 Somersaults 1/2 Twist",
+      "group": 8,
+      "groupName": "Reverse Twists",
+      "dd": {
+        "15": {
+          "B": 4.6,
+          "C": 4.4
+        },
+        "20": {
+          "B": 4.4,
+          "C": 4.2
+        },
+        "27": {
+          "B": 4.3,
+          "C": 4.1
+        },
+        "10_12": {
+          "B": 4.8,
+          "C": 4.6
+        }
+      }
+    },
+    {
+      "number": "5362",
+      "description": "Reverse 3 Somersaults 1 Twist",
+      "group": 8,
+      "groupName": "Reverse Twists",
+      "dd": {
+        "15": {
+          "B": 4.1,
+          "C": 3.9
+        },
+        "20": {
+          "B": 3.9,
+          "C": 3.7
+        },
+        "27": {
+          "B": 3.8,
+          "C": 3.6
+        },
+        "10_12": {
+          "B": 4.3,
+          "C": 4.1
+        }
+      }
+    },
+    {
+      "number": "5363",
+      "description": "Reverse 3 Somersaults 1 1/2 Twist",
+      "group": 8,
+      "groupName": "Reverse Twists",
+      "dd": {
+        "27": {
+          "B": 4.9,
+          "C": 4.7
+        }
+      }
+    },
+    {
+      "number": "5364",
+      "description": "Reverse 3 Somersaults 2 Twists",
+      "group": 8,
+      "groupName": "Reverse Twists",
+      "dd": {
+        "27": {
+          "B": 4.4,
+          "C": 4.2
+        }
+      }
+    },
+    {
+      "number": "5365",
+      "description": "Reverse 3 Somersaults 2 1/2 Twists",
+      "group": 8,
+      "groupName": "Reverse Twists",
+      "dd": {
+        "27": {
+          "B": 5.7,
+          "C": 5.5
+        }
+      }
+    },
+    {
+      "number": "5366",
+      "description": "Reverse 3 Somersaults 3 Twists",
+      "group": 8,
+      "groupName": "Reverse Twists",
+      "dd": {
+        "27": {
+          "B": 5.1,
+          "C": 4.9
+        }
+      }
+    },
+    {
+      "number": "5381",
+      "description": "Reverse 4 Somersaults 1/2 Twist",
+      "group": 8,
+      "groupName": "Reverse Twists",
+      "dd": {
+        "27": {
+          "B": 5.4,
+          "C": 5.1
+        }
+      }
+    },
+    {
+      "number": "5382",
+      "description": "Reverse 4 Somersaults 1 Twist",
+      "group": 8,
+      "groupName": "Reverse Twists",
+      "dd": {
+        "27": {
+          "B": 4.7,
+          "C": 4.4
+        }
+      }
+    },
+    {
+      "number": "5442",
+      "description": "Inward 2 Somersaults 1 Twist",
+      "group": 9,
+      "groupName": "Inward Twists",
+      "dd": {
+        "27": {
+          "D": 3.9
+        }
+      }
+    },
+    {
+      "number": "5443",
+      "description": "Inward 2 Somersaults 1 1/2 Twist",
+      "group": 9,
+      "groupName": "Inward Twists",
+      "dd": {
+        "15": {
+          "D": 3.7
+        },
+        "20": {
+          "D": 3.6
+        },
+        "27": {
+          "D": 3.5
+        },
+        "10_12": {
+          "D": 3.6
+        }
+      }
+    },
+    {
+      "number": "5445",
+      "description": "Inward 2 Somersaults 2 1/2 Twists",
+      "group": 9,
+      "groupName": "Inward Twists",
+      "dd": {
+        "20": {
+          "D": 4.1
+        },
+        "27": {
+          "D": 4
+        }
+      }
+    },
+    {
+      "number": "5447",
+      "description": "Inward 2 Somersaults 3 1/2 Twists",
+      "group": 9,
+      "groupName": "Inward Twists",
+      "dd": {
+        "27": {
+          "D": 4.6
+        }
+      }
+    },
+    {
+      "number": "5462",
+      "description": "Inward 3 Somersaults 1 Twist",
+      "group": 9,
+      "groupName": "Inward Twists",
+      "dd": {
+        "27": {
+          "B": 4.8,
+          "C": 4.6
+        }
+      }
+    },
+    {
+      "number": "5463",
+      "description": "Inward 3 Somersaults 1 1/2 Twist",
+      "group": 9,
+      "groupName": "Inward Twists",
+      "dd": {
+        "27": {
+          "B": 4.3,
+          "C": 4.1
+        }
+      }
+    },
+    {
+      "number": "625(10)",
+      "description": "Arm. Back 2 1/2 Somersaults 5 Twists",
+      "group": 10,
+      "groupName": "Armstand twists",
+      "dd": {
+        "27": {
+          "D": 6.2
+        }
+      }
+    },
+    {
+      "number": "6132",
+      "description": "Arm. Forward 1 1/2 Somersault 1 Twist",
+      "group": 10,
+      "groupName": "Armstand twists",
+      "dd": {
+        "15": {
+          "D": 3.7
+        },
+        "20": {
+          "D": 3.5
+        },
+        "27": {
+          "D": 3.6
+        },
+        "10_12": {
+          "D": 3.6
+        }
+      }
+    },
+    {
+      "number": "6133",
+      "description": "Arm. Forward 1 1/2 Somersault 1 1/2 Twist",
+      "group": 10,
+      "groupName": "Armstand twists",
+      "dd": {
+        "15": {
+          "D": 3.4
+        },
+        "20": {
+          "D": 3.2
+        },
+        "27": {
+          "D": 3.3
+        },
+        "10_12": {
+          "D": 3.3
+        }
+      }
+    },
+    {
+      "number": "6134",
+      "description": "Arm. Forward 1 1/2 Somersault 2 Twists",
+      "group": 10,
+      "groupName": "Armstand twists",
+      "dd": {
+        "15": {
+          "D": 4.4
+        },
+        "20": {
+          "D": 4
+        },
+        "27": {
+          "D": 4.1
+        },
+        "10_12": {
+          "D": 4.4
+        }
+      }
+    },
+    {
+      "number": "6135",
+      "description": "Arm. Forward 1 1/2 Somersault 2 1/2 Twists",
+      "group": 10,
+      "groupName": "Armstand twists",
+      "dd": {
+        "15": {
+          "D": 4
+        },
+        "20": {
+          "D": 3.6
+        },
+        "27": {
+          "D": 3.7
+        },
+        "10_12": {
+          "D": 4
+        }
+      }
+    },
+    {
+      "number": "6152",
+      "description": "Arm. Forward 2 1/2 Somersaults 1 Twist",
+      "group": 10,
+      "groupName": "Armstand twists",
+      "dd": {
+        "15": {
+          "B": 4.9,
+          "C": 4.7
+        },
+        "20": {
+          "B": 4.6,
+          "C": 4.4
+        },
+        "27": {
+          "B": 4.6,
+          "C": 4.4
+        },
+        "10_12": {
+          "B": 5.2,
+          "C": 5
+        }
+      }
+    },
+    {
+      "number": "6153",
+      "description": "Arm. Forward 2 1/2 Somersaults 1 1/2 Twist",
+      "group": 10,
+      "groupName": "Armstand twists",
+      "dd": {
+        "15": {
+          "B": 4.4,
+          "C": 4.2
+        },
+        "20": {
+          "B": 4.1,
+          "C": 3.9
+        },
+        "27": {
+          "B": 4.1,
+          "C": 3.9
+        },
+        "10_12": {
+          "B": 4.7,
+          "C": 4.5
+        }
+      }
+    },
+    {
+      "number": "6154",
+      "description": "Arm. Forward 2 1/2 Somersaults 2 Twists",
+      "group": 10,
+      "groupName": "Armstand twists",
+      "dd": {
+        "27": {
+          "D": 5.2
+        }
+      }
+    },
+    {
+      "number": "6155",
+      "description": "Arm. Forward 2 1/2 Somersaults 2 1/2 Twists",
+      "group": 10,
+      "groupName": "Armstand twists",
+      "dd": {
+        "27": {
+          "D": 4.6
+        }
+      }
+    },
+    {
+      "number": "6156",
+      "description": "Arm. Forward 2 1/2 Somersaults 3 Twists",
+      "group": 10,
+      "groupName": "Armstand twists",
+      "dd": {
+        "27": {
+          "D": 5.9
+        }
+      }
+    },
+    {
+      "number": "6157",
+      "description": "Arm. Forward 2 1/2 Somersaults 3 1/2 Twists",
+      "group": 10,
+      "groupName": "Armstand twists",
+      "dd": {
+        "27": {
+          "D": 5.2
+        }
+      }
+    },
+    {
+      "number": "6173",
+      "description": "Arm. Forward 3 1/2 Somersaults 1 1/2 Twist",
+      "group": 10,
+      "groupName": "Armstand twists",
+      "dd": {
+        "27": {
+          "B": 5.2,
+          "C": 4.9
+        }
+      }
+    },
+    {
+      "number": "6231",
+      "description": "Arm Back 1 1/2 Somersault 1/2 Twist",
+      "group": 10,
+      "groupName": "Armstand twists",
+      "dd": {
+        "15": {
+          "D": 3.2
+        },
+        "20": {
+          "D": 3.2
+        },
+        "27": {
+          "D": 3.3
+        },
+        "10_12": {
+          "D": 3.1
+        }
+      }
+    },
+    {
+      "number": "6232",
+      "description": "Arm. Back 1 1/2 Somersault 1 Twist",
+      "group": 10,
+      "groupName": "Armstand twists",
+      "dd": {
+        "15": {
+          "D": 2.9
+        },
+        "20": {
+          "D": 2.9
+        },
+        "27": {
+          "D": 3
+        },
+        "10_12": {
+          "D": 2.8
+        }
+      }
+    },
+    {
+      "number": "6233",
+      "description": "Arm Back 1 1/2 Somersault 1 1/2 Twist",
+      "group": 10,
+      "groupName": "Armstand twists",
+      "dd": {
+        "15": {
+          "D": 3.5
+        },
+        "20": {
+          "D": 3.5
+        },
+        "27": {
+          "D": 3.7
+        },
+        "10_12": {
+          "D": 3.6
+        }
+      }
+    },
+    {
+      "number": "6251",
+      "description": "Arm Back 2 1/2 Somersault 1/2 Twist",
+      "group": 10,
+      "groupName": "Armstand twists",
+      "dd": {
+        "15": {
+          "B": 4.4,
+          "C": 4.2
+        },
+        "20": {
+          "B": 4.2,
+          "C": 4
+        },
+        "27": {
+          "B": 4.1,
+          "C": 3.9
+        },
+        "10_12": {
+          "B": 4.6,
+          "C": 4.4
+        }
+      }
+    },
+    {
+      "number": "6252",
+      "description": "Arm. Back 2 1/2 Somersaults 1 Twist",
+      "group": 10,
+      "groupName": "Armstand twists",
+      "dd": {
+        "15": {
+          "B": 3.9,
+          "C": 3.7
+        },
+        "20": {
+          "B": 3.7,
+          "C": 3.5
+        },
+        "27": {
+          "B": 3.6,
+          "C": 3.4
+        },
+        "10_12": {
+          "B": 4.1,
+          "C": 3.9
+        }
+      }
+    },
+    {
+      "number": "6253",
+      "description": "Arm Back 2 1/2 Somersaults 1 1/2 Twist",
+      "group": 10,
+      "groupName": "Armstand twists",
+      "dd": {
+        "15": {
+          "B": 4.9,
+          "C": 4.7
+        },
+        "20": {
+          "B": 4.7,
+          "C": 4.5
+        },
+        "27": {
+          "B": 4.6,
+          "C": 4.4
+        },
+        "10_12": {
+          "B": 5.2,
+          "C": 5
+        }
+      }
+    },
+    {
+      "number": "6254",
+      "description": "Arm. Back 2 1/2 Somersaults 2 Twists",
+      "group": 10,
+      "groupName": "Armstand twists",
+      "dd": {
+        "15": {
+          "B": 4.4,
+          "C": 4.2
+        },
+        "20": {
+          "B": 4.2,
+          "C": 4
+        },
+        "27": {
+          "B": 4.1,
+          "C": 3.9
+        },
+        "10_12": {
+          "B": 4.7,
+          "C": 4.5
+        }
+      }
+    },
+    {
+      "number": "6255",
+      "description": "Arm Back 2 1/2 Somersaults 2 1/2 Twists",
+      "group": 10,
+      "groupName": "Armstand twists",
+      "dd": {
+        "27": {
+          "D": 5.3
+        }
+      }
+    },
+    {
+      "number": "6256",
+      "description": "Arm. Back 2 1/2 Somersaults 3 Twists",
+      "group": 10,
+      "groupName": "Armstand twists",
+      "dd": {
+        "15": {
+          "D": 5.1
+        },
+        "20": {
+          "D": 4.8
+        },
+        "27": {
+          "D": 4.7
+        },
+        "10_12": {
+          "D": 5.5
+        }
+      }
+    },
+    {
+      "number": "6257",
+      "description": "Arm Back 2 1/2 Somersaults 3 1/2 Twists",
+      "group": 10,
+      "groupName": "Armstand twists",
+      "dd": {
+        "15": {
+          "D": 6.7
+        },
+        "27": {
+          "D": 6.1
+        },
+        "10_12": {
+          "D": 7.2
+        }
+      }
+    },
+    {
+      "number": "6258",
+      "description": "Arm. Back 2 1/2 Somersaults 4 Twists",
+      "group": 10,
+      "groupName": "Armstand twists",
+      "dd": {
+        "15": {
+          "D": 6
+        },
+        "27": {
+          "D": 5.4
+        },
+        "10_12": {
+          "D": 6.5
+        }
+      }
+    },
+    {
+      "number": "6271",
+      "description": "Arm Back 3 1/2 Somersaults 1/2 Twist",
+      "group": 10,
+      "groupName": "Armstand twists",
+      "dd": {
+        "27": {
+          "B": 5.2,
+          "C": 4.9
+        },
+        "10_12": {
+          "B": 6.5,
+          "C": 6.2
+        }
+      }
+    },
+    {
+      "number": "6272",
+      "description": "Arm. Back 3 1/2 Somersaults 1 Twist",
+      "group": 10,
+      "groupName": "Armstand twists",
+      "dd": {
+        "27": {
+          "B": 4.5,
+          "C": 4.2
+        },
+        "10_12": {
+          "B": 5.8,
+          "C": 5.5
+        }
+      }
+    },
+    {
+      "number": "6273",
+      "description": "Arm Back 3 1/2 Somersaults 1 1/2 Twist",
+      "group": 10,
+      "groupName": "Armstand twists",
+      "dd": {
+        "27": {
+          "B": 5.9,
+          "C": 5.6
+        }
+      }
+    },
+    {
+      "number": "6274",
+      "description": "Arm. Back 3 1/2 Somersault 2 Twists",
+      "group": 10,
+      "groupName": "Armstand twists",
+      "dd": {
+        "27": {
+          "B": 5.2,
+          "C": 4.9
+        }
+      }
+    }
+  ]
+}

@@ -1,5 +1,5 @@
+import { Routes, Route, useNavigate, useLocation, Link } from 'react-router-dom';
 import { useApp } from './app/AppState';
-import { useHistoryState } from './app/useHistoryState';
 import { RULE_SETS, RULE_SET_IDS } from './rules';
 import { EntryScreen } from './screens/EntryScreen';
 import { ListsScreen } from './screens/ListsScreen';
@@ -9,27 +9,21 @@ import { SettingsScreen } from './screens/SettingsScreen';
 import { RankingsScreen } from './screens/RankingsScreen';
 import { AskScreen } from './screens/AskScreen';
 import { AdminScreen } from './screens/AdminScreen';
-import { MoreScreen, type MoreTarget } from './screens/MoreScreen';
+import { MoreScreen } from './screens/MoreScreen';
+import { Button } from './components/ui';
 
-type Tab = 'lists' | 'simulate' | 'rankings' | 'ask' | 'more';
-
-const TABS: { id: Tab; label: string }[] = [
-  { id: 'lists', label: 'Lists' },
-  { id: 'simulate', label: 'Simulate' },
-  { id: 'rankings', label: 'Rankings' },
-  { id: 'ask', label: 'Ask' },
-  { id: 'more', label: 'More' },
+const TABS: { path: string; label: string }[] = [
+  { path: '/lists', label: 'Lists' },
+  { path: '/simulate', label: 'Simulate' },
+  { path: '/rankings', label: 'Rankings' },
+  { path: '/ask', label: 'Ask' },
+  { path: '/more', label: 'More' },
 ];
 
 export default function App() {
   const { account, authReady, ruleSet, setRuleSet, rules } = useApp();
-  // The tab and the More sub-page are one history entry, so back from a sub-page lands
-  // on the More menu and back from a tab lands on the tab before it.
-  const [nav, setNav] = useHistoryState<{ tab: Tab; more: MoreTarget | null }>('nav', {
-    tab: 'lists',
-    more: null,
-  });
-  const { tab, more } = nav;
+  const navigate = useNavigate();
+  const location = useLocation();
 
   if (!authReady) {
     return <div className="grid min-h-full place-items-center text-sm text-muted">Loading…</div>;
@@ -37,75 +31,80 @@ export default function App() {
 
   if (!account) return <EntryScreen />;
 
-  // Opening a tab starts a fresh entry, which also closes whatever sub-page that tab
-  // last had open.
-  function openTab(next: Tab) {
-    // Tapping the tab already showing, with nothing open in it, would only add an entry
-    // that back has to step over.
-    const subPageOpen = Object.entries(window.history.state ?? {}).some(
-      ([k, v]) => k !== 'nav' && v != null,
-    );
-    if (next === tab && more === null && !subPageOpen) return;
-    setNav({ tab: next, more: null }, { reset: true });
-  }
-
-  function setMore(next: MoreTarget | null) {
-    setNav({ tab, more: next });
-  }
+  const currentPath = location.pathname;
 
   return (
     <div className="mx-auto flex min-h-full max-w-2xl flex-col">
-      {/* The rule-set toggle is always reachable: it changes the DD figures, the
-          legality verdict and the whole palette, so it belongs in the chrome. */}
+      {/* The rule-set toggle and login button are always reachable. */}
       <header className="chrome sticky top-0 z-20 border-b border-border/40 px-4 py-2.5">
-        <div
-          role="radiogroup"
-          aria-label="Rule set"
-          className="glass glass-sheen flex gap-1 rounded-xl p-1"
-        >
-          {RULE_SET_IDS.map((id) => {
-            const active = id === ruleSet;
-            return (
-              <button
-                key={id}
-                role="radio"
-                aria-checked={active}
-                onClick={() => setRuleSet(id)}
-                className={`min-h-9 flex-1 rounded-lg px-2 text-sm font-bold transition duration-200 ${
-                  active
-                    ? 'accent-fill text-accent-text shadow-sm'
-                    : 'text-muted hover:bg-text/5 hover:text-text'
-                }`}
-              >
-                {RULE_SETS[id].shortName}
-              </button>
-            );
-          })}
+        <div className="flex items-center justify-between gap-2">
+          <div
+            role="radiogroup"
+            aria-label="Rule set"
+            className="glass glass-sheen flex gap-1 rounded-xl p-1"
+          >
+            {RULE_SET_IDS.map((id) => {
+              const active = id === ruleSet;
+              return (
+                <button
+                  key={id}
+                  role="radio"
+                  aria-checked={active}
+                  onClick={() => setRuleSet(id)}
+                  className={`min-h-9 flex-1 rounded-lg px-2 text-sm font-bold transition duration-200 ${
+                    active
+                      ? 'accent-fill text-accent-text shadow-sm'
+                      : 'text-muted hover:bg-text/5 hover:text-text'
+                  }`}
+                >
+                  {RULE_SETS[id].shortName}
+                </button>
+              );
+            })}
+          </div>
+          <Button variant="ghost" onClick={() => navigate('/entry')}>
+            {account.isGuest ? 'Sign in' : 'Sign out'}
+          </Button>
         </div>
       </header>
 
       <main className="flex-1">
-        {tab === 'lists' ? <ListsScreen /> : null}
-        {tab === 'simulate' ? <SimulatorScreen /> : null}
-        {tab === 'rankings' ? <RankingsScreen /> : null}
-        {tab === 'ask' ? <AskScreen /> : null}
-        {tab === 'more' ? (
-          more === null ? (
-            <MoreScreen onOpen={setMore} />
-          ) : (
+        <Routes>
+          <Route path="/" element={<ListsScreen />} />
+          <Route path="/lists" element={<ListsScreen />} />
+          <Route path="/simulate" element={<SimulatorScreen />} />
+          <Route path="/rankings" element={<RankingsScreen />} />
+          <Route path="/ask" element={<AskScreen />} />
+          <Route path="/more" element={<MoreScreen onOpen={(target) => navigate(`/more/${target}`)} />} />
+          <Route path="/more/table" element={
             <div>
-              <button
-                onClick={() => setMore(null)}
-                className="px-4 pt-4 text-sm text-muted hover:text-text"
-              >
+              <button onClick={() => navigate('/more')} className="px-4 pt-4 text-sm text-muted hover:text-text">
                 ← More
               </button>
-              {more === 'table' ? <CatalogScreen /> : null}
-              {more === 'settings' ? <SettingsScreen /> : null}
-              {more === 'admin' ? <AdminScreen /> : null}
+              <CatalogScreen />
             </div>
-          )
-        ) : null}
+          } />
+          <Route path="/more/settings" element={
+            <div>
+              <button onClick={() => navigate('/more')} className="px-4 pt-4 text-sm text-muted hover:text-text">
+                ← More
+              </button>
+              <SettingsScreen />
+            </div>
+          } />
+          <Route path="/more/admin" element={
+            <div>
+              <button onClick={() => navigate('/more')} className="px-4 pt-4 text-sm text-muted hover:text-text">
+                ← More
+              </button>
+              <AdminScreen />
+            </div>
+          } />
+          <Route path="/entry" element={<EntryScreen />} />
+          <Route path="*" element={
+            account.isGuest ? <RankingsScreen /> : <ListsScreen />
+          } />
+        </Routes>
       </main>
 
       <nav
@@ -114,13 +113,13 @@ export default function App() {
       >
         <ul className="mx-auto flex max-w-2xl px-1 pt-1">
           {TABS.map((t) => {
-            const active = t.id === tab;
+            const active = currentPath === t.path || (t.path === '/lists' && currentPath === '/');
             return (
-              <li key={t.id} className="flex-1">
-                <button
-                  onClick={() => openTab(t.id)}
+              <li key={t.path} className="flex-1">
+                <Link
+                  to={t.path}
                   aria-current={active ? 'page' : undefined}
-                  className={`relative min-h-12 w-full rounded-lg px-1 text-xs font-semibold transition duration-150 ${
+                  className={`relative flex min-h-12 w-full items-center justify-center rounded-lg px-1 text-xs font-semibold transition duration-150 ${
                     active ? 'text-accent-2' : 'text-muted hover:text-text'
                   }`}
                 >
@@ -133,7 +132,7 @@ export default function App() {
                     }`}
                   />
                   {t.label}
-                </button>
+                </Link>
               </li>
             );
           })}

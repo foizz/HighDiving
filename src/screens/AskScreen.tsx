@@ -10,6 +10,27 @@ interface Turn {
   tools?: string[];
 }
 
+/** One conversation per account, kept until the user clears it. */
+const historyKey = (accountId: string) => `highdive.ask.v1.${accountId}`;
+
+function loadTurns(accountId: string): Turn[] {
+  try {
+    const raw = localStorage.getItem(historyKey(accountId));
+    return raw ? (JSON.parse(raw) as Turn[]) : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveTurns(accountId: string, turns: Turn[]): void {
+  try {
+    if (turns.length) localStorage.setItem(historyKey(accountId), JSON.stringify(turns));
+    else localStorage.removeItem(historyKey(accountId));
+  } catch {
+    // Not fatal; the conversation simply will not survive leaving the screen.
+  }
+}
+
 const SUGGESTIONS = [
   'What is the DD limit for a women’s intermediate dive?',
   'Can I put two armstand dives in a Red Bull list?',
@@ -24,7 +45,9 @@ const TOOL_LABELS: Record<string, string> = {
   score_dive: 'calculated the score',
   award_needed_for_target: 'worked out the award needed',
   get_ranking: 'read the standings',
+  placing_needed: 'worked out the place needed',
   query_results: 'read past results',
+  score_by_place: 'averaged past winning scores',
   get_my_lists: 'read your lists',
 };
 
@@ -34,11 +57,38 @@ const TOOL_LABELS: Record<string, string> = {
  */
 export function AskScreen() {
   const { account, rules } = useApp();
-  const [turns, setTurns] = useState<Turn[]>([]);
+  const accountId = account?.id ?? 'anonymous';
+  const [turns, setTurnsState] = useState<Turn[]>(() => loadTurns(accountId));
   const [question, setQuestion] = useState('');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const bottom = useRef<HTMLDivElement>(null);
+
+  /*
+   * Every change is written straight to storage, not from an effect, so an answer that
+   * keeps streaming after the user switches tab still lands in the saved conversation.
+   * The ref is the source of truth for the same reason: state updates stop once the
+   * screen unmounts.
+   */
+  const turnsRef = useRef(turns);
+  function setTurns(update: Turn[] | ((prev: Turn[]) => Turn[])) {
+    const next = typeof update === 'function' ? update(turnsRef.current) : update;
+    turnsRef.current = next;
+    saveTurns(accountId, next);
+    setTurnsState(next);
+  }
+
+  // Signing in as someone else swaps in their conversation.
+  useEffect(() => {
+    const loaded = loadTurns(accountId);
+    turnsRef.current = loaded;
+    setTurnsState(loaded);
+  }, [accountId]);
+
+  function clear() {
+    setTurns([]);
+    setError(null);
+  }
 
   useEffect(() => {
     bottom.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
@@ -50,7 +100,11 @@ export function AskScreen() {
     const trimmed = text.trim();
     if (!trimmed || busy || !supabase) return;
 
-    const history: Turn[] = [...turns, { role: 'user', content: trimmed }];
+    // An answer cut off by leaving mid-stream is saved empty; it is not worth resending.
+    const history: Turn[] = [
+      ...turnsRef.current.filter((t) => t.role === 'user' || t.content),
+      { role: 'user', content: trimmed },
+    ];
     setTurns([...history, { role: 'assistant', content: '', tools: [] }]);
     setQuestion('');
     setBusy(true);
@@ -188,6 +242,14 @@ export function AskScreen() {
       {error ? (
         <div className="mt-3 rounded-xl border border-danger/40 bg-danger/10 p-3 text-sm text-danger">
           {error}
+        </div>
+      ) : null}
+
+      {turns.length && !busy ? (
+        <div className="mt-3 flex justify-end">
+          <Button variant="ghost" onClick={clear}>
+            Clear conversation
+          </Button>
         </div>
       ) : null}
 

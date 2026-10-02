@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useApp } from '../app/AppState';
+import { useHistoryState } from '../app/useHistoryState';
 import { emptyList, type DiveList } from '../data/DataSource';
 import { evaluateList } from '../rules';
 import { Button, Card, EmptyState, Pill, ScreenHeader } from '../components/ui';
@@ -8,7 +9,9 @@ import { ListEditorScreen } from './ListEditorScreen';
 export function ListsScreen() {
   const { data, rules, gender } = useApp();
   const [lists, setLists] = useState<DiveList[] | null>(null);
-  const [editing, setEditing] = useState<DiveList | null>(null);
+  // Opening the editor is a history entry; edits inside it replace that entry, so back
+  // leaves the editor rather than stepping through every change.
+  const [editing, setEditing] = useHistoryState<DiveList | null>('editing', null);
   const [error, setError] = useState<string | null>(null);
 
   async function refresh() {
@@ -28,7 +31,7 @@ export function ListsScreen() {
   }, [data]);
 
   async function save(next: DiveList) {
-    setEditing(next);
+    setEditing(next, { replace: true });
     if (!data) return;
     try {
       await data.saveList(next);

@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import { useApp } from './app/AppState';
+import { useHistoryState } from './app/useHistoryState';
 import { RULE_SETS, RULE_SET_IDS } from './rules';
 import { EntryScreen } from './screens/EntryScreen';
 import { ListsScreen } from './screens/ListsScreen';
@@ -23,8 +23,13 @@ const TABS: { id: Tab; label: string }[] = [
 
 export default function App() {
   const { account, authReady, ruleSet, setRuleSet, rules } = useApp();
-  const [tab, setTab] = useState<Tab>('lists');
-  const [more, setMore] = useState<MoreTarget | null>(null);
+  // The tab and the More sub-page are one history entry, so back from a sub-page lands
+  // on the More menu and back from a tab lands on the tab before it.
+  const [nav, setNav] = useHistoryState<{ tab: Tab; more: MoreTarget | null }>('nav', {
+    tab: 'lists',
+    more: null,
+  });
+  const { tab, more } = nav;
 
   if (!authReady) {
     return <div className="grid min-h-full place-items-center text-sm text-muted">Loading…</div>;
@@ -32,9 +37,20 @@ export default function App() {
 
   if (!account) return <EntryScreen />;
 
+  // Opening a tab starts a fresh entry, which also closes whatever sub-page that tab
+  // last had open.
   function openTab(next: Tab) {
-    setMore(null);
-    setTab(next);
+    // Tapping the tab already showing, with nothing open in it, would only add an entry
+    // that back has to step over.
+    const subPageOpen = Object.entries(window.history.state ?? {}).some(
+      ([k, v]) => k !== 'nav' && v != null,
+    );
+    if (next === tab && more === null && !subPageOpen) return;
+    setNav({ tab: next, more: null }, { reset: true });
+  }
+
+  function setMore(next: MoreTarget | null) {
+    setNav({ tab, more: next });
   }
 
   return (

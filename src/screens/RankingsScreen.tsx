@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useApp } from '../app/AppState';
+import { useHistoryState } from '../app/useHistoryState';
 import {
   seriesRanking,
   worldRanking,
@@ -34,8 +35,15 @@ export function RankingsScreen() {
   const [data, setData] = useState<SeasonData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const [openCompetition, setOpenCompetition] = useState<Competition | null>(null);
-  const [openDiver, setOpenDiver] = useState<Diver | null>(null);
+  // One history entry per page opened, so back retraces competition → diver → competition.
+  const [open, setOpen] = useHistoryState<{ competition?: Competition; diver?: Diver } | null>(
+    'rankings',
+    null,
+  );
+  const openCompetition = open?.competition ?? null;
+  const openDiver = open?.diver ?? null;
+  const setOpenCompetition = (c: Competition | null) => setOpen(c ? { competition: c } : null);
+  const setOpenDiver = (d: Diver | null) => setOpen(d ? { diver: d } : null);
 
   useEffect(() => {
     if (!resultsAvailable()) {
@@ -95,10 +103,7 @@ export function RankingsScreen() {
         competition={openCompetition}
         data={data}
         onBack={() => setOpenCompetition(null)}
-        onOpenDiver={(d) => {
-          setOpenCompetition(null);
-          setOpenDiver(d);
-        }}
+        onOpenDiver={setOpenDiver}
       />
     );
   }
@@ -109,7 +114,6 @@ export function RankingsScreen() {
         diver={openDiver}
         onBack={() => setOpenDiver(null)}
         onOpenCompetition={(c) => {
-          setOpenDiver(null);
           // Only this season's results are loaded here, so jumping to a competition from
           // another season has to move the season with it.
           if (c.season !== season) setSeason(c.season);

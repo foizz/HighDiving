@@ -1,7 +1,7 @@
 /**
  * The rules assistant.
  *
- * Runs server-side because the Anthropic key must never reach the browser. The caller's
+ * Runs server-side because the OpenAI key must never reach the browser. The caller's
  * Supabase JWT is required and is reused for every database read, so the assistant can
  * only ever see what that user could see for themselves.
  *
@@ -16,9 +16,9 @@
  *    tests.
  *
  * Deploy: supabase functions deploy ask
- * Secret: supabase secrets set ANTHROPIC_API_KEY=sk-ant-...
+ * Secret: supabase secrets set OPENAI_API_KEY=sk-...
  */
-import Anthropic from 'npm:@anthropic-ai/sdk@0.131.0';
+import OpenAI from 'npm:openai@7.25.0';
 import { createClient } from 'npm:@supabase/supabase-js@2.117.2';
 import {
   allDives,
@@ -33,8 +33,13 @@ import {
 } from '../_shared/engine.js';
 import { RULES_TEXT } from '../_shared/rules-text.js';
 
-const MODEL = 'claude-opus-5-5';
-const MAX_TOKENS = 4096;
+/**
+ * gpt-6.1-sol: cached input is a twentieth of the input rate, which is what makes
+ * sending both rule books on every question affordable. Overridable because which
+ * models a key can reach varies by account.
+ */
+const MODEL = Deno.env.get('OPENAI_MODEL') ?? 'gpt-6.1-sol';
+const MAX_OUTPUT_TOKENS = 4096;
 /** Per-user daily ceiling, enforced before any model call. */
 const DAILY_CALL_LIMIT = Number(Deno.env.get('ASK_DAILY_LIMIT') ?? '50');
 /** Guards against a tool loop that never settles. */
@@ -78,14 +83,23 @@ A World Aquatics result changes the World Ranking and has no effect on the World
 ranking.
 `.trim();
 
+/**
+ * The whole static prefix, in one string, rule books first.
+ *
+ * This is what prompt caching keys on, so nothing variable may be added to it: no
+ * timestamps, no user name, no season. Anything per-request belongs in `input`.
+ */
+const SYSTEM_PROMPT = `${RULES_TEXT}\n\n${SYSTEM_INSTRUCTIONS}`;
+
 const tools = [
   {
+    type: 'function' as const,
     name: 'lookup_dd',
     description:
       'The degree of difficulty of one dive, in one position, at one height, from one ' +
       "rule book's table. Use this for every DD question.",
     strict: true,
-    input_schema: {
+    parameters: {
       type: 'object',
       additionalProperties: false,
       properties: {
@@ -102,12 +116,13 @@ const tools = [
     },
   },
   {
+    type: 'function' as const,
     name: 'find_dives',
     description:
       'Search a rule book\'s dive table by number or description, returning each match ' +
       'with the positions it may be performed in and their DDs at a height.',
     strict: true,
-    input_schema: {
+    parameters: {
       type: 'object',
       additionalProperties: false,
       properties: {
@@ -119,12 +134,13 @@ const tools = [
     },
   },
   {
+    type: 'function' as const,
     name: 'validate_list',
     description:
       'Check a four-dive list against a rule book: per-dive DD, the slot limits, take-off ' +
       'variety, repeats, and the resulting total DD.',
     strict: true,
-    input_schema: {
+    parameters: {
       type: 'object',
       additionalProperties: false,
       properties: {
@@ -151,12 +167,13 @@ const tools = [
     },
   },
   {
+    type: 'function' as const,
     name: 'score_dive',
     description:
       'Score one dive from the judges\' awards and a DD: drops the highest and lowest, ' +
       'sums the rest, multiplies by DD.',
     strict: true,
-    input_schema: {
+    parameters: {
       type: 'object',
       additionalProperties: false,
       properties: {
@@ -168,11 +185,12 @@ const tools = [
     },
   },
   {
+    type: 'function' as const,
     name: 'award_needed_for_target',
     description:
       'What each counting judge must award on the remaining dives to reach a target total.',
     strict: true,
-    input_schema: {
+    parameters: {
       type: 'object',
       additionalProperties: false,
       properties: {
@@ -184,13 +202,14 @@ const tools = [
     },
   },
   {
+    type: 'function' as const,
     name: 'get_ranking',
     description:
       'The current standings for a season. "series" is the Red Bull World Series ranking ' +
       '(tour stops, summed); "world" is the World Ranking (tour stops and World Aquatics ' +
       'World Cups, averaged). They are separate tables.',
     strict: true,
-    input_schema: {
+    parameters: {
       type: 'object',
       additionalProperties: false,
       properties: {
@@ -202,12 +221,13 @@ const tools = [
     },
   },
   {
+    type: 'function' as const,
     name: 'query_results',
     description:
       'Uploaded competition results, optionally narrowed to a season, a diver or a ' +
       'competition name.',
     strict: true,
-    input_schema: {
+    parameters: {
       type: 'object',
       additionalProperties: false,
       properties: {
@@ -219,10 +239,11 @@ const tools = [
     },
   },
   {
+    type: 'function' as const,
     name: 'get_my_lists',
     description: "The signed-in user's own saved dive lists.",
     strict: true,
-    input_schema: { type: 'object', additionalProperties: false, properties: {}, required: [] },
+    parameters: { type: 'object', additionalProperties: false, properties: {}, required: [] },
   },
 ];
 
@@ -236,10 +257,10 @@ Deno.serve(async (req) => {
     return new Response('Method not allowed', { status: 405, headers: CORS });
   }
 
-  const apiKey = Deno.env.get('ANTHROPIC_API_KEY');
+  const apiKey = Deno.env.get('OPENAI_API_KEY');
   if (!apiKey) {
     return Response.json(
-      { error: 'The assistant is not configured: ANTHROPIC_API_KEY is not set.' },
+      { error: 'The assistant is not configured: OPENAI_API_KEY is not set.' },
       { status: 503, headers: CORS },
     );
   }
@@ -424,7 +445,7 @@ Deno.serve(async (req) => {
         const { data: rows, error } = await db
           .from('results')
           .select('*')
-          .in('competition_id', competitions.map((c: { id: string }) => c.id));
+          .in('competition_id', competitions.map((c) => String(c.id)));
         if (error) return { error: error.message };
         const results = (rows ?? []).map((r: Record<string, unknown>) => ({
           competitionId: r.competition_id,
@@ -470,7 +491,7 @@ Deno.serve(async (req) => {
         if (input.season != null) q = q.eq('competitions.season', input.season as number);
         const { data, error } = await q;
         if (error) return { error: error.message };
-        let rows = (data ?? []) as Record<string, never>[];
+        let rows = (data ?? []) as Record<string, unknown>[];
         const diverName = (input.diver_name as string | null)?.toLowerCase();
         const compName = (input.competition_name as string | null)?.toLowerCase();
         if (diverName) {
@@ -505,11 +526,16 @@ Deno.serve(async (req) => {
 
   // ---- the model loop -------------------------------------------------------
 
-  const anthropic = new Anthropic({ apiKey });
-  const messages: Anthropic.MessageParam[] = history.map((m) => ({
-    role: m.role,
-    content: m.content,
-  }));
+  const openai = new OpenAI({ apiKey });
+
+  /**
+   * The Responses API carries conversation state as a flat list of items rather than a
+   * messages array. The model's own output items are appended verbatim between turns —
+   * including reasoning items, which must be passed back alongside tool results.
+   */
+  // The SDK's own item union, so a malformed item is caught here rather than by a 400.
+  type InputItem = OpenAI.Responses.ResponseInputItem;
+  const input: InputItem[] = history.map((m) => ({ role: m.role, content: m.content }));
 
   const stream = new ReadableStream({
     async start(controller) {
@@ -518,73 +544,76 @@ Deno.serve(async (req) => {
 
       try {
         for (let turn = 0; turn < MAX_TURNS; turn++) {
-          const response = await anthropic.messages.stream({
+          /*
+           * Prompt caching is left implicit, which is the default. The rule books and the
+           * tool definitions are the front of every request and never change, so the
+           * prefix matches on its own. Explicit mode would allow a longer TTL, but a
+           * request in explicit mode with a misplaced breakpoint caches nothing at all,
+           * and that failure is silent and expensive.
+           */
+          const events = await openai.responses.create({
             model: MODEL,
-            max_tokens: MAX_TOKENS,
-            output_config: { effort: 'medium' },
-            system: [
-              {
-                type: 'text',
-                text: RULES_TEXT,
-                // The books never change between requests, so this prefix is what makes
-                // the assistant cheap to run. An hour covers a coaching session.
-                cache_control: { type: 'ephemeral', ttl: '1h' },
-              },
-              { type: 'text', text: SYSTEM_INSTRUCTIONS },
-            ],
+            instructions: SYSTEM_PROMPT,
+            input,
             tools,
-            messages,
+            max_output_tokens: MAX_OUTPUT_TOKENS,
+            stream: true,
           });
 
-          // Forward the visible answer as it is written; tool calls are handled after
-          // the turn completes.
-          for await (const event of response) {
-            if (event.type === 'content_block_delta' && event.delta.type === 'text_delta') {
-              send('text', { text: event.delta.text });
+          let completed: OpenAI.Responses.Response | undefined;
+          for await (const event of events) {
+            if (event.type === 'response.output_text.delta') {
+              send('text', { text: event.delta });
+            } else if (event.type === 'response.completed') {
+              completed = event.response;
+            } else if (event.type === 'error') {
+              send('error', { error: event.message ?? 'The model stream failed.' });
             }
           }
 
-          const message = await response.finalMessage();
-          messages.push({ role: 'assistant', content: message.content });
-
-          if (message.stop_reason === 'refusal') {
-            send('error', { error: 'That question was declined.' });
+          if (!completed) {
+            send('error', { error: 'The model did not finish its answer.' });
             break;
           }
-          if (message.stop_reason !== 'tool_use') {
+
+          // Keep every item the model produced, in order, or the next turn loses the
+          // reasoning that led to the tool call.
+          const output = completed.output ?? [];
+          input.push(...(output as InputItem[]));
+
+          const calls = output.filter(
+            (item): item is OpenAI.Responses.ResponseFunctionToolCall =>
+              item.type === 'function_call',
+          );
+
+          if (!calls.length) {
+            // cached_tokens is the number worth watching: if it stays at zero across
+            // questions, the rule-book prefix is not being reused and every answer is
+            // paying full price for 32k tokens.
             send('usage', {
-              input: message.usage.input_tokens,
-              cacheRead: message.usage.cache_read_input_tokens ?? 0,
-              output: message.usage.output_tokens,
+              input: completed.usage?.input_tokens ?? 0,
+              cached: completed.usage?.input_tokens_details?.cached_tokens ?? 0,
+              output: completed.usage?.output_tokens ?? 0,
             });
             break;
           }
 
-          const calls = message.content.filter(
-            (b): b is Anthropic.ToolUseBlock => b.type === 'tool_use',
-          );
-          // All results go back in one user message; splitting them stops the model
-          // making parallel calls in future turns.
-          const results: Anthropic.ToolResultBlockParam[] = [];
           for (const call of calls) {
             send('tool', { name: call.name });
+            let result: unknown;
             try {
-              const result = await runTool(call.name, call.input as Record<string, unknown>);
-              results.push({
-                type: 'tool_result',
-                tool_use_id: call.id,
-                content: JSON.stringify(result),
-              });
+              // Arguments arrive as a JSON string; a malformed one is the model's error
+              // to recover from, so it goes back as a tool result rather than a throw.
+              result = await runTool(call.name, JSON.parse(call.arguments));
             } catch (err) {
-              results.push({
-                type: 'tool_result',
-                tool_use_id: call.id,
-                is_error: true,
-                content: err instanceof Error ? err.message : 'Tool failed.',
-              });
+              result = { error: err instanceof Error ? err.message : 'Tool failed.' };
             }
+            input.push({
+              type: 'function_call_output',
+              call_id: call.call_id,
+              output: JSON.stringify(result),
+            });
           }
-          messages.push({ role: 'user', content: results });
         }
         send('done', {});
       } catch (err) {

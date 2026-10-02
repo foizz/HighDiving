@@ -199,18 +199,26 @@ uploaded results.
 ```bash
 npm i -g supabase                      # if you do not have it
 supabase functions deploy ask
-supabase secrets set ANTHROPIC_API_KEY=sk-ant-...
+supabase secrets set OPENAI_API_KEY=sk-...
 ```
 
 The key lives in function secrets and never reaches the browser. The function requires the
 caller's Supabase JWT and reuses it for every query, so the assistant can only read what
 that user could read themselves.
 
+It runs OpenAI's Responses API on `gpt-6.1-sol`, overridable with an `OPENAI_MODEL`
+secret. That model was chosen for the caching rate rather than the headline price: cached
+input costs a twentieth of fresh input, which is what makes sending both rule books with
+every question affordable.
+
 Two choices worth knowing about:
 
-- **Both rule books go into the prompt whole** (~32k tokens), behind a cache breakpoint
-  with a one-hour TTL. They fit, caching makes repeat questions cheap, and unlike a
-  retrieval index nothing can silently drop the clause that decides an answer.
+- **Both rule books go into the prompt whole** (~32k tokens), at the front of every
+  request so prompt caching reuses them. They fit, caching makes repeat questions cheap,
+  and unlike a retrieval index nothing can silently drop the clause that decides an
+  answer. Caching is left implicit, which is the default: explicit mode allows a longer
+  TTL but caches *nothing* if a breakpoint is misplaced, and that failure is silent.
+  Watch `cached` in the usage event — if it stays zero, the prefix is not being reused.
 - **Figures come from tools, not from the model.** DD lookups, list validation, scoring
   and standings call the same functions the app uses, bundled for Deno from
   `src/engine-entry.ts` by `npm run build:engine` rather than copied. The assistant cannot

@@ -156,9 +156,10 @@ finds, so an updated spreadsheet cannot introduce one unnoticed.
 
 What the sources cannot tell us:
 
-- **No best-dive bonuses.** Neither records which dive won the +1 (3.4.1), so `best_dive`
-  is false throughout and World Series totals can be up to one point per stop below the
-  official figure. Tick them on the Admin screen where you know them.
+- **No best-dive bonuses in the seed.** Neither spreadsheet records which dive won the +1
+  (3.4.1), so `best_dive` starts false everywhere and World Series totals are up to one
+  point per stop below the official figure until you award them. Admin → **Best dives**
+  lists every tour stop for a season so you can set them one tap each.
 - **One missing total.** Andrea Barnaba, 2025 El Nido, is a DNF with no numeric total; the
   placing is kept and the score stored as null.
 - **Eight withdrawals** (DNS/WD/DSQ) in the World Aquatics file have no finishing position

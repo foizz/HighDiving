@@ -15,6 +15,7 @@ import {
 } from '../data/resultsDataSource';
 import type { Gender, RuleSetId } from '../rules';
 import { Button, Card, EmptyState, Field, Input, Pill, ScreenHeader, Segmented } from '../components/ui';
+import { BestDivesScreen } from './BestDivesScreen';
 
 type Mode = 'paste' | 'form';
 
@@ -37,6 +38,8 @@ export function AdminScreen() {
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [view, setView] = useState<'results' | 'bestDives'>('results');
+  const [seasons, setSeasons] = useState<number[]>([]);
 
   async function refresh(forSeason = season) {
     try {
@@ -50,6 +53,7 @@ export function AdminScreen() {
 
   useEffect(() => {
     void listSeasons().then((list) => {
+      setSeasons(list);
       if (list.length && !list.includes(season)) setSeason(list[0]);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -64,7 +68,28 @@ export function AdminScreen() {
 
   return (
     <div className="p-4 pb-24">
-      <ScreenHeader title="Admin" subtitle="Add a competition, then upload its results." />
+      <ScreenHeader
+        title="Admin"
+        subtitle={
+          view === 'results'
+            ? 'Add a competition, then upload its results.'
+            : 'Award the best dive of each tour stop.'
+        }
+      />
+
+      {!competition ? (
+        <div className="mb-4">
+          <Segmented
+            ariaLabel="Admin section"
+            value={view}
+            onChange={setView}
+            options={[
+              { value: 'results' as const, label: 'Competitions' },
+              { value: 'bestDives' as const, label: 'Best dives' },
+            ]}
+          />
+        </div>
+      ) : null}
 
       {error ? (
         <div className="mb-3 rounded-xl border border-danger/40 bg-danger/10 p-3 text-sm text-danger">
@@ -73,7 +98,12 @@ export function AdminScreen() {
       ) : null}
       {notice ? <p className="mb-3 text-sm text-ok">{notice}</p> : null}
 
-      {competition ? (
+      {view === 'bestDives' && !competition ? (
+        <>
+          <SeasonPicker season={season} seasons={seasons} onChange={setSeason} />
+          <BestDivesScreen season={season} />
+        </>
+      ) : competition ? (
         <ResultsEditor
           competition={competition}
           onBack={() => {
@@ -148,6 +178,36 @@ export function AdminScreen() {
           )}
         </>
       )}
+    </div>
+  );
+}
+
+/** Shown above the best-dive list, which is always read for one season at a time. */
+function SeasonPicker({
+  season,
+  seasons,
+  onChange,
+}: {
+  season: number;
+  seasons: number[];
+  onChange: (season: number) => void;
+}) {
+  if (seasons.length < 2) return null;
+  return (
+    <div className="mb-3">
+      <Field label="Season">
+        <select
+          value={season}
+          onChange={(e) => onChange(Number(e.target.value))}
+          className="min-h-11 w-full rounded-xl border border-border/60 bg-text/[0.04] px-3 text-base text-text transition focus:border-accent-2/50"
+        >
+          {seasons.map((s) => (
+            <option key={s} value={s}>
+              {s}
+            </option>
+          ))}
+        </select>
+      </Field>
     </div>
   );
 }

@@ -229,3 +229,33 @@ export async function loadResults(competitionId: string): Promise<CompetitionRes
   if (error) rethrow(error, 'results');
   return (data as ResultRow[]).map(toResult);
 }
+
+/**
+ * Set which dive(s) took the best-dive bonus at one competition (rule 3.4.1).
+ *
+ * `diverIds` is the complete set, not an addition, so clearing it removes the bonus.
+ * Usually that is one diver, but 3.4.3 ends "If there is still a tie, the divers will
+ * receive 1 (one) point each", so more than one is legal.
+ *
+ * Clearing happens first and the two statements are not in one transaction. That is
+ * deliberate for an admin action on a handful of rows: the worst case is the bonus is
+ * briefly unset and the caller sees the error, rather than two divers silently holding
+ * it because a half-applied update looked like success.
+ */
+export async function setBestDive(competitionId: string, diverIds: string[]): Promise<void> {
+  const db = client();
+  const { error: clearError } = await db
+    .from('results')
+    .update({ best_dive: false })
+    .eq('competition_id', competitionId)
+    .eq('best_dive', true);
+  if (clearError) rethrow(clearError, 'results');
+
+  if (!diverIds.length) return;
+  const { error } = await db
+    .from('results')
+    .update({ best_dive: true })
+    .eq('competition_id', competitionId)
+    .in('diver_id', diverIds);
+  if (error) rethrow(error, 'results');
+}

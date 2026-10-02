@@ -46,9 +46,11 @@ create table if not exists public.results (
 create index if not exists results_competition_idx on public.results (competition_id);
 create index if not exists results_diver_idx on public.results (diver_id);
 
--- A diver cannot finish in two places at the same competition.
-create unique index if not exists results_one_diver_per_rank
-  on public.results (competition_id, rank);
+-- Note: a finishing position is deliberately NOT unique within a competition. Divers do
+-- tie, and the rules say so explicitly — "if two divers are in first place, both get the
+-- prize money for the 1st place and ... both will get 20 points" (Red Bull 3.3.2). The
+-- 2025 World Championships and the 2025 World Cup each have a shared placing.
+-- The primary key already stops the same diver being recorded twice.
 
 create table if not exists public.admins (
   user_id    uuid primary key references auth.users (id) on delete cascade,

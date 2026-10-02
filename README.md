@@ -126,32 +126,43 @@ separation is enforced by data rather than by remembering a convention.
 
 ### Seeding 2022–2026
 
-`Red_Bull_Cliff_Diving_2022-2026_Simplified_Results.xlsx` holds 741 results across 62
-final tables. `npm run data:results-seed` turns it into
-`supabase/seed/redbull_results.sql` — run that in the SQL editor after the migration.
-It is idempotent: competitions and divers are keyed on ids derived from the event and
-the name, and each seeded competition's results are replaced rather than appended, so
-re-running it after the spreadsheet changes is safe.
+`npm run data:results-seed` reads both spreadsheets and writes two SQL files, to run in
+the SQL editor after the migrations:
 
-The generator refuses to write if it finds a repeated placing or a diver listed twice in
-one competition, because those would otherwise fail halfway through the transaction
-against the unique indexes.
+| Seed | Source | Content | Counts for |
+|---|---|---|---|
+| `supabase/seed/redbull_results.sql` | Red Bull workbook | 62 tables, 741 results | both tables |
+| `supabase/seed/worldaquatics_results.sql` | World Aquatics workbook | 16 tables, 314 results | World Ranking only |
 
-Two things the spreadsheet cannot tell us:
+Both are idempotent — competitions and divers are keyed on ids derived from the event and
+the name, and each seeded competition's results are deleted before insert.
 
-- **No best-dive bonuses.** It does not record which dive won the +1 (3.4.1), so
-  `best_dive` is false throughout and World Series totals can be up to one point per
-  stop below the official figure. Tick them on the Admin screen where you know them.
-- **One missing total.** Andrea Barnaba, 2025 El Nido, is a DNF with no numeric total;
-  the placing is kept and the score stored as null.
+**Divers are matched across the two files by name**, which is what lets one diver hold a
+single World Ranking built from both series. That makes a spelling difference an expensive
+and silent fault: the diver splits into two records with half a ranking each, and nothing
+errors. Three such pairs exist (`Jucelino Lima Junior` / `Jucelino Junior`,
+`Maike Elena Halbisch` / `Maike Halbisch`, `Isabel Cristina Perez` / `Isabel Perez`) and
+are mapped in `ALIASES` in the generator. The script reports any new near-duplicate it
+finds, so an updated spreadsheet cannot introduce one unnoticed.
 
-Every seeded event is a Red Bull tour stop, so all of them count towards both tables.
-If a World Aquatics World Cup is added later it should carry `counts_for_series = false`.
+What the sources cannot tell us:
+
+- **No best-dive bonuses.** Neither records which dive won the +1 (3.4.1), so `best_dive`
+  is false throughout and World Series totals can be up to one point per stop below the
+  official figure. Tick them on the Admin screen where you know them.
+- **One missing total.** Andrea Barnaba, 2025 El Nido, is a DNF with no numeric total; the
+  placing is kept and the score stored as null.
+- **Eight withdrawals** (DNS/WD/DSQ) in the World Aquatics file have no finishing position
+  and are not imported. They score nothing, so no ranking is affected.
+
+Rule 6.2 names only World Cups, but the World Championships are counted here too, as a
+deliberate choice — the rule book says the 2026 procedure was still to be finalised. Any
+event's two flags can be changed per competition on the Admin screen.
 
 ### Uploading results
 
-Apply `supabase/migrations/0002_results.sql`, then make yourself an admin with the
-commented `insert` at the bottom of that file. The Admin screen appears under **More**
+Apply `supabase/migrations/0002_results.sql` and `0003_allow_tied_placings.sql`, then
+make yourself an admin with the commented `insert` at the bottom of 0002. The Admin screen appears under **More**
 once you are in the `admins` table; writes are rejected by row level security for anyone
 who is not, so hiding the screen is a convenience rather than the control.
 
@@ -196,9 +207,12 @@ any model call — without it one looping client could spend the whole API budge
 
 ## Known gaps
 
-- **The 2026 season is partial.** The spreadsheet has five Red Bull stops for 2026 and no
-  World Aquatics World Cups, while rule 6.2 counts eight events, so World Ranking averages
-  will move as the rest are added.
+- **A tied placing is allowed.** Divers do tie and rule 3.3.2 says both take the full
+  points, so there is no unique index on (competition, position). 0003 drops the one 0002
+  originally created.
+- **The 2026 season is partial.** The data has five Red Bull stops and two World Aquatics
+  events for 2026, while rule 6.2 counts eight, so World Ranking averages will move as the
+  rest are added.
 - **The assistant has not been run against a live key.** The function is written and the
   engine bundle is verified standalone, but it has not been deployed or exercised
   end to end.

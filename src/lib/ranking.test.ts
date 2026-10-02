@@ -292,6 +292,34 @@ describe('ties', () => {
     expect(table[1].position).toBe(1);
   });
 
+  it('gives both divers the full points for a shared placing', () => {
+    // Red Bull 3.3.2: "If for example two divers are in first place, both get the prize
+    // money for the 1st place and in terms of points ... both will get 20 points." Real
+    // data has these — the 2025 World Championships and World Cup each had a tie.
+    const table = seriesRanking({
+      season: 2026,
+      gender: 'men',
+      divers: [diver('d1', 'A'), diver('d2', 'B')],
+      competitions: [stop('s1')],
+      results: [res('s1', 'd1', 6), res('s1', 'd2', 6)],
+    });
+    expect(table).toHaveLength(2);
+    expect(table[0].points).toBe(7);
+    expect(table[1].points).toBe(7);
+    expect(table[0].position).toBe(1);
+    expect(table[1].position).toBe(1);
+
+    const world = worldRanking({
+      season: 2026,
+      gender: 'men',
+      divers: [diver('d1', 'A'), diver('d2', 'B')],
+      competitions: [worldCup('w1')],
+      results: [res('w1', 'd1', 6), res('w1', 'd2', 6)],
+    });
+    expect(world[0].totalPoints).toBe(20);
+    expect(world[1].totalPoints).toBe(20);
+  });
+
   it('compares placings depth-first', () => {
     const oneWin = [0, 1, 0, 0];
     const noWins = [0, 0, 3, 0];

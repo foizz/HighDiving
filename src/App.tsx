@@ -41,11 +41,11 @@ export default function App() {
     <div className="mx-auto flex min-h-full max-w-2xl flex-col">
       {/* The rule-set toggle is always reachable: it changes the DD figures, the
           legality verdict and the whole palette, so it belongs in the chrome. */}
-      <header className="sticky top-0 z-10 border-b border-border bg-bg/90 px-4 py-2 backdrop-blur">
+      <header className="chrome sticky top-0 z-20 border-b border-border/40 px-4 py-2.5">
         <div
           role="radiogroup"
           aria-label="Rule set"
-          className="flex gap-1 rounded-xl border border-border bg-surface-2 p-1"
+          className="glass glass-sheen flex gap-1 rounded-xl p-1"
         >
           {RULE_SET_IDS.map((id) => {
             const active = id === ruleSet;
@@ -55,8 +55,10 @@ export default function App() {
                 role="radio"
                 aria-checked={active}
                 onClick={() => setRuleSet(id)}
-                className={`min-h-9 flex-1 rounded-lg px-2 text-sm font-bold transition focus-visible:outline-none focus-visible:ring-2 ${
-                  active ? 'bg-accent text-accent-text' : 'text-muted hover:text-text'
+                className={`min-h-9 flex-1 rounded-lg px-2 text-sm font-bold transition duration-200 ${
+                  active
+                    ? 'accent-fill text-accent-text shadow-sm'
+                    : 'text-muted hover:bg-text/5 hover:text-text'
                 }`}
               >
                 {RULE_SETS[id].shortName}
@@ -92,9 +94,9 @@ export default function App() {
 
       <nav
         aria-label="Sections"
-        className="pb-safe sticky bottom-0 z-10 border-t border-border bg-bg/95 backdrop-blur"
+        className="chrome pb-safe sticky bottom-0 z-20 border-t border-border/40"
       >
-        <ul className="mx-auto flex max-w-2xl">
+        <ul className="mx-auto flex max-w-2xl px-1 pt-1">
           {TABS.map((t) => {
             const active = t.id === tab;
             return (
@@ -102,10 +104,18 @@ export default function App() {
                 <button
                   onClick={() => openTab(t.id)}
                   aria-current={active ? 'page' : undefined}
-                  className={`min-h-12 w-full px-1 text-xs font-semibold transition focus-visible:outline-none focus-visible:ring-2 ${
-                    active ? 'text-accent-2' : 'text-muted'
+                  className={`relative min-h-12 w-full rounded-lg px-1 text-xs font-semibold transition duration-150 ${
+                    active ? 'text-accent-2' : 'text-muted hover:text-text'
                   }`}
                 >
+                  {/* A short bar above the label, rather than a filled tab — quieter,
+                      and it leaves the glass behind it visible. */}
+                  <span
+                    aria-hidden="true"
+                    className={`absolute inset-x-0 -top-1 mx-auto h-0.5 w-8 rounded-full transition duration-200 ${
+                      active ? 'bg-accent-2 opacity-100' : 'opacity-0'
+                    }`}
+                  />
                   {t.label}
                 </button>
               </li>

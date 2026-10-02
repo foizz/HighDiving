@@ -63,10 +63,10 @@ export function CatalogScreen() {
           <h2 className="mb-2 text-sm font-bold uppercase tracking-wide text-accent-2">
             {GROUP_NAMES[group] ?? `Group ${group}`}
           </h2>
-          <div className="overflow-hidden rounded-xl border border-border">
+          <div className="glass glass-sheen overflow-hidden rounded-2xl">
             <table className="w-full text-sm">
               <thead>
-                <tr className="bg-surface-2 text-xs text-muted">
+                <tr className="bg-text/[0.05] text-xs text-muted">
                   <th scope="col" className="px-2 py-2 text-left font-semibold">
                     Dive
                   </th>
@@ -86,7 +86,7 @@ export function CatalogScreen() {
                 {dives.map((d) => {
                   const cells = d.dd[height] ?? {};
                   return (
-                    <tr key={d.number} className="border-t border-border bg-surface align-top">
+                    <tr key={d.number} className="border-t border-border/40 align-top">
                       <th scope="row" className="px-2 py-2 text-left font-normal">
                         <span className="tabular font-bold">{d.number}</span>
                         <span className="block text-xs text-muted">{d.description}</span>

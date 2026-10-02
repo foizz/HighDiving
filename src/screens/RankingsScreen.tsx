@@ -129,7 +129,7 @@ export function RankingsScreen() {
           <select
             value={season}
             onChange={(e) => setSeason(Number(e.target.value))}
-            className="min-h-11 w-full rounded-xl border border-border bg-surface-2 px-3 text-base text-text focus-visible:outline-none focus-visible:ring-2"
+            className="min-h-11 w-full rounded-xl border border-border/60 bg-text/[0.04] px-3 text-base text-text transition focus:border-accent-2/50"
           >
             {seasons.map((s) => (
               <option key={s} value={s}>

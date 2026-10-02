@@ -150,7 +150,7 @@ export function AskScreen() {
             <button
               key={s}
               onClick={() => void ask(s)}
-              className="w-full rounded-xl border border-border bg-surface px-3 py-3 text-left text-sm transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-2"
+              className="glass glass-sheen w-full rounded-xl px-3.5 py-3 text-left text-sm transition duration-150 hover:brightness-110"
             >
               {s}
             </button>
@@ -205,7 +205,7 @@ export function AskScreen() {
           onChange={(e) => setQuestion(e.target.value)}
           placeholder="Ask about the rules…"
           aria-label="Your question"
-          className="min-h-11 flex-1 rounded-xl border border-border bg-surface-2 px-3 text-base text-text placeholder:text-muted focus-visible:outline-none focus-visible:ring-2"
+          className="glass min-h-11 flex-1 rounded-xl px-3 text-base text-text placeholder:text-muted/70"
         />
         <Button type="submit" disabled={busy || !question.trim()}>
           {busy ? '…' : 'Ask'}

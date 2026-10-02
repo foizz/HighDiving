@@ -96,7 +96,16 @@ supabase/migrations
 `src/rules/index.ts` holds both rule sets as data against one `RuleSet` interface, so
 adding a third set of rules is one file rather than conditionals spread through the UI.
 Likewise the theme: every colour is a CSS variable keyed off `data-ruleset` on `<html>`,
-so the toggle re-skins the whole app without a single per-component branch.
+so the toggle re-skins the whole app without a single per-component branch. That includes
+the glass treatment, which needs opposite recipes in the two palettes — on dark a pane is
+a lighter translucent film, on light a whiter one that needs a shadow to lift off the page
+at all. Both are `--glass-*` tokens behind one `.glass` class.
+
+Two rules keep it from turning to mush: **containers are glass, controls are tinted** (a
+glass button inside a glass card reads as a slab and stacks backdrop filters), and the
+ambient wash on `body::before` is positioned to pass behind the content column, because
+glass over an empty field is just a flat panel. There is a `@supports` fallback to solid
+surfaces where `backdrop-filter` is unavailable.
 
 ## Accounts
 

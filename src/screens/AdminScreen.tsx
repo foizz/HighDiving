@@ -391,7 +391,7 @@ function ResultsEditor({
               onChange={(e) => setText(e.target.value)}
               rows={8}
               placeholder={'1\tGary Hunt\t428.50\t*\n2\tCatalin Preda\t410.25'}
-              className="w-full rounded-xl border border-border bg-surface-2 p-3 font-mono text-sm text-text focus-visible:outline-none focus-visible:ring-2"
+              className="w-full rounded-xl border border-border/60 bg-text/[0.04] p-3 font-mono text-sm leading-relaxed text-text transition focus:border-accent-2/50"
             />
           </Field>
 
@@ -407,7 +407,9 @@ function ResultsEditor({
                   <li
                     key={r.line}
                     className={`rounded-lg px-2.5 py-2 text-sm ${
-                      r.problems.length ? 'bg-danger/10 text-danger' : 'bg-surface-2'
+                      r.problems.length
+                        ? 'bg-danger/10 text-danger ring-1 ring-inset ring-danger/20'
+                        : 'bg-text/[0.05]'
                     }`}
                   >
                     <span className="tabular font-bold">{r.rank ?? '—'}</span>{' '}

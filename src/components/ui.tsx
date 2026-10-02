@@ -1,9 +1,25 @@
 import type { ButtonHTMLAttributes, InputHTMLAttributes, ReactNode } from 'react';
 import type { Violation } from '../rules';
 
-export function Card({ children, className = '' }: { children: ReactNode; className?: string }) {
+/**
+ * The shared surface. Everything that holds content is one of these, so the glass recipe
+ * lives in a single place and the two palettes stay consistent with each other.
+ */
+export function Card({
+  children,
+  className = '',
+  elevated = false,
+}: {
+  children: ReactNode;
+  className?: string;
+  elevated?: boolean;
+}) {
   return (
-    <div className={`rounded-2xl border border-border bg-surface p-4 ${className}`}>{children}</div>
+    <div
+      className={`glass glass-sheen rounded-2xl p-4 ${elevated ? 'glass-strong' : ''} ${className}`}
+    >
+      {children}
+    </div>
   );
 }
 
@@ -13,15 +29,19 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 
 export function Button({ variant = 'primary', className = '', ...props }: ButtonProps) {
   const styles = {
-    primary: 'bg-accent text-accent-text hover:brightness-110',
-    secondary: 'bg-surface-2 text-text border border-border hover:brightness-105',
-    ghost: 'text-muted hover:text-text',
-    danger: 'bg-danger text-white hover:brightness-110',
+    primary:
+      'accent-fill text-accent-text shadow-sm hover:brightness-[1.08] active:brightness-95',
+    // Tinted rather than glass: a secondary button almost always sits inside a Card, and
+    // glass within glass reads as a muddy slab as well as stacking backdrop filters.
+    secondary:
+      'border border-border/50 bg-text/[0.06] text-text hover:bg-text/[0.11] active:bg-text/[0.08]',
+    ghost: 'text-muted hover:text-text hover:bg-text/5',
+    danger: 'bg-danger text-white shadow-sm hover:brightness-110 active:brightness-95',
   }[variant];
   return (
     <button
       {...props}
-      className={`min-h-11 rounded-xl px-4 text-sm font-semibold transition disabled:opacity-40 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 ${styles} ${className}`}
+      className={`min-h-11 rounded-xl px-4 text-sm font-semibold transition duration-150 disabled:opacity-40 disabled:pointer-events-none ${styles} ${className}`}
     />
   );
 }
@@ -37,22 +57,21 @@ export function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-muted">
+      <span className="mb-1.5 block text-[11px] font-semibold uppercase tracking-[0.08em] text-muted">
         {label}
       </span>
       {children}
-      {hint ? <span className="mt-1 block text-xs text-muted">{hint}</span> : null}
+      {hint ? <span className="mt-1.5 block text-xs leading-snug text-muted">{hint}</span> : null}
     </label>
   );
 }
 
+/** Inputs are inset rather than raised — the opposite treatment to a card. */
+export const inputClass =
+  'min-h-11 w-full rounded-xl border border-border/60 bg-text/[0.04] px-3 text-base text-text placeholder:text-muted/70 transition focus:border-accent-2/50';
+
 export function Input({ className = '', ...props }: InputHTMLAttributes<HTMLInputElement>) {
-  return (
-    <input
-      {...props}
-      className={`min-h-11 w-full rounded-xl border border-border bg-surface-2 px-3 text-base text-text placeholder:text-muted focus-visible:outline-none focus-visible:ring-2 ${className}`}
-    />
-  );
+  return <input {...props} className={`${inputClass} ${className}`} />;
 }
 
 /**
@@ -74,7 +93,7 @@ export function Segmented<T extends string | number>({
     <div
       role="radiogroup"
       aria-label={ariaLabel}
-      className="flex gap-1 rounded-xl border border-border bg-surface-2 p-1"
+      className="flex gap-1 rounded-xl border border-border/50 bg-text/[0.05] p-1"
     >
       {options.map((o) => {
         const active = o.value === value;
@@ -84,13 +103,15 @@ export function Segmented<T extends string | number>({
             role="radio"
             aria-checked={active}
             onClick={() => onChange(o.value)}
-            className={`min-h-10 flex-1 rounded-lg px-2 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 ${
-              active ? 'bg-accent text-accent-text' : 'text-muted hover:text-text'
+            className={`min-h-10 flex-1 rounded-lg px-2 text-sm font-semibold transition duration-150 ${
+              active
+                ? 'accent-fill text-accent-text shadow-sm'
+                : 'text-muted hover:bg-text/5 hover:text-text'
             }`}
           >
             <span className="block leading-tight">{o.label}</span>
             {o.sublabel ? (
-              <span className={`block text-[11px] font-normal ${active ? 'opacity-80' : ''}`}>
+              <span className={`block text-[11px] font-normal ${active ? 'opacity-85' : ''}`}>
                 {o.sublabel}
               </span>
             ) : null}
@@ -109,14 +130,16 @@ export function Pill({
   tone?: 'neutral' | 'ok' | 'warn' | 'danger' | 'accent';
 }) {
   const styles = {
-    neutral: 'bg-surface-2 text-muted',
-    ok: 'bg-ok/15 text-ok',
-    warn: 'bg-warn/15 text-warn',
-    danger: 'bg-danger/15 text-danger',
-    accent: 'bg-accent-2/20 text-accent-2',
+    neutral: 'bg-text/[0.07] text-muted ring-text/10',
+    ok: 'bg-ok/15 text-ok ring-ok/25',
+    warn: 'bg-warn/15 text-warn ring-warn/25',
+    danger: 'bg-danger/15 text-danger ring-danger/25',
+    accent: 'bg-accent-2/15 text-accent-2 ring-accent-2/30',
   }[tone];
   return (
-    <span className={`inline-block rounded-full px-2 py-0.5 text-[11px] font-semibold ${styles}`}>
+    <span
+      className={`inline-block rounded-full px-2 py-0.5 text-[11px] font-semibold ring-1 ring-inset ${styles}`}
+    >
       {children}
     </span>
   );
@@ -130,11 +153,16 @@ export function Violations({ items }: { items: Violation[] }) {
       {items.map((v, i) => (
         <li
           key={i}
-          className={`flex gap-2 rounded-lg px-2.5 py-2 text-xs leading-snug ${
-            v.level === 'error' ? 'bg-danger/10 text-danger' : 'bg-warn/10 text-warn'
+          className={`flex gap-2 rounded-lg px-2.5 py-2 text-xs leading-snug ring-1 ring-inset ${
+            v.level === 'error'
+              ? 'bg-danger/10 text-danger ring-danger/20'
+              : 'bg-warn/10 text-warn ring-warn/20'
           }`}
         >
-          <span aria-hidden="true" className="font-bold">
+          <span
+            aria-hidden="true"
+            className="mt-px grid h-4 w-4 shrink-0 place-items-center rounded-full bg-current/15 text-[10px] font-bold"
+          >
             {v.level === 'error' ? '!' : 'i'}
           </span>
           <span>
@@ -148,18 +176,18 @@ export function Violations({ items }: { items: Violation[] }) {
 
 export function EmptyState({ title, children }: { title: string; children?: ReactNode }) {
   return (
-    <div className="rounded-2xl border border-dashed border-border px-4 py-10 text-center">
-      <p className="font-semibold">{title}</p>
-      {children ? <div className="mt-1 text-sm text-muted">{children}</div> : null}
+    <div className="rounded-2xl border border-dashed border-border/70 px-4 py-12 text-center">
+      <p className="font-semibold tight">{title}</p>
+      {children ? <div className="mt-1.5 text-sm text-muted">{children}</div> : null}
     </div>
   );
 }
 
 export function ScreenHeader({ title, subtitle }: { title: string; subtitle?: ReactNode }) {
   return (
-    <header className="mb-4">
-      <h1 className="text-2xl font-bold tracking-tight">{title}</h1>
-      {subtitle ? <p className="mt-0.5 text-sm text-muted">{subtitle}</p> : null}
+    <header className="mb-5">
+      <h1 className="tight text-[1.75rem] font-bold leading-tight">{title}</h1>
+      {subtitle ? <p className="mt-1 text-sm leading-snug text-muted">{subtitle}</p> : null}
     </header>
   );
 }

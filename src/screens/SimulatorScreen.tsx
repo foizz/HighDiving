@@ -97,7 +97,7 @@ export function SimulatorScreen() {
             setListId(e.target.value);
             setAwards({});
           }}
-          className="min-h-11 w-full rounded-xl border border-border bg-surface-2 px-3 text-base text-text focus-visible:outline-none focus-visible:ring-2"
+          className="min-h-11 w-full rounded-xl border border-border/60 bg-text/[0.04] px-3 text-base text-text transition focus:border-accent-2/50"
         >
           {lists.map((l) => (
             <option key={l.id} value={l.id}>
@@ -249,7 +249,7 @@ function DiveScoreCard({
             value={given[i] ?? ''}
             onChange={(e) => onAward(i, e.target.value === '' ? null : Number(e.target.value))}
             aria-label={`Judge ${i + 1} award`}
-            className="tabular min-h-10 rounded-lg border border-border bg-surface-2 px-1 text-center text-sm focus-visible:outline-none focus-visible:ring-2"
+            className="tabular min-h-10 rounded-lg border border-border/60 bg-text/[0.04] px-1 text-center text-sm transition focus:border-accent-2/50"
           >
             <option value="">–</option>
             {AWARD_OPTIONS.map((v) => (

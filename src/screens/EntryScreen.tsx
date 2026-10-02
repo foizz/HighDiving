@@ -45,7 +45,7 @@ export function EntryScreen() {
 
       {supabaseConfigured ? (
         <Card>
-          <div className="mb-4 flex gap-1 rounded-xl border border-border bg-surface-2 p-1">
+          <div className="mb-4 flex gap-1 rounded-xl border border-border/50 bg-text/[0.05] p-1">
             {(['signin', 'signup'] as Mode[]).map((m) => (
               <button
                 key={m}
@@ -56,7 +56,7 @@ export function EntryScreen() {
                 }}
                 aria-pressed={mode === m}
                 className={`min-h-10 flex-1 rounded-lg text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 ${
-                  mode === m ? 'bg-accent text-accent-text' : 'text-muted'
+                  mode === m ? 'accent-fill text-accent-text shadow-sm' : 'text-muted hover:text-text'
                 }`}
               >
                 {m === 'signin' ? 'Sign in' : 'Create account'}

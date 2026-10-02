@@ -47,8 +47,8 @@ export function DivePicker({
   }, [available, query, group]);
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col bg-bg">
-      <div className="border-b border-border p-4">
+    <div className="fixed inset-0 z-50 flex flex-col bg-bg/95 backdrop-blur-xl">
+      <div className="border-b border-border/40 p-4">
         <div className="mb-3 flex items-center gap-3">
           <h2 className="flex-1 text-lg font-bold">Choose a dive</h2>
           <Button variant="ghost" onClick={onCancel}>
@@ -108,7 +108,9 @@ function GroupChip({
       onClick={onClick}
       aria-pressed={active}
       className={`min-h-9 whitespace-nowrap rounded-full px-3 text-xs font-semibold transition focus-visible:outline-none focus-visible:ring-2 ${
-        active ? 'bg-accent text-accent-text' : 'bg-surface-2 text-muted'
+        active
+          ? 'accent-fill text-accent-text shadow-sm'
+          : 'border border-border/50 bg-text/[0.05] text-muted hover:bg-text/10 hover:text-text'
       }`}
     >
       {children}
@@ -129,7 +131,7 @@ function DiveRow({
 }) {
   const entries = dive.dd[height] ?? {};
   return (
-    <li className="rounded-xl border border-border bg-surface p-3">
+    <li className="glass glass-sheen rounded-2xl p-3.5">
       <div className="flex items-baseline gap-2">
         <span className="tabular font-bold">{dive.number}</span>
         <span className="flex-1 text-sm text-muted">{dive.description}</span>
@@ -143,7 +145,7 @@ function DiveRow({
               key={p}
               onClick={() => onPick(dive.number, p)}
               title={`${POSITION_NAMES[p]} — DD ${dd.toFixed(1)}`}
-              className="min-h-10 rounded-lg border border-border bg-surface-2 px-2.5 text-left transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-2"
+              className="min-h-10 rounded-lg border border-border/60 bg-text/[0.05] px-2.5 text-left transition duration-150 hover:border-accent-2/50 hover:bg-text/10"
             >
               <span className="mr-1.5 font-bold">{p}</span>
               <span className="tabular text-sm">{dd.toFixed(1)}</span>

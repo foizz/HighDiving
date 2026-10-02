@@ -9,40 +9,75 @@
  *
  * Red Bull Cliff Diving runs dark — deep navy with the red/yellow accents from the
  * series branding. World Aquatics runs light — white with its blue and cyan.
+ *
+ * Glass is done with tokens rather than per-component utilities because it has to read
+ * correctly in both: on dark, a pane is a lighter translucent film; on light it is a
+ * whiter one that needs a shadow to lift off the page at all. Same class, two recipes.
  */
 :root,
 :root[data-ruleset='redbull'] {
-  --bg: 6 14 38;
-  --surface: 14 26 60;
-  --surface-2: 23 38 80;
-  --border: 44 62 112;
-  --text: 241 245 255;
-  --text-muted: 160 176 214;
+  --bg: 6 12 32;
+  --surface: 16 28 62;
+  --surface-2: 26 42 86;
+  --border: 56 76 130;
+  --text: 244 247 255;
+  --text-muted: 155 172 211;
   --accent: 219 10 64;
+  --accent-strong: 164 6 46;
   --accent-text: 255 255 255;
   --accent-2: 255 201 0;
   --accent-2-text: 26 20 0;
-  --ok: 52 199 123;
-  --warn: 255 176 32;
-  --danger: 255 94 94;
+  --ok: 61 207 132;
+  --warn: 255 186 56;
+  --danger: 255 107 107;
   --ring: 255 201 0;
+
+  /* Glass */
+  --glass-bg: rgba(255, 255, 255, 0.07);
+  --glass-bg-strong: rgba(255, 255, 255, 0.11);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-border-strong: rgba(255, 255, 255, 0.18);
+  --glass-blur: 18px;
+  /* A hairline of light along the top edge is what sells a pane as glass. */
+  --glass-sheen: rgba(255, 255, 255, 0.18);
+  --glass-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 32px -12px rgba(0, 0, 0, 0.6);
+  --elevated-shadow: 0 2px 6px rgba(0, 0, 0, 0.35), 0 20px 48px -16px rgba(0, 0, 0, 0.75);
+
+  /* Ambient colour behind the glass, so there is something for it to blur. */
+  --ambient-1: rgba(219, 10, 64, 0.4);
+  --ambient-2: rgba(255, 201, 0, 0.16);
+  --ambient-3: rgba(48, 104, 224, 0.34);
 }
 
 :root[data-ruleset='worldaquatics'] {
-  --bg: 244 248 252;
+  --bg: 240 246 252;
   --surface: 255 255 255;
-  --surface-2: 234 242 250;
-  --border: 199 216 232;
-  --text: 10 29 48;
-  --text-muted: 83 105 128;
+  --surface-2: 232 241 250;
+  --border: 203 219 235;
+  --text: 9 28 48;
+  --text-muted: 83 106 131;
   --accent: 0 86 164;
+  --accent-strong: 0 60 118;
   --accent-text: 255 255 255;
-  --accent-2: 0 163 224;
+  --accent-2: 0 150 206;
   --accent-2-text: 255 255 255;
-  --ok: 13 138 78;
-  --warn: 176 104 0;
-  --danger: 199 32 42;
-  --ring: 0 163 224;
+  --ok: 13 130 74;
+  --warn: 162 96 0;
+  --danger: 196 28 38;
+  --ring: 0 150 206;
+
+  --glass-bg: rgba(255, 255, 255, 0.72);
+  --glass-bg-strong: rgba(255, 255, 255, 0.86);
+  --glass-border: rgba(255, 255, 255, 0.9);
+  --glass-border-strong: rgba(255, 255, 255, 1);
+  --glass-blur: 18px;
+  --glass-sheen: rgba(255, 255, 255, 0.95);
+  --glass-shadow: 0 1px 2px rgba(12, 38, 66, 0.06), 0 10px 30px -12px rgba(12, 38, 66, 0.22);
+  --elevated-shadow: 0 2px 6px rgba(12, 38, 66, 0.08), 0 20px 44px -16px rgba(12, 38, 66, 0.3);
+
+  --ambient-1: rgba(0, 150, 206, 0.3);
+  --ambient-2: rgba(0, 86, 164, 0.16);
+  --ambient-3: rgba(120, 190, 255, 0.3);
 }
 
 html,
@@ -56,6 +91,85 @@ body {
   color: rgb(var(--text));
   -webkit-text-size-adjust: 100%;
   overscroll-behavior-y: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/*
+ * The ambient wash. Fixed and behind everything, so the glass has colour to pick up and
+ * the page does not look like flat panels on a flat field. Pointer-events none, and it
+ * never scrolls, which also keeps it off the compositor's work list while scrolling.
+ */
+body::before {
+  content: '';
+  position: fixed;
+  inset: -20%;
+  z-index: -1;
+  pointer-events: none;
+  /*
+   * Placed so colour passes BEHIND the centred content column, not only around it —
+   * glass over an empty field just looks like a flat panel. Sized in vmax so the wash
+   * keeps its proportions from a phone to a desktop window.
+   */
+  background:
+    radial-gradient(60vmax 60vmax at 18% -8%, var(--ambient-1), transparent 60%),
+    radial-gradient(55vmax 55vmax at 88% 18%, var(--ambient-3), transparent 58%),
+    radial-gradient(65vmax 65vmax at 50% 108%, var(--ambient-2), transparent 60%);
+}
+
+@layer components {
+  /*
+   * One pane of glass. `isolation` keeps the sheen pseudo-element from bleeding into
+   * stacking contexts above it, and the border-radius is inherited from the utility class
+   * on the element so a card and a pill can share this.
+   */
+  .glass {
+    position: relative;
+    isolation: isolate;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+    backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+  }
+
+  .glass-strong {
+    background: var(--glass-bg-strong);
+    border-color: var(--glass-border-strong);
+    box-shadow: var(--elevated-shadow);
+  }
+
+  /* The top-edge highlight. Inset so it follows the rounded corner. */
+  .glass-sheen::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding-top: 1px;
+    background: linear-gradient(to bottom, var(--glass-sheen), transparent 42%);
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  /* Chrome that sits over scrolling content: blurrier, and a touch more opaque. */
+  .chrome {
+    background: color-mix(in srgb, rgb(var(--bg)) 72%, transparent);
+    -webkit-backdrop-filter: blur(22px) saturate(160%);
+    backdrop-filter: blur(22px) saturate(160%);
+  }
+
+  .accent-fill {
+    background-image: linear-gradient(
+      140deg,
+      rgb(var(--accent)) 0%,
+      rgb(var(--accent-strong)) 100%
+    );
+  }
 }
 
 /* Keep numeric columns in the DD tables aligned. */
@@ -63,9 +177,34 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
+/* Headings read better slightly tightened; body text does not. */
+.tight {
+  letter-spacing: -0.018em;
+}
+
 /* Honour the iOS safe area so the bottom tab bar clears the home indicator. */
 .pb-safe {
   padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 0.5rem);
+}
+
+/* A consistent focus ring, visible against both palettes. */
+:where(button, a, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid rgb(var(--ring));
+  outline-offset: 2px;
+}
+
+/*
+ * backdrop-filter is the expensive part. Where the browser cannot do it, the fallbacks
+ * above (a solid-ish background and a border) still give a readable panel, so nothing
+ * here is load-bearing for legibility.
+ */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass {
+    background: rgb(var(--surface));
+  }
+  .chrome {
+    background: rgb(var(--bg));
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

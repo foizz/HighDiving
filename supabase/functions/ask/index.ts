@@ -31,15 +31,25 @@ import {
   seriesRanking,
   worldRanking,
 } from '../_shared/engine.js';
-import { RULES_TEXT } from '../_shared/rules-text.js';
+import { RULES, RULE_SET_IDS } from '../_shared/rules-text.js';
 
 /**
- * gpt-6.1-sol: cached input is a twentieth of the input rate, which is what makes
- * sending both rule books on every question affordable. Overridable because which
- * models a key can reach varies by account.
+ * gpt-5-nano: the cheapest model OpenAI offers, and cached input is a tenth of the
+ * input rate, which is what makes sending both rule books on every question
+ * affordable. Overridable because which models a key can reach varies by account.
  */
-const MODEL = Deno.env.get('OPENAI_MODEL') ?? 'gpt-6.1-sol';
-const MAX_OUTPUT_TOKENS = 4096;
+const MODEL = Deno.env.get('OPENAI_MODEL') ?? 'gpt-5-nano';
+/**
+ * Includes the hidden reasoning tokens, not just the visible answer, so it needs
+ * headroom well beyond the length of a reply.
+ */
+const MAX_OUTPUT_TOKENS = 16000;
+/** Low keeps nano from spending the whole output budget thinking before it answers. */
+const REASONING_EFFORT = (Deno.env.get('OPENAI_REASONING_EFFORT') ?? 'low') as
+  | 'minimal'
+  | 'low'
+  | 'medium'
+  | 'high';
 /** Per-user daily ceiling, enforced before any model call. */
 const DAILY_CALL_LIMIT = Number(Deno.env.get('ASK_DAILY_LIMIT') ?? '50');
 /** Guards against a tool loop that never settles. */
@@ -56,6 +66,17 @@ You answer questions about high diving for divers and coaches, using the two rul
 above and the tools provided.
 
 How to answer:
+- The database holds every uploaded result, standing and diver. Look things up with the
+  tools before answering, and never ask the user for points, placings or standings that
+  a tool can give you. Today's date is given at the start of the conversation; the
+  season is its year unless the question says otherwise.
+- Do not ask a clarifying question you can resolve with a sensible default. Make the
+  assumption, state it in one line, and answer. "The last two years" means this season
+  and the one before. A question that does not name a book covers both, reported
+  separately; one that does not name a gender covers both, reported separately.
+- "Score" usually means a competition total (the sum of the four dives, a few hundred
+  points), not ranking points (20 for a Red Bull win, 45 on the World Ranking). If a
+  number the user mentions is in the hundreds, they mean the competition total.
 - Cite the rule you are relying on, in the book's own numbering: "HD 6.5" for World
   Aquatics, "Red Bull 3.5.3" for Red Bull. A claim about the rules without a citation is
   not useful to a diver arguing with a referee.
@@ -89,7 +110,23 @@ ranking.
  * This is what prompt caching keys on, so nothing variable may be added to it: no
  * timestamps, no user name, no season. Anything per-request belongs in `input`.
  */
+const RULES_TEXT = RULE_SET_IDS.map((id: string) => RULES[id as keyof typeof RULES]).join(
+  '\n\n\n',
+);
 const SYSTEM_PROMPT = `${RULES_TEXT}\n\n${SYSTEM_INSTRUCTIONS}`;
+
+/** The filters shared by every tool that reads uploaded results. */
+const RESULT_FILTERS = {
+  season_from: { type: ['integer', 'null'], description: 'first season, inclusive' },
+  season_to: { type: ['integer', 'null'], description: 'last season, inclusive' },
+  rule_set: { type: ['string', 'null'], enum: ['redbull', 'worldaquatics', null] },
+  gender: { type: ['string', 'null'], enum: ['men', 'women', null] },
+  diver_name: { type: ['string', 'null'] },
+  competition_name: {
+    type: ['string', 'null'],
+    description: 'matches the competition name or its location, e.g. "World Cup" or "Mostar"',
+  },
+};
 
 const tools = [
   {
@@ -222,20 +259,62 @@ const tools = [
   },
   {
     type: 'function' as const,
-    name: 'query_results',
+    name: 'placing_needed',
     description:
-      'Uploaded competition results, optionally narrowed to a season, a diver or a ' +
-      'competition name.',
+      'For one diver, the overall ranking position he or she would hold after each ' +
+      'possible place at the next event, and the worst place that still reaches a target ' +
+      'position. Use this for every "what place does X need" question; the next event ' +
+      'does not have to be in the database.',
     strict: true,
     parameters: {
       type: 'object',
       additionalProperties: false,
       properties: {
-        season: { type: ['integer', 'null'] },
-        diver_name: { type: ['string', 'null'] },
-        competition_name: { type: ['string', 'null'] },
+        kind: {
+          type: 'string',
+          enum: ['series', 'world'],
+          description: 'world for a World Aquatics World Cup, which only counts there',
+        },
+        season: { type: 'integer' },
+        gender: { type: 'string', enum: ['men', 'women'] },
+        diver_name: { type: 'string' },
+        target_position: { type: 'integer' },
       },
-      required: ['season', 'diver_name', 'competition_name'],
+      required: ['kind', 'season', 'gender', 'diver_name', 'target_position'],
+    },
+  },
+  {
+    type: 'function' as const,
+    name: 'query_results',
+    description:
+      'Individual uploaded results (place, total score, best dive), newest first. Narrow ' +
+      'by any of: a range of seasons, rule book, gender, diver name, competition name or ' +
+      'location. Pass null for a filter you do not need.',
+    strict: true,
+    parameters: {
+      type: 'object',
+      additionalProperties: false,
+      properties: RESULT_FILTERS,
+      required: Object.keys(RESULT_FILTERS),
+    },
+  },
+  {
+    type: 'function' as const,
+    name: 'score_by_place',
+    description:
+      'For each finishing place (1st, 2nd, ...), the average, lowest and highest total ' +
+      'competition score that earned it across past competitions. Use this for "what ' +
+      'score do you need to finish in the top N" questions. A total score is the sum of ' +
+      'the four dives, typically a few hundred points; it is not ranking points.',
+    strict: true,
+    parameters: {
+      type: 'object',
+      additionalProperties: false,
+      properties: {
+        ...RESULT_FILTERS,
+        max_place: { type: 'integer', description: 'last place to report, e.g. 5 for top 5' },
+      },
+      required: [...Object.keys(RESULT_FILTERS), 'max_place'],
     },
   },
   {
@@ -317,6 +396,104 @@ Deno.serve(async (req) => {
   }
 
   // ---- tool implementations -------------------------------------------------
+
+  /** A season's competitions, results and divers, shaped for the ranking engine. */
+  async function loadRankingInput(season: number, gender: string) {
+    const [comps, divers] = await Promise.all([
+      db.from('competitions').select('*').eq('season', season),
+      db.from('divers').select('*'),
+    ]);
+    if (comps.error) return { error: comps.error.message };
+    const competitions = (comps.data ?? []).map((c: Record<string, unknown>) => ({
+      id: c.id,
+      season: c.season,
+      name: c.name,
+      location: c.location,
+      heldOn: c.held_on,
+      ruleSet: c.rule_set,
+      gender: c.gender,
+      countsForSeries: c.counts_for_series,
+      countsForWorldRanking: c.counts_for_world_ranking,
+    }));
+    let results: Record<string, unknown>[] = [];
+    if (competitions.length) {
+      const { data: rows, error } = await db
+        .from('results')
+        .select('*')
+        .in('competition_id', competitions.map((c: { id: unknown }) => String(c.id)));
+      if (error) return { error: error.message };
+      results = (rows ?? []).map((r: Record<string, unknown>) => ({
+        competitionId: r.competition_id,
+        diverId: r.diver_id,
+        rank: r.rank,
+        score: r.score == null ? null : Number(r.score),
+        bestDive: r.best_dive,
+      }));
+    }
+    return { season, gender, competitions, results, divers: divers.data ?? [] };
+  }
+
+  /**
+   * Results matching the shared result filters, newest competition first. The filters
+   * run in the database (the `!inner` joins make a filter on a competition or diver drop
+   * the result, not just blank its embedded row), so nothing is cut off before filtering.
+   */
+  async function loadResults(input: Record<string, unknown>) {
+    const data: unknown[] = [];
+    // The API caps a response at 1000 rows, so read in pages.
+    for (let from = 0; ; from += 1000) {
+      const page = await resultsQuery(input).range(from, from + 999);
+      if (page.error) return { error: page.error.message };
+      data.push(...(page.data ?? []));
+      if ((page.data ?? []).length < 1000) break;
+    }
+    return { rows: shapeResults(data) };
+  }
+
+  function resultsQuery(input: Record<string, unknown>) {
+    let q = db
+      .from('results')
+      .select(
+        'rank, score, best_dive, competitions!inner(name, location, season, held_on, gender, rule_set), divers!inner(name)',
+      )
+      // A stable order, so pages neither skip nor repeat rows.
+      .order('competition_id')
+      .order('diver_id');
+    if (input.season_from != null) q = q.gte('competitions.season', input.season_from as number);
+    if (input.season_to != null) q = q.lte('competitions.season', input.season_to as number);
+    if (input.rule_set != null) q = q.eq('competitions.rule_set', input.rule_set as string);
+    if (input.gender != null) q = q.eq('competitions.gender', input.gender as string);
+    if (input.diver_name) q = q.ilike('divers.name', `%${input.diver_name}%`);
+    if (input.competition_name) {
+      // Commas and parentheses would break the or() expression; they never occur in a name.
+      const term = String(input.competition_name).replace(/[,()]/g, ' ');
+      q = q.or(`name.ilike.*${term}*,location.ilike.*${term}*`, { referencedTable: 'competitions' });
+    }
+    return q;
+  }
+
+  function shapeResults(data: unknown[]) {
+    type Row = {
+      rank: number;
+      score: number | null;
+      best_dive: boolean;
+      competitions: Record<string, unknown>;
+      divers: { name: string };
+    };
+    return (data as Row[])
+      .map((r) => ({
+        competition: [r.competitions.name, r.competitions.location].filter(Boolean).join(', '),
+        season: r.competitions.season as number,
+        heldOn: r.competitions.held_on as string | null,
+        ruleSet: r.competitions.rule_set as string,
+        gender: r.competitions.gender as string,
+        place: r.rank,
+        diver: r.divers.name,
+        score: r.score == null ? null : Number(r.score),
+        bestDive: r.best_dive,
+      }))
+      .sort((a, b) => String(b.heldOn ?? '').localeCompare(String(a.heldOn ?? '')) || a.place - b.place);
+  }
 
   async function runTool(name: string, input: Record<string, unknown>): Promise<unknown> {
     switch (name) {
@@ -423,44 +600,12 @@ Deno.serve(async (req) => {
 
       case 'get_ranking': {
         const season = input.season as number;
-        const [comps, divers] = await Promise.all([
-          db.from('competitions').select('*').eq('season', season),
-          db.from('divers').select('*'),
-        ]);
-        if (comps.error) return { error: comps.error.message };
-        const competitions = (comps.data ?? []).map((c: Record<string, unknown>) => ({
-          id: c.id,
-          season: c.season,
-          name: c.name,
-          location: c.location,
-          heldOn: c.held_on,
-          ruleSet: c.rule_set,
-          gender: c.gender,
-          countsForSeries: c.counts_for_series,
-          countsForWorldRanking: c.counts_for_world_ranking,
-        }));
-        if (!competitions.length) {
+        const loaded = await loadRankingInput(season, input.gender as string);
+        if ('error' in loaded) return loaded;
+        if (!loaded.competitions.length) {
           return { standings: [], note: `No competitions are recorded for ${season}.` };
         }
-        const { data: rows, error } = await db
-          .from('results')
-          .select('*')
-          .in('competition_id', competitions.map((c) => String(c.id)));
-        if (error) return { error: error.message };
-        const results = (rows ?? []).map((r: Record<string, unknown>) => ({
-          competitionId: r.competition_id,
-          diverId: r.diver_id,
-          rank: r.rank,
-          score: r.score == null ? null : Number(r.score),
-          bestDive: r.best_dive,
-        }));
-        const args = {
-          season,
-          gender: input.gender as never,
-          competitions,
-          results,
-          divers: divers.data ?? [],
-        };
+        const args = loaded;
         const standings =
           input.kind === 'series' ? seriesRanking(args as never) : worldRanking(args as never);
         return {
@@ -482,31 +627,106 @@ Deno.serve(async (req) => {
         };
       }
 
+      case 'placing_needed': {
+        const season = input.season as number;
+        const kind = input.kind as 'series' | 'world';
+        const loaded = await loadRankingInput(season, input.gender as string);
+        if ('error' in loaded) return loaded;
+        const wanted = String(input.diver_name).toLowerCase();
+        const matches = loaded.divers.filter((d: { name?: string }) =>
+          String(d.name ?? '').toLowerCase().includes(wanted),
+        );
+        if (matches.length !== 1) {
+          return {
+            error: matches.length
+              ? `"${input.diver_name}" matches several divers: ${matches.map((d: { name?: string }) => d.name).join(', ')}.`
+              : `No diver named "${input.diver_name}".`,
+          };
+        }
+        const diver = matches[0] as { id: string; name: string };
+        const rank = kind === 'series' ? seriesRanking : worldRanking;
+        const positionOf = (standings: Record<string, unknown>[]) => {
+          const row = standings.find((s) => s.diverId === diver.id);
+          return row
+            ? {
+                position: row.position as number,
+                ...(kind === 'series' ? { points: row.points } : { average: row.average }),
+              }
+            : null;
+        };
+
+        // The upcoming event is not in the database, so add it as a hypothetical one in
+        // which only this diver scores: every other diver stands still.
+        const hypothetical = {
+          id: '__next_event__',
+          season,
+          gender: input.gender,
+          countsForSeries: kind === 'series',
+          countsForWorldRanking: true,
+        };
+        const target = input.target_position as number;
+        const outcomes: { placeAtNextEvent: number; position?: number }[] = [];
+        for (let place = 1; place <= (kind === 'series' ? 12 : 20); place++) {
+          const standings = rank({
+            ...loaded,
+            competitions: [...loaded.competitions, hypothetical],
+            results: [
+              ...loaded.results,
+              { competitionId: hypothetical.id, diverId: diver.id, rank: place, score: null, bestDive: false },
+            ],
+          } as never) as Record<string, unknown>[];
+          outcomes.push({ placeAtNextEvent: place, ...positionOf(standings) });
+        }
+        const good = outcomes.filter((o) => (o.position ?? Infinity) <= target);
+        return {
+          diver: diver.name,
+          kind,
+          rule: kind === 'series' ? 'Red Bull 3.3.1, 3.3.2' : 'Red Bull 6.1, 6.2',
+          current: positionOf(rank(loaded as never) as Record<string, unknown>[]),
+          target_position: target,
+          worst_place_that_reaches_target: good.length ? good[good.length - 1].placeAtNextEvent : null,
+          outcomes,
+          assumption:
+            'Only this diver is scored at the next event; every other diver keeps their ' +
+            'current total. Ties are broken by placings (most 1st, most 2nd, ...).',
+        };
+      }
+
       case 'query_results': {
-        let q = db
-          .from('results')
-          .select('rank, score, best_dive, competitions(name, season, gender, rule_set), divers(name)')
-          .order('rank')
-          .limit(100);
-        if (input.season != null) q = q.eq('competitions.season', input.season as number);
-        const { data, error } = await q;
-        if (error) return { error: error.message };
-        let rows = (data ?? []) as Record<string, unknown>[];
-        const diverName = (input.diver_name as string | null)?.toLowerCase();
-        const compName = (input.competition_name as string | null)?.toLowerCase();
-        if (diverName) {
-          rows = rows.filter((r) =>
-            String((r.divers as { name?: string })?.name ?? '').toLowerCase().includes(diverName),
-          );
+        const loaded = await loadResults(input);
+        if ('error' in loaded) return loaded;
+        return {
+          count: loaded.rows.length,
+          ...(loaded.rows.length > 80 ? { note: 'Showing the newest 80; narrow the filters for more.' } : {}),
+          results: loaded.rows.slice(0, 80),
+        };
+      }
+
+      case 'score_by_place': {
+        const loaded = await loadResults(input);
+        if ('error' in loaded) return loaded;
+        const maxPlace = Math.max(1, Math.min(input.max_place as number, 30));
+        const byPlace = new Map<number, number[]>();
+        for (const r of loaded.rows) {
+          if (r.place > maxPlace || r.score == null) continue;
+          byPlace.set(r.place, [...(byPlace.get(r.place) ?? []), r.score]);
         }
-        if (compName) {
-          rows = rows.filter((r) =>
-            String((r.competitions as { name?: string })?.name ?? '')
-              .toLowerCase()
-              .includes(compName),
-          );
-        }
-        return { count: rows.length, results: rows.slice(0, 60) };
+        const round = (n: number) => Math.round(n * 100) / 100;
+        return {
+          competitions: new Set(loaded.rows.map((r) => `${r.competition}|${r.season}|${r.gender}`)).size,
+          note:
+            'Total competition scores. Red Bull and World Aquatics events use different ' +
+            'formats, and men and women dive different heights, so compare like with like.',
+          places: [...byPlace.entries()]
+            .sort(([a], [b]) => a - b)
+            .map(([place, scores]) => ({
+              place,
+              events: scores.length,
+              average: round(scores.reduce((s, x) => s + x, 0) / scores.length),
+              lowest: Math.min(...scores),
+              highest: Math.max(...scores),
+            })),
+        };
       }
 
       case 'get_my_lists': {
@@ -535,7 +755,12 @@ Deno.serve(async (req) => {
    */
   // The SDK's own item union, so a malformed item is caught here rather than by a 400.
   type InputItem = OpenAI.Responses.ResponseInputItem;
-  const input: InputItem[] = history.map((m) => ({ role: m.role, content: m.content }));
+  // The date goes here rather than in the instructions, which must stay byte-identical
+  // for the prompt cache.
+  const input: InputItem[] = [
+    { role: 'developer', content: `Today's date is ${today}.` },
+    ...history.map((m) => ({ role: m.role, content: m.content })),
+  ];
 
   const stream = new ReadableStream({
     async start(controller) {
@@ -557,22 +782,34 @@ Deno.serve(async (req) => {
             input,
             tools,
             max_output_tokens: MAX_OUTPUT_TOKENS,
+            reasoning: { effort: REASONING_EFFORT },
             stream: true,
           });
 
           let completed: OpenAI.Responses.Response | undefined;
+          let stopped: string | undefined;
           for await (const event of events) {
             if (event.type === 'response.output_text.delta') {
               send('text', { text: event.delta });
             } else if (event.type === 'response.completed') {
               completed = event.response;
+            } else if (event.type === 'response.incomplete') {
+              stopped = event.response.incomplete_details?.reason ?? 'unknown';
+            } else if (event.type === 'response.failed') {
+              stopped = event.response.error?.message ?? 'failed';
             } else if (event.type === 'error') {
               send('error', { error: event.message ?? 'The model stream failed.' });
             }
           }
 
           if (!completed) {
-            send('error', { error: 'The model did not finish its answer.' });
+            console.error(`ask: response not completed (${stopped ?? 'stream ended early'})`);
+            send('error', {
+              error:
+                stopped === 'max_output_tokens'
+                  ? 'The answer ran past the length limit. Try a narrower question.'
+                  : `The model did not finish its answer (${stopped ?? 'stream ended early'}).`,
+            });
             break;
           }
 
@@ -600,6 +837,7 @@ Deno.serve(async (req) => {
 
           for (const call of calls) {
             send('tool', { name: call.name });
+            console.log(`ask: tool ${call.name} ${call.arguments}`);
             let result: unknown;
             try {
               // Arguments arrive as a JSON string; a malformed one is the model's error

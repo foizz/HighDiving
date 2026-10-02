@@ -230,6 +230,46 @@ export async function loadResults(competitionId: string): Promise<CompetitionRes
   return (data as ResultRow[]).map(toResult);
 }
 
+export interface DiverResult {
+  competition: Competition;
+  rank: number;
+  score: number | null;
+  bestDive: boolean;
+}
+
+/**
+ * Every result for one diver, across all seasons and both series, newest first.
+ *
+ * The competition is embedded rather than fetched separately because a diver's page is
+ * about where each placing happened — the date, the series, and whether it counted —
+ * and that is unreadable as a list of ids.
+ */
+export async function loadDiverHistory(diverId: string): Promise<DiverResult[]> {
+  const { data, error } = await client()
+    .from('results')
+    .select('rank, score, best_dive, competitions(*)')
+    .eq('diver_id', diverId);
+  if (error) rethrow(error, 'results');
+
+  type Row = Omit<ResultRow, 'competition_id' | 'diver_id'> & {
+    competitions: CompetitionRow | null;
+  };
+
+  return (data as unknown as Row[])
+    .filter((r) => r.competitions)
+    .map((r) => ({
+      competition: toCompetition(r.competitions!),
+      rank: r.rank,
+      score: r.score == null ? null : Number(r.score),
+      bestDive: r.best_dive,
+    }))
+    .sort(
+      (a, b) =>
+        b.competition.season - a.competition.season ||
+        (b.competition.heldOn ?? '').localeCompare(a.competition.heldOn ?? ''),
+    );
+}
+
 /**
  * Set which dive(s) took the best-dive bonus at one competition (rule 3.4.1).
  *

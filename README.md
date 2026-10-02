@@ -169,6 +169,17 @@ Rule 6.2 names only World Cups, but the World Championships are counted here too
 deliberate choice — the rule book says the 2026 procedure was still to be finalised. Any
 event's two flags can be changed per competition on the Admin screen.
 
+### Browsing results
+
+From **Rankings**, every standings row opens that diver and every competition in the
+season list opens its full result. Both pages show two points columns — WS for the World
+Series ranking and WR for the World Ranking — because the same finish is worth different
+amounts in each (a win is 20 against 45), which explains the two tables better than any
+wording. A diver page groups every season they competed in, across both series.
+
+Season position is deliberately not on the diver page: it depends on every other diver, so
+it would cost a query per season to show one number that the Rankings screen already has.
+
 ### Uploading results
 
 Apply `supabase/migrations/0002_results.sql` and `0003_allow_tied_placings.sql`, then

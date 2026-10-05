@@ -10,7 +10,7 @@ import { RankingsScreen } from './screens/RankingsScreen';
 import { AskScreen } from './screens/AskScreen';
 import { AdminScreen } from './screens/AdminScreen';
 import { MoreScreen } from './screens/MoreScreen';
-import { Button } from './components/ui';
+import { Button, ScreenLayout } from './components/ui';
 
 const TABS: { path: string; label: string }[] = [
   { path: '/lists', label: 'Lists' },
@@ -77,28 +77,19 @@ export default function App() {
           <Route path="/ask" element={<AskScreen />} />
           <Route path="/more" element={<MoreScreen onOpen={(target) => navigate(`/more/${target}`)} />} />
           <Route path="/more/table" element={
-            <div>
-              <button onClick={() => navigate('/more')} className="px-4 pt-4 text-sm text-muted hover:text-text">
-                ← More
-              </button>
+            <ScreenLayout onBack={() => navigate('/more')} backLabel="More">
               <CatalogScreen />
-            </div>
+            </ScreenLayout>
           } />
           <Route path="/more/settings" element={
-            <div>
-              <button onClick={() => navigate('/more')} className="px-4 pt-4 text-sm text-muted hover:text-text">
-                ← More
-              </button>
+            <ScreenLayout onBack={() => navigate('/more')} backLabel="More">
               <SettingsScreen />
-            </div>
+            </ScreenLayout>
           } />
           <Route path="/more/admin" element={
-            <div>
-              <button onClick={() => navigate('/more')} className="px-4 pt-4 text-sm text-muted hover:text-text">
-                ← More
-              </button>
+            <ScreenLayout onBack={() => navigate('/more')} backLabel="More">
               <AdminScreen />
-            </div>
+            </ScreenLayout>
           } />
           <Route path="/entry" element={<EntryScreen />} />
           <Route path="*" element={

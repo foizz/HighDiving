@@ -191,3 +191,31 @@ export function ScreenHeader({ title, subtitle }: { title: string; subtitle?: Re
     </header>
   );
 }
+
+export function BackButton({ onClick, label = 'Back' }: { onClick: () => void; label?: string }) {
+  return (
+    <button
+      onClick={onClick}
+      className="px-4 pt-4 text-sm text-muted hover:text-text transition"
+    >
+      ← {label}
+    </button>
+  );
+}
+
+export function ScreenLayout({
+  onBack,
+  backLabel = 'Back',
+  children,
+}: {
+  onBack: () => void;
+  backLabel?: string;
+  children: ReactNode;
+}) {
+  return (
+    <div>
+      <BackButton onClick={onBack} label={backLabel} />
+      {children}
+    </div>
+  );
+}

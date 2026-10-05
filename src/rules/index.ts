@@ -28,7 +28,7 @@ export const REDBULL: RuleSet = {
   judgeCounts: [5],
   defaultJudgeCount: 5,
   slots,
-  overLimit: 'zero',
+  overLimit: 'cap',
   takeoffRule: 'allDistinct',
   citations: {
     repeat: 'Red Bull 3.5.3',

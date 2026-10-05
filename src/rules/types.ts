@@ -14,12 +14,12 @@ export interface SlotDef {
 }
 
 /**
- * What happens when a dive exceeds its slot's DD limit. This is the one place the two
- * rule books genuinely disagree:
+ * What happens when a dive exceeds its slot's DD limit.
  *
- *  - `cap`  World Aquatics: "If a diver performs a dive above 2.8 they will only
- *           receive 2.8" — the dive is legal, the DD is simply clamped.
- *  - `zero` Red Bull 3.5.3: the dive is a failed dive and scores nothing.
+ *  - `cap`  The dive is legal, the DD is simply clamped to the limit — World Aquatics:
+ *           "If a diver performs a dive above 2.8 they will only receive 2.8". Both
+ *           rule sets use this.
+ *  - `zero` The dive is a failed dive and scores nothing.
  */
 export type OverLimitBehaviour = 'cap' | 'zero';
 

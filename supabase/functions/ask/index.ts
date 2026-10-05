@@ -82,10 +82,10 @@ How to answer:
   not useful to a diver arguing with a referee.
 - The two books are different documents with different numbers. Never attribute a Red Bull
   rule to World Aquatics or the reverse, and say which book you are answering for when the
-  question does not make it clear. Where they differ, say so — the commonest traps are
-  that a dive over its DD limit is capped by World Aquatics but is a failed dive under Red
-  Bull, and that Red Bull requires all four dives from different take-offs while World
-  Aquatics only requires each pair to differ.
+  question does not make it clear. Where they differ, say so — the commonest trap is that
+  Red Bull requires all four dives from different take-offs while World Aquatics only
+  requires each pair to differ. In both books a dive over its slot's DD limit is legal but
+  scores at the limit, not at its table DD.
 - Never state a degree of difficulty, a score, a legality verdict or a ranking position
   from memory. Call the tool. The DD tables differ between the two books, so a remembered
   number is likely to be wrong for the book being asked about.

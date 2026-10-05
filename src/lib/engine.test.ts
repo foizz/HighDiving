@@ -235,7 +235,7 @@ describe('list validation', () => {
     expect(rb.dives.some((d) => d.violations.some((v) => /different take-offs/.test(v.message)))).toBe(true);
   });
 
-  it('caps an over-limit required dive under World Aquatics but zeroes it under Red Bull', () => {
+  it('caps an over-limit required dive at the slot limit under both rule sets', () => {
     // 106B at 27 m is well above the 2.8 required limit in both books.
     const list: ListEntry[] = [
       entry('required', '106', 'B'),
@@ -253,8 +253,9 @@ describe('list validation', () => {
     const rb = evaluateList([...list], REDBULL, 'men');
     const rbDive = rb.dives.find((d) => d.slot === 'required')!;
     expect(rbDive.rawDD).toBe(3.9);
-    expect(rbDive.effectiveDD).toBe(0);
-    expect(rbDive.failed).toBe(true);
+    expect(rbDive.effectiveDD).toBe(2.8);
+    expect(rbDive.capped).toBe(true);
+    expect(rbDive.failed).toBe(false);
   });
 
   it('uses the lower women limits and the 20 m column', () => {
@@ -263,8 +264,9 @@ describe('list validation', () => {
     const women = evaluateList(list, REDBULL, 'women');
     expect(men.dives[0].rawDD).toBe(3.0);
     expect(women.dives[0].rawDD).toBe(2.9);
-    // 2.9 is above the women's required limit of 2.6, so Red Bull zeroes it.
-    expect(women.dives[0].failed).toBe(true);
+    // 2.9 is above the women's required limit of 2.6, so it scores at 2.6.
+    expect(women.dives[0].capped).toBe(true);
+    expect(women.dives[0].effectiveDD).toBe(2.6);
   });
 
   it('judges a women\'s list at the 20 m column and the lower limits', () => {
@@ -283,9 +285,9 @@ describe('list validation', () => {
     expect(men.valid).toBe(true);
   });
 
-  it('rejects a required dive that is inside the men limit but over the women one', () => {
+  it('caps a required dive that is inside the men limit but over the women one', () => {
     // 102B is 2.8 at 27 m — exactly the men's required limit — and 2.7 at 20 m, which is
-    // over the women's 2.6. The identical list is legal as a men's list and not as a women's.
+    // over the women's 2.6, so the women's dive scores at 2.6 instead.
     const list: ListEntry[] = [
       entry('required', '102', 'B'),
       entry('intermediate', '202', 'B'),
@@ -299,8 +301,10 @@ describe('list validation', () => {
 
     const women = evaluateList(list, REDBULL, 'women');
     expect(women.dives[0].rawDD).toBe(2.7);
-    expect(women.dives[0].failed).toBe(true);
-    expect(women.valid).toBe(false);
+    expect(women.dives[0].effectiveDD).toBe(2.6);
+    expect(women.dives[0].capped).toBe(true);
+    expect(women.dives[0].failed).toBe(false);
+    expect(women.valid).toBe(true);
   });
 
   it('applies the women intermediate limit of 3.4', () => {

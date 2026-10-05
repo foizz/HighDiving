@@ -38,7 +38,7 @@ export default function App() {
   return (
     <div className="mx-auto flex min-h-full max-w-2xl flex-col">
       {/* The rule-set toggle and login button are always reachable. */}
-      <header className="chrome sticky top-0 z-20 border-b border-border/30 px-4 py-3">
+      <header className="chrome pt-safe sticky top-0 z-20 border-b border-border/30 px-4 pb-3">
         <div className="flex items-center justify-between gap-3">
           <div
             role="radiogroup"

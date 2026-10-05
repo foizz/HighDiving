@@ -48,7 +48,7 @@ export function DivePicker({
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col bg-bg/95 backdrop-blur-xl">
-      <div className="border-b border-border/40 p-4">
+      <div className="pt-safe border-b border-border/40 px-4 pb-4">
         <div className="mb-3 flex items-center gap-3">
           <h2 className="flex-1 text-lg font-bold">Choose a dive</h2>
           <Button variant="ghost" onClick={onCancel}>

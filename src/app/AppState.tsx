@@ -13,6 +13,7 @@ import type { Account, DataSource } from '../data/DataSource';
 import { LocalDataSource, clearLocalLists, localLists } from '../data/localDataSource';
 import { SupabaseDataSource, supabase, supabaseConfigured } from '../data/supabaseDataSource';
 import { isAdmin as isAdminUser } from '../data/resultsDataSource';
+import { syncStatusBar } from '../lib/native';
 
 interface Settings {
   ruleSet: RuleSetId;
@@ -90,6 +91,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     if (meta) {
       meta.setAttribute('content', settings.ruleSet === 'redbull' ? '#060e26' : '#f4f8fc');
     }
+    syncStatusBar(settings.ruleSet === 'redbull' ? 'dark' : 'light');
   }, [settings.ruleSet]);
 
   useEffect(() => {

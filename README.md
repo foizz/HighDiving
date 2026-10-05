@@ -107,6 +107,25 @@ ambient wash on `body::before` is positioned to pass behind the content column, 
 glass over an empty field is just a flat panel. There is a `@supports` fallback to solid
 surfaces where `backdrop-filter` is unavailable.
 
+## iOS app
+
+The iOS app is the same web app wrapped with [Capacitor](https://capacitorjs.com); the
+Xcode project lives in `ios/`. Building it needs a Mac with Xcode, and publishing needs an
+Apple Developer account.
+
+```bash
+npm install
+cp .env.example .env   # fill in the Supabase keys: they are baked in at build time
+npm run ios            # build the web app, copy it into ios/, open Xcode
+```
+
+In Xcode, select the **App** target → *Signing & Capabilities*, pick your team, then run on
+a simulator or device. For the App Store: *Product → Archive*, then *Distribute App*.
+
+After any change to the web app, run `npm run ios:sync` (or `npm run ios`) so the native
+project picks up the new build. The bundle id is `com.mitradev.highdiving` (set in
+`capacitor.config.ts`). The app icon and splash source is `assets/icon.png`.
+
 ## Accounts
 
 Copy `.env.example` to `.env` and fill in a Supabase project's URL and anon key, then apply

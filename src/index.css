@@ -181,6 +181,14 @@ body::before {
   letter-spacing: -0.018em;
 }
 
+/*
+ * Honour the iOS safe area. Inside the native app the page runs edge to edge, so the
+ * header must clear the status bar / Dynamic Island; in Safari the inset is 0.
+ */
+.pt-safe {
+  padding-top: calc(env(safe-area-inset-top, 0px) + 0.75rem);
+}
+
 /* Honour the iOS safe area so the bottom tab bar clears the home indicator. */
 .pb-safe {
   padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 0.5rem);

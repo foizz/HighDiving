@@ -16,7 +16,7 @@ export function Card({
 }) {
   return (
     <div
-      className={`glass glass-sheen rounded-2xl p-4 ${elevated ? 'glass-strong' : ''} ${className}`}
+      className={`glass rounded-2xl p-4 ${elevated ? 'glass-strong' : ''} ${className}`}
     >
       {children}
     </div>
@@ -30,18 +30,16 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 export function Button({ variant = 'primary', className = '', ...props }: ButtonProps) {
   const styles = {
     primary:
-      'accent-fill text-accent-text shadow-sm hover:brightness-[1.08] active:brightness-95',
-    // Tinted rather than glass: a secondary button almost always sits inside a Card, and
-    // glass within glass reads as a muddy slab as well as stacking backdrop filters.
+      'accent-fill text-accent-text shadow-md hover:shadow-lg active:shadow-sm hover:scale-[1.02] transition-all',
     secondary:
-      'border border-border/50 bg-text/[0.06] text-text hover:bg-text/[0.11] active:bg-text/[0.08]',
-    ghost: 'text-muted hover:text-text hover:bg-text/5',
-    danger: 'bg-danger text-white shadow-sm hover:brightness-110 active:brightness-95',
+      'border border-border/60 bg-text/[0.08] text-text hover:bg-text/[0.14] active:bg-text/[0.1]',
+    ghost: 'text-muted hover:text-text hover:bg-text/[0.08]',
+    danger: 'bg-danger text-white shadow-md hover:shadow-lg active:shadow-sm hover:scale-[1.02] transition-all',
   }[variant];
   return (
     <button
       {...props}
-      className={`min-h-11 rounded-xl px-4 text-sm font-semibold transition duration-150 disabled:opacity-40 disabled:pointer-events-none ${styles} ${className}`}
+      className={`min-h-11 rounded-lg px-4 text-sm font-semibold transition duration-150 disabled:opacity-40 disabled:pointer-events-none ${styles} ${className}`}
     />
   );
 }
@@ -93,7 +91,7 @@ export function Segmented<T extends string | number>({
     <div
       role="radiogroup"
       aria-label={ariaLabel}
-      className="flex gap-1 rounded-xl border border-border/50 bg-text/[0.05] p-1"
+      className="flex gap-1.5 rounded-lg border border-border/40 bg-text/[0.04] p-1.5"
     >
       {options.map((o) => {
         const active = o.value === value;
@@ -103,15 +101,15 @@ export function Segmented<T extends string | number>({
             role="radio"
             aria-checked={active}
             onClick={() => onChange(o.value)}
-            className={`min-h-10 flex-1 rounded-lg px-2 text-sm font-semibold transition duration-150 ${
+            className={`min-h-9 flex-1 rounded-md px-2.5 text-sm font-semibold transition duration-150 ${
               active
-                ? 'accent-fill text-accent-text shadow-sm'
-                : 'text-muted hover:bg-text/5 hover:text-text'
+                ? 'accent-fill text-accent-text shadow-md'
+                : 'text-muted hover:bg-text/8 hover:text-text'
             }`}
           >
             <span className="block leading-tight">{o.label}</span>
             {o.sublabel ? (
-              <span className={`block text-[11px] font-normal ${active ? 'opacity-85' : ''}`}>
+              <span className={`block text-[11px] font-normal ${active ? 'opacity-80' : ''}`}>
                 {o.sublabel}
               </span>
             ) : null}
@@ -176,9 +174,9 @@ export function Violations({ items }: { items: Violation[] }) {
 
 export function EmptyState({ title, children }: { title: string; children?: ReactNode }) {
   return (
-    <div className="rounded-2xl border border-dashed border-border/70 px-4 py-12 text-center">
-      <p className="font-semibold tight">{title}</p>
-      {children ? <div className="mt-1.5 text-sm text-muted">{children}</div> : null}
+    <div className="rounded-xl border border-dashed border-border/50 bg-text/[0.02] px-4 py-12 text-center">
+      <p className="font-semibold tight text-sm">{title}</p>
+      {children ? <div className="mt-2 text-xs text-muted">{children}</div> : null}
     </div>
   );
 }
@@ -196,7 +194,7 @@ export function BackButton({ onClick, label = 'Back' }: { onClick: () => void; l
   return (
     <button
       onClick={onClick}
-      className="px-4 pt-4 text-sm text-muted hover:text-text transition"
+      className="px-4 pt-4 text-sm text-muted hover:text-accent-2 hover:scale-105 transition duration-150"
     >
       ← {label}
     </button>

@@ -7,6 +7,7 @@ import { CatalogScreen } from './screens/CatalogScreen';
 import { SimulatorScreen } from './screens/SimulatorScreen';
 import { SettingsScreen } from './screens/SettingsScreen';
 import { RankingsScreen } from './screens/RankingsScreen';
+import { ResearchDiverScreen } from './screens/ResearchDiverScreen';
 import { AskScreen } from './screens/AskScreen';
 import { AdminScreen } from './screens/AdminScreen';
 import { MoreScreen } from './screens/MoreScreen';
@@ -16,6 +17,7 @@ const TABS: { path: string; label: string }[] = [
   { path: '/lists', label: 'Lists' },
   { path: '/simulate', label: 'Simulate' },
   { path: '/rankings', label: 'Rankings' },
+  { path: '/research', label: 'Research' },
   { path: '/ask', label: 'Ask' },
   { path: '/more', label: 'More' },
 ];
@@ -36,12 +38,12 @@ export default function App() {
   return (
     <div className="mx-auto flex min-h-full max-w-2xl flex-col">
       {/* The rule-set toggle and login button are always reachable. */}
-      <header className="chrome sticky top-0 z-20 border-b border-border/40 px-4 py-2.5">
-        <div className="flex items-center justify-between gap-2">
+      <header className="chrome sticky top-0 z-20 border-b border-border/30 px-4 py-3">
+        <div className="flex items-center justify-between gap-3">
           <div
             role="radiogroup"
             aria-label="Rule set"
-            className="glass glass-sheen flex gap-1 rounded-xl p-1"
+            className="flex gap-1.5 rounded-lg border border-border/40 bg-text/[0.04] p-1.5"
           >
             {RULE_SET_IDS.map((id) => {
               const active = id === ruleSet;
@@ -51,10 +53,10 @@ export default function App() {
                   role="radio"
                   aria-checked={active}
                   onClick={() => setRuleSet(id)}
-                  className={`min-h-9 flex-1 rounded-lg px-2 text-sm font-bold transition duration-200 ${
+                  className={`min-h-9 flex-1 rounded-md px-3 text-sm font-semibold transition duration-150 ${
                     active
-                      ? 'accent-fill text-accent-text shadow-sm'
-                      : 'text-muted hover:bg-text/5 hover:text-text'
+                      ? 'accent-fill text-accent-text shadow-md'
+                      : 'text-muted hover:bg-text/8 hover:text-text'
                   }`}
                 >
                   {RULE_SETS[id].shortName}
@@ -74,6 +76,7 @@ export default function App() {
           <Route path="/lists" element={<ListsScreen />} />
           <Route path="/simulate" element={<SimulatorScreen />} />
           <Route path="/rankings" element={<RankingsScreen />} />
+          <Route path="/research" element={<ResearchDiverScreen />} />
           <Route path="/ask" element={<AskScreen />} />
           <Route path="/more" element={<MoreScreen onOpen={(target) => navigate(`/more/${target}`)} />} />
           <Route path="/more/table" element={

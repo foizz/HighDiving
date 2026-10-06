@@ -42,13 +42,15 @@ export function SimulatorScreen() {
     return evaluation.dives.map((dive) => {
       const given = awards[dive.slot] ?? [];
       const entered = given.filter((v): v is number => v != null);
-      const score = scoreDive(entered, dive.failed ? 0 : dive.effectiveDD, JUDGE_COUNT);
+      // Simulate with rawDD so illegal lists can still be scored (showing the hypothetical total).
+      const dd = dive.rawDD ?? 0;
+      const score = scoreDive(entered, dd, JUDGE_COUNT);
       return { dive, given, score, complete: entered.length >= JUDGE_COUNT };
     });
   }, [evaluation, awards]);
 
   const total = round2(scored.reduce((n, s) => n + (s.complete ? s.score.points : 0), 0));
-  const remainingDDs = scored.filter((s) => !s.complete).map((s) => s.dive.effectiveDD);
+  const remainingDDs = scored.filter((s) => !s.complete).map((s) => s.dive.rawDD ?? 0);
   const targetValue = Number(target);
   const targetResult =
     target.trim() && Number.isFinite(targetValue)
@@ -212,14 +214,14 @@ function DiveScoreCard({
         <div className="text-right">
           <p className="tabular text-lg font-bold">{complete ? points.toFixed(2) : '—'}</p>
           <p className="tabular text-xs text-muted">
-            DD {dive.failed ? '0.0' : dive.effectiveDD.toFixed(1)}
+            DD {(dive.rawDD ?? 0).toFixed(1)}
           </p>
         </div>
       </div>
 
       {dive.failed ? (
-        <p className="mt-2 text-xs text-danger">
-          This dive scores zero under the current rules, whatever the judges award.
+        <p className="mt-2 text-xs text-warn">
+          This dive breaks a rule, but the score shown is hypothetical.
         </p>
       ) : null}
 

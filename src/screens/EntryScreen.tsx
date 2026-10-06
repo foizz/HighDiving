@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useApp } from '../app/AppState';
 import { Button, Card, Field, Input } from '../components/ui';
 
@@ -6,6 +7,7 @@ type Mode = 'signin' | 'signup';
 
 export function EntryScreen() {
   const { signIn, signUp, continueAsGuest, supabaseConfigured } = useApp();
+  const navigate = useNavigate();
   const [mode, setMode] = useState<Mode>('signin');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -21,10 +23,13 @@ export function EntryScreen() {
     try {
       if (mode === 'signin') {
         await signIn(email, password);
+        navigate('/lists', { replace: true });
       } else {
         const { needsConfirmation } = await signUp(email, password);
         if (needsConfirmation) {
           setNotice('Check your email to confirm the account, then sign in.');
+        } else {
+          navigate('/lists', { replace: true });
         }
       }
     } catch (err) {

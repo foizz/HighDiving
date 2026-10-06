@@ -77,7 +77,7 @@ const TABS: { path: string; label: string; icon: (active: boolean) => JSX.Elemen
 ];
 
 export default function App() {
-  const { account, authReady, ruleSet, setRuleSet, rules } = useApp();
+  const { account, authReady, ruleSet, setRuleSet, rules, signOut } = useApp();
   const navigate = useNavigate();
   const location = useLocation();
   const analyticsConsent = useAnalyticsConsent();
@@ -123,7 +123,7 @@ export default function App() {
               );
             })}
           </div>
-          <Button variant="ghost" onClick={() => navigate('/entry')}>
+          <Button variant="ghost" onClick={() => void signOut()}>
             {account.isGuest ? 'Sign in' : 'Sign out'}
           </Button>
         </div>
@@ -168,7 +168,6 @@ export default function App() {
               <DMCAScreen />
             </ScreenLayout>
           } />
-          <Route path="/entry" element={<EntryScreen />} />
           <Route path="*" element={
             account.isGuest ? <RankingsScreen /> : <ListsScreen />
           } />

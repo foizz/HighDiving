@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { useApp } from '../app/AppState';
 import { Card, Pill, ScreenHeader } from '../components/ui';
 
@@ -32,10 +33,17 @@ export function MoreScreen({ onOpen }: { onOpen: (target: MoreTarget) => void })
     },
   ];
 
+  const legalItems = [
+    { href: '/privacy', label: 'Privacy Policy' },
+    { href: '/terms', label: 'Terms of Service' },
+    { href: '/dmca', label: 'Copyright / DMCA' },
+  ];
+
   return (
     <div className="p-4 pb-24">
       <ScreenHeader title="More" />
-      <ul className="space-y-2">
+
+      <ul className="space-y-2 mb-6">
         {items
           .filter((item) => !item.adminOnly || admin)
           .map((item) => (
@@ -51,6 +59,19 @@ export function MoreScreen({ onOpen }: { onOpen: (target: MoreTarget) => void })
               </Card>
             </li>
           ))}
+      </ul>
+
+      <h2 className="mb-2 text-sm font-bold uppercase tracking-wide text-muted">Legal</h2>
+      <ul className="space-y-2">
+        {legalItems.map((item) => (
+          <li key={item.href}>
+            <Link to={item.href}>
+              <Card>
+                <span className="font-semibold">{item.label}</span>
+              </Card>
+            </Link>
+          </li>
+        ))}
       </ul>
     </div>
   );

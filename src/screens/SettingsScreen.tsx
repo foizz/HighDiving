@@ -2,6 +2,11 @@ import { useState } from 'react';
 import { useApp } from '../app/AppState';
 import { RULE_SETS, RULE_SET_IDS } from '../rules';
 import { Button, Card, Pill, ScreenHeader, Segmented } from '../components/ui';
+import {
+  analyticsConfigured,
+  setAnalyticsConsent,
+  useAnalyticsConsent,
+} from '../lib/analytics';
 
 export function SettingsScreen() {
   const {
@@ -16,6 +21,8 @@ export function SettingsScreen() {
     migrateGuestLists,
   } = useApp();
   const [migrated, setMigrated] = useState<number | null>(null);
+  const analyticsConsent = useAnalyticsConsent();
+  const gpcActive = navigator.globalPrivacyControl === true;
 
   const slots = rules.slots(gender);
 
@@ -121,6 +128,26 @@ export function SettingsScreen() {
           </Button>
         </div>
       </Card>
+
+      {analyticsConfigured ? (
+        <Card className="mt-3">
+          <h2 className="mb-2 font-bold">Usage analytics</h2>
+          <Segmented
+            ariaLabel="Usage analytics"
+            value={analyticsConsent === true ? 'on' : 'off'}
+            onChange={(v) => setAnalyticsConsent(v === 'on')}
+            options={[
+              { value: 'off', label: 'Off' },
+              { value: 'on', label: 'On' },
+            ]}
+          />
+          <p className="mt-3 text-xs text-muted">
+            {gpcActive
+              ? 'Off because your browser sends a Global Privacy Control signal.'
+              : 'When on, Google Analytics records which screens you use. Turning it off stops collection and clears its cookies.'}
+          </p>
+        </Card>
+      ) : null}
 
       <p className="mt-4 text-center text-xs text-muted">
         <Pill>DD figures come from the published rule books</Pill>

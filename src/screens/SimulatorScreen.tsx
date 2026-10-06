@@ -37,20 +37,28 @@ export function SimulatorScreen() {
     [list, listRules, listGender],
   );
 
+  const slotDefs = useMemo(() => listRules.slots(listGender), [listRules, listGender]);
+
+  const getCappedDD = (dive: EvaluatedDive) => {
+    const slotDef = slotDefs.find((s) => s.id === dive.slot);
+    const rawDD = dive.rawDD ?? 0;
+    return slotDef?.maxDD != null ? Math.min(rawDD, slotDef.maxDD) : rawDD;
+  };
+
   const scored = useMemo(() => {
     if (!evaluation) return [];
     return evaluation.dives.map((dive) => {
       const given = awards[dive.slot] ?? [];
       const entered = given.filter((v): v is number => v != null);
-      // Simulate with rawDD so illegal lists can still be scored (showing the hypothetical total).
-      const dd = dive.rawDD ?? 0;
+      // Simulate with rawDD capped at the slot limit, so illegal lists can still be scored.
+      const dd = getCappedDD(dive);
       const score = scoreDive(entered, dd, JUDGE_COUNT);
-      return { dive, given, score, complete: entered.length >= JUDGE_COUNT };
+      return { dive, given, score, complete: entered.length >= JUDGE_COUNT, cappedDD: dd };
     });
-  }, [evaluation, awards]);
+  }, [evaluation, awards, slotDefs]);
 
   const total = round2(scored.reduce((n, s) => n + (s.complete ? s.score.points : 0), 0));
-  const remainingDDs = scored.filter((s) => !s.complete).map((s) => s.dive.rawDD ?? 0);
+  const remainingDDs = scored.filter((s) => !s.complete).map((s) => s.cappedDD);
   const targetValue = Number(target);
   const targetResult =
     target.trim() && Number.isFinite(targetValue)
@@ -124,7 +132,7 @@ export function SimulatorScreen() {
       </div>
 
       <div className="mt-4 space-y-3">
-        {scored.map(({ dive, given, score, complete }) => (
+        {scored.map(({ dive, given, score, complete, cappedDD }) => (
           <DiveScoreCard
             key={dive.slot}
             dive={dive}
@@ -133,6 +141,7 @@ export function SimulatorScreen() {
             complete={complete}
             points={score.points}
             counted={score.counted}
+            cappedDD={cappedDD}
             onAward={(i, v) => setAward(dive.slot, i, v)}
           />
         ))}
@@ -192,6 +201,7 @@ function DiveScoreCard({
   complete,
   points,
   counted,
+  cappedDD,
   onAward,
 }: {
   dive: EvaluatedDive;
@@ -200,6 +210,7 @@ function DiveScoreCard({
   complete: boolean;
   points: number;
   counted: number[];
+  cappedDD: number;
   onAward: (index: number, value: number | null) => void;
 }) {
   return (
@@ -214,7 +225,7 @@ function DiveScoreCard({
         <div className="text-right">
           <p className="tabular text-lg font-bold">{complete ? points.toFixed(2) : '—'}</p>
           <p className="tabular text-xs text-muted">
-            DD {(dive.rawDD ?? 0).toFixed(1)}
+            DD {cappedDD.toFixed(1)}
           </p>
         </div>
       </div>

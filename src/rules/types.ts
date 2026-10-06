@@ -44,8 +44,6 @@ export interface RuleSet {
   source: string;
   /** Platform height in metres, keyed by gender, used to pick the DD column. */
   heights: Record<Gender, { table: '27' | '20'; label: string }>;
-  judgeCounts: number[];
-  defaultJudgeCount: number;
   slots: (gender: Gender) => SlotDef[];
   overLimit: OverLimitBehaviour;
   takeoffRule: TakeoffRule;

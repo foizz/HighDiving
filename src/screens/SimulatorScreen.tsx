@@ -3,13 +3,14 @@ import { useApp } from '../app/AppState';
 import { AWARD_STEP, MAX_AWARD, awardNeededForTarget, round2, scoreDive } from '../lib/scoring';
 import { evaluateList, type EvaluatedDive } from '../rules';
 import type { DiveList } from '../data/DataSource';
-import { Button, Card, EmptyState, Field, Input, Pill, ScreenHeader, Segmented } from '../components/ui';
+import { Button, Card, EmptyState, Field, Input, Pill, ScreenHeader } from '../components/ui';
 
 /** Awards are given in half points, so the picker offers exactly those. */
 const AWARD_OPTIONS = Array.from({ length: MAX_AWARD / AWARD_STEP + 1 }, (_, i) => i * AWARD_STEP);
+const JUDGE_COUNT = 3;
 
 export function SimulatorScreen() {
-  const { data, rules, gender, judgeCount, setJudgeCount } = useApp();
+  const { data, rules, gender } = useApp();
   const [lists, setLists] = useState<DiveList[] | null>(null);
   const [listId, setListId] = useState<string | null>(null);
   // An award slot is `null` until a mark is entered. A cleared slot must stay empty
@@ -41,10 +42,10 @@ export function SimulatorScreen() {
     return evaluation.dives.map((dive) => {
       const given = awards[dive.slot] ?? [];
       const entered = given.filter((v): v is number => v != null);
-      const score = scoreDive(entered, dive.failed ? 0 : dive.effectiveDD, judgeCount);
-      return { dive, given, score, complete: entered.length >= judgeCount };
+      const score = scoreDive(entered, dive.failed ? 0 : dive.effectiveDD, JUDGE_COUNT);
+      return { dive, given, score, complete: entered.length >= JUDGE_COUNT };
     });
-  }, [evaluation, awards, judgeCount]);
+  }, [evaluation, awards]);
 
   const total = round2(scored.reduce((n, s) => n + (s.complete ? s.score.points : 0), 0));
   const remainingDDs = scored.filter((s) => !s.complete).map((s) => s.dive.effectiveDD);
@@ -66,7 +67,7 @@ export function SimulatorScreen() {
   function fillAll(value: number) {
     if (!evaluation) return;
     const next: Record<string, (number | null)[]> = {};
-    for (const d of evaluation.dives) next[d.slot] = Array(judgeCount).fill(value);
+    for (const d of evaluation.dives) next[d.slot] = Array(JUDGE_COUNT).fill(value);
     setAwards(next);
   }
 
@@ -107,26 +108,6 @@ export function SimulatorScreen() {
         </select>
       </Field>
 
-      {listRules.judgeCounts.length > 1 ? (
-        <div className="mt-3">
-          <Field label="Judges">
-            <Segmented
-              ariaLabel="Number of judges"
-              value={judgeCount}
-              onChange={setJudgeCount}
-              options={listRules.judgeCounts.map((n) => ({
-                value: n,
-                label: `${n} judges`,
-                sublabel: n >= 7 ? 'drop 2 each end' : 'drop 1 each end',
-              }))}
-            />
-          </Field>
-        </div>
-      ) : (
-        <p className="mt-2 text-xs text-muted">
-          {listRules.shortName} judges on a panel of {listRules.defaultJudgeCount}.
-        </p>
-      )}
 
       <div className="mt-3 flex flex-wrap gap-2">
         <span className="self-center text-xs text-muted">Fill all:</span>
@@ -146,7 +127,7 @@ export function SimulatorScreen() {
             key={dive.slot}
             dive={dive}
             given={given}
-            judgeCount={judgeCount}
+            judgeCount={JUDGE_COUNT}
             complete={complete}
             points={score.points}
             counted={score.counted}

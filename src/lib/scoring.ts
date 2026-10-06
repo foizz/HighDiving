@@ -1,11 +1,9 @@
 /**
  * Score calculation, which is identical in both rule books:
- * cancel the highest and lowest awards, add the remaining three, multiply by the DD.
- *
- *   5 judges (Red Bull 12.1.3)      drop 1 high + 1 low
- *   7 judges (World Aquatics HD 6.5) drop 2 high + 2 low
+ * add the three judges' awards, multiply by the DD.
  *
  * Both books give the same worked example: 8.0, 7.5, 7.5, 7.5, 7.0 = 22.5 x 3.8 = 85.5
+ * (three judges from a larger panel: keep the middle three, drop 1 or 2 from each end)
  */
 
 export const MIN_AWARD = 0;

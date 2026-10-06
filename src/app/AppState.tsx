@@ -18,7 +18,6 @@ import { syncStatusBar } from '../lib/native';
 interface Settings {
   ruleSet: RuleSetId;
   gender: Gender;
-  judgeCount: number;
 }
 
 const SETTINGS_KEY = 'highdive.settings.v1';
@@ -34,7 +33,7 @@ function setGuestFlag(on: boolean): void {
 }
 
 function loadSettings(): Settings {
-  const fallback: Settings = { ruleSet: 'redbull', gender: 'men', judgeCount: 5 };
+  const fallback: Settings = { ruleSet: 'redbull', gender: 'men' };
   try {
     const raw = localStorage.getItem(SETTINGS_KEY);
     if (!raw) return fallback;
@@ -48,7 +47,6 @@ interface AppContextValue extends Settings {
   rules: RuleSet;
   setRuleSet: (id: RuleSetId) => void;
   setGender: (g: Gender) => void;
-  setJudgeCount: (n: number) => void;
   account: Account | null;
   data: DataSource | null;
   authReady: boolean;
@@ -188,16 +186,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
     ...settings,
     rules: RULE_SETS[settings.ruleSet],
     setRuleSet: (ruleSet) =>
-      setSettings((s) => {
-        const rules = RULE_SETS[ruleSet];
-        // Red Bull judges on a panel of five only; keep the count legal across a switch.
-        const judgeCount = rules.judgeCounts.includes(s.judgeCount)
-          ? s.judgeCount
-          : rules.defaultJudgeCount;
-        return { ...s, ruleSet, judgeCount };
-      }),
+      setSettings((s) => ({ ...s, ruleSet })),
     setGender: (gender) => setSettings((s) => ({ ...s, gender })),
-    setJudgeCount: (judgeCount) => setSettings((s) => ({ ...s, judgeCount })),
     account,
     data,
     authReady,

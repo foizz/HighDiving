@@ -91,8 +91,8 @@ export function SettingsScreen() {
           </li>
           <li>No dive may be repeated. ({rules.citations.repeat})</li>
           <li>
-            Panel of {rules.judgeCounts.join(' or ')}; drop the highest and lowest, add the rest,
-            multiply by DD. ({rules.citations.scoring})
+            Panel of 3 judges; drop the highest and lowest, add the rest, multiply by DD.
+            ({rules.citations.scoring})
           </li>
         </ul>
       </Card>
